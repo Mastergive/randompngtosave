@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: transparent; /* Makes it transparent in OBS */
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .scroll-container {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.4); /* Subtle dark bar background */
+            border-top: 2px solid #ffcc00;
+            border-bottom: 2px solid #ffcc00;
+        }
+
+        .scroll-content {
+            display: flex;
+            align-items: center;
+            animation: scroll 20s linear infinite; /* Adjust speed here */
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .text {
+            font-size: 48px;
+            color: #ffffff;
+            text-shadow: 0 0 10px #ffcc00, 0 0 20px #ff9900;
+            margin-left: 30px;
+        }
+
+        .logo {
+            height: 60px; /* Adjust logo size */
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(100%); } /* Scrolls right to left for Arabic */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scroll-container">
+        <div class="scroll-content">
+            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+        </div>
+        <div class="scroll-content">
+            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+        </div>
+    </div>
+
+</body>
+</html>

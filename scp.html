@@ -4,56 +4,78 @@
     <meta charset="UTF-8">
     <style>
         body { 
-            margin: 0; 
-            padding: 0; 
-            overflow: hidden; 
+            margin: 0; padding: 0; overflow: hidden; 
             background-color: transparent; 
-            font-family: Arial, sans-serif; /* Cleanest for performance */
+            font-family: Arial, sans-serif; 
         }
         
         .scroll-container {
             display: flex;
             align-items: center;
             white-space: nowrap;
-            height: 55px; /* Slimmer bar like the image */
-            background: #b30000; /* Spacetoon Red */
-            border-top: 3px solid #ffd700; /* Yellow top border */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            height: 65px;
+            background: #b30000;
+            border-top: 3px solid #ffd700;
+            position: relative;
         }
 
+        /* Fixed Planet Container */
+        .planet-container {
+            position: absolute;
+            left: 2px; /* Adjusted position */
+            bottom: -15px; /* Pulls it down slightly to look like it's floating on the bar */
+            width: 110px; /* Made slightly wider for your PNGs */
+            height: 110px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* The Planet PNG Spot */
+        .planet-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: opacity 1s ease;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+        }
+
+        /* Text overlaying the planet image */
+        .planet-info {
+            position: relative;
+            z-index: 21;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0px; 
+        }
+
+        .planet-info span {
+            color: #fff;
+            font-size: 11px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000, -1px -1px 2px #000;
+            line-height: 1.1;
+        }
+
+        .planet-info .number { font-size: 16px; color: #ffd700; }
+
+        /* Scrolling Area */
         .scroll-content {
             display: flex;
             align-items: center;
             will-change: transform;
-            animation: scroll 13s linear infinite; 
+            animation: scroll 10s linear infinite; 
+            padding-left: 120px; /* Space so text doesn't overlap planet */
         }
 
-        .item { 
-            display: flex; 
-            align-items: center; 
-            padding: 0 30px; 
-        }
-        
-        .text { 
-            font-size: 22px; 
-            color: #ffffff; 
-            font-weight: bold;
-            margin-left: 20px;
-            /* No heavy glow - just a tiny sharp shadow for readability */
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-        }
-        
-        .username { 
-            color: #ffd700; /* Yellow names like the classic UI */
-            font-weight: 900; 
-            margin-left: 8px; 
-            font-size: 20px; 
-        }
-        
-        .logo { 
-            height: 28px; /* Small logo separator */
-            opacity: 0.9;
-        }
+        .item { display: flex; align-items: center; padding: 0 40px; }
+        .text { font-size: 24px; color: #fff; font-weight: bold; margin-left: 20px; text-shadow: 1px 1px 2px #000; }
+        .username { color: #ffd700; font-weight: 900; margin-left: 8px; font-size: 22px; }
+        .logo { height: 30px; }
 
         @keyframes scroll {
             from { transform: translateX(0); }
@@ -64,6 +86,16 @@
 <body>
 
     <div class="scroll-container">
+        <div class="planet-container">
+            <img id="planetImg" class="planet-image" src="https://github.com/Mastergive/randompngtosave/blob/main/Action_planet-Photoroom.png?raw=true">
+            
+            <div class="planet-info">
+                <span id="countryName">المغرب</span>
+                <span class="number" id="phoneNum">1091</span>
+                <span id="providerName">اتصالات</span>
+            </div>
+        </div>
+
         <div class="scroll-content" id="content">
             <div class="item"><span class="username">Ayman:</span><span class="text">أطلقوا القوة! دراغون بول للأبد ⚡🔥</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
             <div class="item"><span class="username">Sara:</span><span class="text">من يتذكر أغنية ريمي؟ 😭🎶</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
@@ -79,6 +111,36 @@
         const content = document.getElementById('content');
         const copy = document.getElementById('copy');
         copy.innerHTML = content.innerHTML;
+
+        const infoList = [
+            { country: "المغرب", num: "1091", provider: "اتصالات", img: "https://github.com/Mastergive/randompngtosave/blob/main/Action_planet-Photoroom.png?raw=true" },
+            { country: "السعودية", num: "8822", provider: "STC", img: "https://github.com/Mastergive/randompngtosave/blob/main/Adventure-Photoroom.png?raw=true" },
+            { country: "الإمارات", num: "2714", provider: "دو", img: "https://github.com/Mastergive/randompngtosave/blob/main/Sports-Photoroom.png?raw=true" }
+        ];
+
+        let index = 0;
+        const planetImg = document.getElementById('planetImg');
+        const countryText = document.getElementById('countryName');
+        const phoneText = document.getElementById('phoneNum');
+        const providerText = document.getElementById('providerName');
+
+        function updatePlanet() {
+            planetImg.style.opacity = 0;
+            
+            setTimeout(() => {
+                index = (index + 1) % infoList.length;
+                const data = infoList[index];
+                
+                planetImg.src = data.img;
+                countryText.innerText = data.country;
+                phoneText.innerText = data.num;
+                providerText.innerText = data.provider;
+                
+                planetImg.style.opacity = 1;
+            }, 1000); 
+        }
+
+        setInterval(updatePlanet, 20000);
     </script>
 
 </body>

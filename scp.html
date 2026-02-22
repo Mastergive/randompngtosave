@@ -3,41 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap');
-
-        body { margin: 0; padding: 0; overflow: hidden; background-color: transparent; font-family: 'Cairo', sans-serif; }
+        /* Using system fonts to avoid loading external lag */
+        body { 
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden; 
+            background-color: transparent; 
+            font-family: "Segoe UI", Tahoma, Arial, sans-serif; 
+        }
         
         .scroll-container {
             display: flex;
             align-items: center;
             white-space: nowrap;
             height: 85px;
-            background: linear-gradient(90deg, rgba(20,0,40,0.9) 0%, rgba(60,20,100,0.9) 50%, rgba(20,0,40,0.9) 100%);
-            border-top: 3px solid #ffcc00;
-            border-bottom: 3px solid #ffcc00;
-            box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+            /* Simplified background color instead of complex gradient */
+            background: rgba(30, 0, 60, 0.9);
+            border-top: 2px solid #ffcc00;
+            border-bottom: 2px solid #ffcc00;
         }
 
         .scroll-content {
             display: flex;
             align-items: center;
-            animation: scroll 120s linear infinite; 
+            /* will-change optimizes GPU usage */
+            will-change: transform;
+            animation: scroll 60s linear infinite; 
         }
 
-        .item { display: flex; align-items: center; padding: 0 60px; }
-        
-        .text { 
-            font-size: 28px; 
-            color: #ffffff; 
-            text-shadow: 0 0 10px #ffcc00; 
-            margin-left: 45px; /* Increased this to move the logo further left */
+        .item { 
+            display: flex; 
+            align-items: center; 
+            padding: 0 50px; 
         }
         
-        .username { color: #00ecff; font-weight: 900; margin-left: 12px; font-size: 24px; }
+        .text { 
+            font-size: 26px; 
+            color: #ffffff; 
+            /* Simplified shadow - one layer is lighter than multiple */
+            text-shadow: 2px 2px 4px rgba(255, 204, 0, 0.5); 
+            margin-left: 35px;
+            font-weight: bold;
+        }
+        
+        .username { 
+            color: #00ecff; 
+            font-weight: 800; 
+            margin-left: 10px; 
+            font-size: 22px; 
+        }
         
         .logo { 
-            height: 42px; 
-            filter: drop-shadow(0 0 5px #fff);
+            height: 40px;
+            /* Removed drop-shadow filter as it's a huge lag source */
+            border-radius: 5px;
         }
 
         @keyframes scroll {

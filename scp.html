@@ -5,70 +5,70 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap');
 
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: transparent; /* Makes it transparent in OBS */
-            font-family: 'Cairo', sans-serif;
-        }
-
+        body { margin: 0; padding: 0; overflow: hidden; background-color: transparent; font-family: 'Cairo', sans-serif; }
+        
         .scroll-container {
             display: flex;
             align-items: center;
             white-space: nowrap;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.4); /* Subtle dark bar background */
-            border-top: 2px solid #ffcc00;
-            border-bottom: 2px solid #ffcc00;
+            height: 85px;
+            background: linear-gradient(90deg, rgba(20,0,40,0.9) 0%, rgba(60,20,100,0.9) 50%, rgba(20,0,40,0.9) 100%);
+            border-top: 3px solid #ffcc00;
+            border-bottom: 3px solid #ffcc00;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
         }
 
         .scroll-content {
             display: flex;
             align-items: center;
-            animation: scroll 20s linear infinite; /* Adjust speed here */
+            animation: scroll 120s linear infinite; 
         }
 
-        .item {
-            display: flex;
-            align-items: center;
-            padding: 0 40px;
+        .item { display: flex; align-items: center; padding: 0 60px; }
+        
+        .text { 
+            font-size: 28px; 
+            color: #ffffff; 
+            text-shadow: 0 0 10px #ffcc00; 
+            margin-left: 45px; /* Increased this to move the logo further left */
         }
-
-        .text {
-            font-size: 48px;
-            color: #ffffff;
-            text-shadow: 0 0 10px #ffcc00, 0 0 20px #ff9900;
-            margin-left: 30px;
-        }
-
-        .logo {
-            height: 60px; /* Adjust logo size */
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+        
+        .username { color: #00ecff; font-weight: 900; margin-left: 12px; font-size: 24px; }
+        
+        .logo { 
+            height: 42px; 
+            filter: drop-shadow(0 0 5px #fff);
         }
 
         @keyframes scroll {
             from { transform: translateX(0); }
-            to { transform: translateX(100%); } /* Scrolls right to left for Arabic */
+            to { transform: translateX(100%); }
         }
     </style>
 </head>
 <body>
 
     <div class="scroll-container">
-        <div class="scroll-content">
-            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+        <div class="scroll-content" id="content">
+            <div class="item"><span class="username">Ayman:</span><span class="text">أطلقوا القوة! دراغون بول للأبد ⚡🔥</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="username">Sara:</span><span class="text">من يتذكر أغنية ريمي؟ "أنتي الأمان" 😭🎶</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="username">Conan_Fan:</span><span class="text">الجريمة لا تفيد.. المحقق كونان هنا! 🕵️‍♂️🔍</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="username">Goku_DZ:</span><span class="text">كاميهاميهااااااااا! 💥☄️</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="username">Nostalgia:</span><span class="text">سبيستون هي طفولتنا الجميلة ❤️✨</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="username">HunterX:</span><span class="text">قد لمعت عيناه بالعزم انتفضت يمنااااه ✊⚔️</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="username">Action_King:</span><span class="text">هزيم الرعد.. أبرقي أرعـدي! ⚡️🗡️</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="username">Captain_Majid:</span><span class="text">سجل هدفاً هيا يا ماجد! ⚽️🥅</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="username">Yami:</span><span class="text">حان وقت المبارزة! يوغي يو 🃏🌟</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
+            <div class="item"><span class="username">Fast_Car:</span><span class="text">سابق ولاحق.. الانطلاق نحو الفوز 🏎️🏁</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
         </div>
-        <div class="scroll-content">
-            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-            <div class="item"><span class="text">رمضان كريم</span> <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-        </div>
+        <div class="scroll-content" id="copy"></div>
     </div>
+
+    <script>
+        const content = document.getElementById('content');
+        const copy = document.getElementById('copy');
+        copy.innerHTML = content.innerHTML;
+    </script>
 
 </body>
 </html>

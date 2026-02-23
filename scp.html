@@ -4,23 +4,24 @@
     <meta charset="UTF-8">
     <style>
         body { 
-            margin: 0; padding: 0; overflow: hidden; 
+            margin: 0; padding: 0; 
+            overflow: hidden; 
             background-color: transparent; 
-            font-family: Arial, sans-serif; 
+            font-family: Arial, sans-serif;
+            width: 100vw; /* Force width to screen size */
         }
         
         .wrapper {
-            margin-top: 50px; /* Shifted down further for large planet */
+            margin-top: 45px; 
             position: relative;
+            width: 100%;
         }
 
         .scroll-container {
             display: flex;
             align-items: center;
-            white-space: nowrap;
-            height: 85px; /* Taller bar to fit large text */
-            
-            /* Enhanced Live Shine Effect */
+            height: 75px; /* Balanced height */
+            width: 100%;
             background: #182694 linear-gradient(
                 110deg, 
                 rgba(24,38,148,1) 0%, 
@@ -31,10 +32,10 @@
             );
             background-size: 300% 100%;
             animation: liveShine 4s linear infinite;
-            
-            border-top: 5px solid #fff;
-            box-shadow: inset 0 3px 0 #ffd700, 0 6px 15px rgba(0,0,0,0.6); 
+            border-top: 4px solid #fff;
+            box-shadow: inset 0 3px 0 #ffd700, 0 4px 10px rgba(0,0,0,0.5); 
             position: relative;
+            overflow: hidden; /* CRITICAL: Keeps everything inside the bar */
         }
 
         @keyframes liveShine {
@@ -42,106 +43,111 @@
             100% { background-position: -100% 0%; }
         }
 
+        /* Planet */
         .planet-container {
             position: absolute;
             left: 5px;
-            bottom: -18px; /* Adjusted for larger height */
-            width: 145px; /* Bigger planet */
-            height: 145px;
-            z-index: 70; 
+            bottom: -15px; 
+            width: 130px;
+            height: 130px;
+            z-index: 100; /* Stays on top */
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .planet-image {
-            position: absolute;
             width: 100%;
             height: 100%;
             object-fit: contain;
-            transition: opacity 1s ease;
-            filter: drop-shadow(0 0 10px rgba(0,0,0,0.7));
+            filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));
         }
 
         .planet-info {
-            position: relative;
-            z-index: 71;
+            position: absolute;
+            z-index: 101;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            margin-top: 10px;
+            padding-top: 15px;
         }
 
         .planet-info span {
             color: #fff;
-            font-size: 18px; /* Bigger country name */
+            font-size: 16px;
             font-weight: bold;
             text-shadow: 2px 2px 4px #000;
         }
 
-        .planet-info .number { font-size: 32px; color: #ffd700; margin: -2px 0; }
+        .planet-info .number { font-size: 28px; color: #ffd700; margin: -4px 0; }
 
+        /* Emoji Box */
         .emoji-area {
             position: absolute;
             right: 0;
             top: 0;
-            width: 100px; /* Wider for bigger GIF */
+            width: 90px;
             height: 100%;
             background: #182694; 
-            border-left: 4px solid #ffd700;
-            z-index: 80; 
+            border-left: 3px solid #ffd700;
+            z-index: 110; /* Stays on top */
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .emoji-gif {
-            width: 75px; /* Large GIF */
-            height: 75px;
+            width: 65px;
+            height: 65px;
             object-fit: contain;
+        }
+
+        /* Scroll Area */
+        .scroll-wrapper {
+            width: 100%;
+            overflow: hidden;
+            display: flex;
         }
 
         .scroll-content {
             display: flex;
             align-items: center;
-            height: 100%;
+            white-space: nowrap;
             will-change: transform;
-            animation: scroll 18s linear infinite; 
-            padding-left: 155px; 
-            padding-right: 110px; 
+            animation: scroll 20s linear infinite; 
+            padding-left: 140px; /* Space for planet */
+            padding-right: 100px; /* Space for emoji */
         }
 
         .item { 
             display: flex; 
             align-items: center; 
-            padding-left: 80px; 
+            padding-left: 100px; 
         }
         
         .text { 
-            font-size: 34px; /* Much larger text */
+            font-size: 30px; 
             color: #fff; 
             font-weight: bold; 
-            margin-left: 18px;
-            text-shadow: 2px 3px 3px rgba(0,0,0,1);
+            text-shadow: 2px 2px 2px #000;
         }
         
         .username { 
             color: #ffd700; 
             font-weight: 900; 
-            margin-left: 10px; 
-            font-size: 32px; 
-            text-shadow: 2px 3px 3px rgba(0,0,0,1);
+            font-size: 28px; 
+            margin-left: 10px;
+            text-shadow: 2px 2px 2px #000;
         }
 
         .scroll-logo {
-            height: 40px; /* Bigger separator logo */
-            margin-left: 25px;
-            filter: drop-shadow(0 0 4px white);
+            height: 35px;
+            margin-left: 30px;
         }
 
+        /* Fixed the animation direction and logic for RTL */
         @keyframes scroll {
-            from { transform: translateX(0); }
+            from { transform: translateX(-100%); }
             to { transform: translateX(100%); }
         }
     </style>
@@ -163,20 +169,21 @@
             <img id="emojiImg" class="emoji-gif" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif1.gif">
         </div>
 
-        <div class="scroll-content" id="content">
-            <div class="item">
-                <span class="username">سبيستون:</span>
-                <span class="text">عرض كونان الجزء الأول .. عمر - سوريا</span>
-                <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+        <div class="scroll-wrapper">
+            <div class="scroll-content" id="content">
+                <div class="item">
+                    <span class="username">Ayman:</span>
+                    <span class="text">أهلاً يا شباب المستقبل!</span>
+                    <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+                </div>
+                <div class="item">
+                    <span class="username">سبيستون:</span>
+                    <span class="text">تابعوا مغامرات دراغون بول الليلة ⚡🔥</span>
+                    <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+                </div>
             </div>
-
-            <div class="item">
-                <span class="username">Ayman:</span>
-                <span class="text">أطلقوا القوة! دراغون بول للأبد ⚡🔥</span>
-                <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
-            </div>
+            <div class="scroll-content" id="copy"></div>
         </div>
-        <div class="scroll-content" id="copy"></div>
     </div>
 </div>
 
@@ -185,7 +192,7 @@
     const copy = document.getElementById('copy');
     copy.innerHTML = content.innerHTML;
 
-    // Same rotation logic as before
+    // Planet Switching
     const infoList = [
         { country: "المغرب", num: "1091", provider: "اتصالات", img: "https://github.com/Mastergive/randompngtosave/blob/main/Action_planet-Photoroom.png?raw=true" },
         { country: "السعودية", num: "8822", provider: "STC", img: "https://github.com/Mastergive/randompngtosave/blob/main/Adventure-Photoroom.png?raw=true" },
@@ -206,6 +213,7 @@
         }, 1000);
     }, 20000);
 
+    // Emoji Switching
     const emojiList = [
         "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif1.gif", 
         "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif2.gif", 

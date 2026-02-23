@@ -9,73 +9,137 @@
             font-family: Arial, sans-serif; 
         }
         
+        .wrapper {
+            margin-top: 40px; 
+            position: relative;
+        }
+
         .scroll-container {
             display: flex;
             align-items: center;
             white-space: nowrap;
             height: 65px;
-            background: #182694;
-            border-top: 3px solid #ffd700;
+            
+            /* --- THE LIVE SHINE EFFECT --- */
+            /* We use a sharp gradient and animate it quickly to look like a light beam */
+            background: #182694 linear-gradient(
+                110deg, 
+                rgba(24,38,148,1) 0%, 
+                rgba(24,38,148,1) 40%, 
+                rgba(255,255,255,0.15) 50%, 
+                rgba(24,38,148,1) 60%, 
+                rgba(24,38,148,1) 100%
+            );
+            background-size: 300% 100%;
+            animation: liveShine 4s linear infinite;
+            
+            border-top: 4px solid #fff;
+            box-shadow: inset 0 2px 0 #ffd700, 0 4px 10px rgba(0,0,0,0.5); 
             position: relative;
         }
 
-        /* Fixed Planet Container */
+        /* Speed up the shine so you actually see it moving */
+        @keyframes liveShine {
+            0% { background-position: 100% 0%; }
+            100% { background-position: -100% 0%; }
+        }
+
         .planet-container {
             position: absolute;
-            left: 2px; /* Adjusted position */
-            bottom: -15px; /* Pulls it down slightly to look like it's floating on the bar */
-            width: 110px; /* Made slightly wider for your PNGs */
-            height: 110px;
-            z-index: 20;
+            left: 5px;
+            bottom: -12px; 
+            width: 120px;
+            height: 120px;
+            z-index: 50; 
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* The Planet PNG Spot */
         .planet-image {
             position: absolute;
             width: 100%;
             height: 100%;
             object-fit: contain;
             transition: opacity 1s ease;
-            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));
         }
 
-        /* Text overlaying the planet image */
         .planet-info {
             position: relative;
-            z-index: 21;
+            z-index: 51;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-top: 0px; 
+            margin-top: 8px;
         }
 
         .planet-info span {
             color: #fff;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
-            text-shadow: 1px 1px 2px #000, -1px -1px 2px #000;
-            line-height: 1.1;
+            text-shadow: 2px 2px 4px #000;
         }
 
-        .planet-info .number { font-size: 25px; color: #ffd700; }
+        .planet-info .number { font-size: 26px; color: #ffd700; }
 
-        /* Scrolling Area */
+        .emoji-area {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 80px; 
+            height: 100%;
+            background: #182694; /* Solid background so text hides behind it */
+            border-left: 3px solid #ffd700;
+            z-index: 60; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .emoji-gif {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+        }
+
         .scroll-content {
             display: flex;
             align-items: center;
             will-change: transform;
-            animation: scroll 10s linear infinite; 
-            padding-left: 120px; /* Space so text doesn't overlap planet */
+            animation: scroll 15s linear infinite; 
+            padding-left: 130px; 
+            padding-right: 90px; 
         }
 
-        .item { display: flex; align-items: center; padding: 0 40px; }
-        .text { font-size: 24px; color: #fff; font-weight: bold; margin-left: 20px; text-shadow: 1px 1px 2px #000; }
-        .username { color: #ffd700; font-weight: 900; margin-left: 8px; font-size: 22px; }
-        .logo { height: 30px; }
+        .item { 
+            display: flex; 
+            align-items: center; 
+            padding-left: 70px; 
+        }
+        
+        .text { 
+            font-size: 26px; 
+            color: #fff; 
+            font-weight: bold; 
+            margin-left: 15px;
+            text-shadow: 2px 2px 2px rgba(0,0,0,1);
+        }
+        
+        .username { 
+            color: #ffd700; 
+            font-weight: 900; 
+            margin-left: 8px; 
+            font-size: 24px; 
+            text-shadow: 2px 2px 2px rgba(0,0,0,1);
+        }
+
+        .scroll-logo {
+            height: 32px;
+            margin-left: 20px;
+            filter: drop-shadow(0 0 3px white);
+        }
 
         @keyframes scroll {
             from { transform: translateX(0); }
@@ -85,10 +149,10 @@
 </head>
 <body>
 
+<div class="wrapper">
     <div class="scroll-container">
         <div class="planet-container">
             <img id="planetImg" class="planet-image" src="https://github.com/Mastergive/randompngtosave/blob/main/Action_planet-Photoroom.png?raw=true">
-            
             <div class="planet-info">
                 <span id="countryName">المغرب</span>
                 <span class="number" id="phoneNum">1091</span>
@@ -96,52 +160,61 @@
             </div>
         </div>
 
+        <div class="emoji-area">
+            <img id="emojiImg" class="emoji-gif" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif1.gif">
+        </div>
+
         <div class="scroll-content" id="content">
-            <div class="item"><span class="username">Ayman:</span><span class="text">أطلقوا القوة! دراغون بول للأبد ⚡🔥</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-            <div class="item"><span class="username">Sara:</span><span class="text">من يتذكر أغنية ريمي؟ 😭🎶</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-            <div class="item"><span class="username">Conan:</span><span class="text">المحقق كونان الجزء الرابع.. </span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-            <div class="item"><span class="username">Nostalgia:</span><span class="text">سبيستون قناة شباب المستقبل ❤️✨</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-            <div class="item"><span class="username">Hunter:</span><span class="text">قد لمعت عيناه بالعزم! ✊⚔️</span><img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png"></div>
-            
+            <div class="item">
+                <span class="username">سبيستون:</span>
+                <span class="text">عرض كونان الجزء الأول .. عمر - سوريا</span>
+                <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+            </div>
+
+            <div class="item">
+                <span class="username">Ayman:</span>
+                <span class="text">أطلقوا القوة! دراغون بول للأبد ⚡🔥</span>
+                <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+            </div>
         </div>
         <div class="scroll-content" id="copy"></div>
     </div>
+</div>
 
-    <script>
-        const content = document.getElementById('content');
-        const copy = document.getElementById('copy');
-        copy.innerHTML = content.innerHTML;
+<script>
+    const content = document.getElementById('content');
+    const copy = document.getElementById('copy');
+    copy.innerHTML = content.innerHTML;
 
-        const infoList = [
-            { country: "المغرب", num: "1091", provider: "اتصالات", img: "https://github.com/Mastergive/randompngtosave/blob/main/Action_planet-Photoroom.png?raw=true" },
-            { country: "السعودية", num: "8822", provider: "STC", img: "https://github.com/Mastergive/randompngtosave/blob/main/Adventure-Photoroom.png?raw=true" },
-            { country: "الإمارات", num: "2714", provider: "دو", img: "https://github.com/Mastergive/randompngtosave/blob/main/Sports-Photoroom.png?raw=true" }
-        ];
+    // Planet Switching
+    const infoList = [
+        { country: "المغرب", num: "1091", provider: "اتصالات", img: "https://github.com/Mastergive/randompngtosave/blob/main/Action_planet-Photoroom.png?raw=true" },
+        { country: "السعودية", num: "8822", provider: "STC", img: "https://github.com/Mastergive/randompngtosave/blob/main/Adventure-Photoroom.png?raw=true" },
+        { country: "الإمارات", num: "2714", provider: "دو", img: "https://github.com/Mastergive/randompngtosave/blob/main/Sports-Photoroom.png?raw=true" }
+    ];
 
-        let index = 0;
-        const planetImg = document.getElementById('planetImg');
-        const countryText = document.getElementById('countryName');
-        const phoneText = document.getElementById('phoneNum');
-        const providerText = document.getElementById('providerName');
+    let pIdx = 0;
+    setInterval(() => {
+        const img = document.getElementById('planetImg');
+        img.style.opacity = 0;
+        setTimeout(() => {
+            pIdx = (pIdx + 1) % infoList.length;
+            img.src = infoList[pIdx].img;
+            document.getElementById('countryName').innerText = infoList[pIdx].country;
+            document.getElementById('phoneNum').innerText = infoList[pIdx].num;
+            document.getElementById('providerName').innerText = infoList[pIdx].provider;
+            img.style.opacity = 1;
+        }, 1000);
+    }, 20000);
 
-        function updatePlanet() {
-            planetImg.style.opacity = 0;
-            
-            setTimeout(() => {
-                index = (index + 1) % infoList.length;
-                const data = infoList[index];
-                
-                planetImg.src = data.img;
-                countryText.innerText = data.country;
-                phoneText.innerText = data.num;
-                providerText.innerText = data.provider;
-                
-                planetImg.style.opacity = 1;
-            }, 1000); 
-        }
-
-        setInterval(updatePlanet, 20000);
-    </script>
+    // Emoji Switching
+    const emojiList = ["https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif1.gif", "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif2.gif", "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif3.gif"];
+    let eIdx = 0;
+    setInterval(() => {
+        eIdx = (eIdx + 1) % emojiList.length;
+        document.getElementById('emojiImg').src = emojiList[eIdx];
+    }, 5000);
+</script>
 
 </body>
 </html>

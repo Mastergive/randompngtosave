@@ -12,13 +12,13 @@
         }
         
         .wrapper {
-            margin-top: 50px; 
+            margin-top: 40px; 
             position: relative;
             width: 100%;
             height: 180px; 
         }
 
-        /* The Blue Scroll Container with the "Hole" for the planet */
+        /* The Blue Scroll Container */
         .scroll-container {
             display: flex;
             align-items: center;
@@ -35,13 +35,15 @@
             background-size: 300% 100%;
             animation: liveShine 4s linear infinite;
             border-top: 4px solid #fff;
+            /* Bottom border added to keep it looking good on the bottom */
+            border-bottom: 2px solid rgba(255,255,255,0.3);
             box-shadow: inset 0 3px 0 #ffd700, 0 4px 10px rgba(0,0,0,0.5); 
             position: absolute;
-            bottom: 0;
-            /* This creates the transparency behind the planet circle */
-            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 15px 50%, 15px 50% );
-            mask-image: radial-gradient(circle 75px at 75px 50%, transparent 100%, black 100%);
-            -webkit-mask-image: radial-gradient(circle 65px at 72px 10%, transparent 100%, black 100%);
+            bottom: 20px;
+            
+            /* This carves the hole for the planet so the blue doesn't show behind it */
+            -webkit-mask-image: radial-gradient(circle 80px at 75px 15%, transparent 100%, black 100%);
+            mask-image: radial-gradient(circle 80px at 75px 15%, transparent 100%, black 100%);
         }
 
         @keyframes liveShine {
@@ -49,35 +51,36 @@
             100% { background-position: -100% 0%; }
         }
 
-        /* Planet Container - Positioned to match the 'hole' in the blue bar */
+        /* Planet Container */
         .planet-container {
             position: absolute;
-            left: 2px;
-            bottom: -5px; 
-            width: 145px;
-            height: 145px;
+            left: -5px;
+            bottom: 5px; 
+            width: 160px;
+            height: 160px;
             z-index: 200;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* The Glowing Green Ring from your picture */
+        /* The Green Neon Ring from your photo */
         .planet-container::before {
             content: '';
             position: absolute;
-            width: 125px;
-            height: 125px;
-            border: 3px solid #3dfc4a;
+            width: 130px;
+            height: 130px;
+            border: 4px solid #3dfc4a;
             border-radius: 50%;
-            box-shadow: 0 0 15px #3dfc4a, inset 0 0 15px #3dfc4a;
+            box-shadow: 0 0 20px #3dfc4a, inset 0 0 15px #3dfc4a;
             z-index: -1;
-            background: rgba(0,0,0,0.2);
+            /* Slight dark tint inside the circle to help text pop */
+            background: rgba(0,0,0,0.3);
         }
 
         .planet-image {
-            width: 90%;
-            height: 90%;
+            width: 85%;
+            height: 85%;
             object-fit: contain;
             filter: drop-shadow(0 0 5px rgba(0,0,0,0.8));
             transition: opacity 1s ease;
@@ -92,16 +95,17 @@
             justify-content: center;
             width: 100%;
             height: 100%;
+            padding-bottom: 5px;
         }
 
         .planet-info span {
             color: #fff;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: bold;
             text-shadow: 2px 2px 3px #000;
         }
 
-        .planet-info .number { font-size: 24px; color: #fff; margin: -2px 0; }
+        .planet-info .number { font-size: 26px; color: #fff; margin: -2px 0; }
 
         /* Emoji Box */
         .emoji-area {
@@ -121,21 +125,20 @@
         .emoji-gif {
             width: 55px;
             height: 55px;
-            object-fit: contain;
         }
 
         .scroll-wrapper {
             width: 100%;
             overflow: hidden;
             display: flex;
-            padding-right: 140px; /* Space for the planet hole */
+            padding-right: 150px; /* Offset so text doesn't start under planet */
         }
 
         .scroll-content {
             display: flex;
             align-items: center;
             white-space: nowrap;
-            animation: scroll 30s linear infinite; 
+            animation: scroll 50s linear infinite; 
         }
 
         @keyframes scroll {
@@ -263,3 +266,6 @@
 
 </body>
 </html>
+
+
+

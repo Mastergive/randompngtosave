@@ -2,42 +2,123 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>مركز رسائل سبيستون</title>
+    <title>مركز بث سبيستون القديم</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0a114d; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .card { background: #182694; padding: 30px; border-radius: 15px; width: 400px; box-shadow: 0 0 30px rgba(0,0,0,0.7); border: 2px solid #ffd700; text-align: center; }
-        h2 { color: #ffd700; text-shadow: 2px 2px 4px #000; }
-        input, button, textarea { width: 100%; margin-top: 10px; padding: 12px; border-radius: 8px; border: none; box-sizing: border-box; font-size: 16px; }
-        input, textarea { background: #fff; color: #333; }
-        button { background: #ffd700; color: #182694; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #fff; }
-        .admin-only { background: #ff4d4d !important; color: white !important; margin-top: 20px; display: none; }
+        :root {
+            --space-blue: #0a114d;
+            --stoon-blue: #182694;
+            --stoon-gold: #ffd700;
+            --stoon-green: #3dfc4a;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--space-blue); 
+            background: radial-gradient(circle, #1e2a78 0%, #0a114d 100%);
+            color: white; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .card { 
+            background: var(--stoon-blue); 
+            padding: 40px; 
+            border-radius: 25px; 
+            width: 450px; 
+            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 15px rgba(255,255,255,0.1); 
+            border: 3px solid var(--stoon-gold); 
+            text-align: center;
+            position: relative;
+        }
+
+        h2 { 
+            color: var(--stoon-gold); 
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        input, button, textarea { 
+            width: 100%; 
+            margin-top: 15px; 
+            padding: 14px; 
+            border-radius: 12px; 
+            border: 2px solid rgba(255,255,255,0.2); 
+            box-sizing: border-box; 
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input, textarea { background: rgba(255, 255, 255, 0.9); color: #111; }
+        input:focus { border-color: var(--stoon-gold); box-shadow: 0 0 10px var(--stoon-gold); }
+
+        button { 
+            background: var(--stoon-gold); 
+            color: var(--stoon-blue); 
+            font-weight: 900; 
+            cursor: pointer; 
+            border: none;
+            box-shadow: 0 4px 0 #b39700;
+        }
+
+        button:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 6px 0 #ccc; }
+        button:active { transform: translateY(2px); box-shadow: 0 0 0; }
+
+        .history-container {
+            margin-top: 30px;
+            text-align: right;
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px dashed var(--stoon-gold);
+        }
+
+        .history-title { font-size: 14px; color: var(--stoon-gold); margin-bottom: 10px; border-bottom: 1px solid #444; }
+        
+        .msg-item {
+            font-size: 13px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            animation: fadeIn 0.5s ease;
+        }
+        .msg-user { color: var(--stoon-gold); font-weight: bold; }
+
+        .admin-only { background: #ff4d4d !important; color: white !important; margin-top: 20px; display: none; box-shadow: 0 4px 0 #a32a2a; }
         .hidden { display: none; }
-        #status { margin-top: 10px; color: #3dfc4a; font-size: 14px; }
-        .toggle-link { font-size: 12px; cursor: pointer; color: #ffd700; text-decoration: underline; display: block; margin-top: 10px; }
+        #status { margin-top: 15px; color: var(--stoon-green); font-weight: bold; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>قناة شباب المستقبل 🚀</h2>
+    <h2>شريط ذكريات سبيستون 🚀</h2>
     
     <div id="auth-section">
         <input type="email" id="email" placeholder="البريد الإلكتروني">
         <input type="password" id="password" placeholder="كلمة المرور">
-        <button id="auth-btn" onclick="handleAuth()">تسجيل الدخول</button>
-        <span class="toggle-link" onclick="toggleAuthMode()" id="toggle-text">ليس لديك حساب؟ سجل الآن</span>
+        <button onclick="handleAuth()" id="auth-btn">دخول إلى الكوكب</button>
+        <p style="font-size: 12px; cursor: pointer; color: var(--stoon-gold);" onclick="toggleAuthMode()" id="toggle-text">ليس لديك حساب؟ انضم إلينا الآن</p>
     </div>
 
     <div id="msg-section" class="hidden">
-        <p id="user-welcome"></p>
-        <input type="text" id="nickname" placeholder="اسمك في الشريط (مثلاً: كونان)">
-        <textarea id="msg" rows="3" placeholder="اكتب رسالتك هنا..."></textarea>
-        <button onclick="sendMessage()">إرسال إلى OBS</button>
+        <input type="text" id="nickname" placeholder="اسمك السبيستوني (مثلاً: المحقق كونان)">
+        <textarea id="msg" rows="3" placeholder="اكتب رسالتك لتظهر على القناة..."></textarea>
+        <button onclick="sendMessage()">إرسال إلى سبيستون ✨</button>
         
-        <button id="clear-btn" class="admin-only" onclick="clearMessages()">مسح جميع الرسائل (للمشرف فقط)</button>
-        
-        <button onclick="logout()" style="background: transparent; color: #ccc; font-size: 12px; border: 1px solid #555; margin-top: 20px;">تسجيل الخروج</button>
+        <div class="history-container">
+            <div class="history-title">آخر الرسائل المرسلة:</div>
+            <div id="history-list"></div>
+        </div>
+
+        <button id="clear-btn" class="admin-only" onclick="clearMessages()">مسح الشريط (للمشرف)</button>
+        <button onclick="logout()" style="background: transparent; color: #aaa; box-shadow: none; font-size: 11px; margin-top: 20px; border: 1px solid #444;">تسجيل الخروج</button>
     </div>
 
     <p id="status"></p>
@@ -64,34 +145,27 @@
 
     function toggleAuthMode() {
         isLoginMode = !isLoginMode;
-        document.getElementById('auth-btn').innerText = isLoginMode ? "تسجيل الدخول" : "إنشاء حساب جديد";
-        document.getElementById('toggle-text').innerText = isLoginMode ? "ليس لديك حساب؟ سجل الآن" : "لديك حساب بالفعل؟ ادخل هنا";
+        document.getElementById('auth-btn').innerText = isLoginMode ? "دخول إلى الكوكب" : "إنشاء حساب سبيستوني";
+        document.getElementById('toggle-text').innerText = isLoginMode ? "ليس لديك حساب؟ انضم إلينا الآن" : "لديك حساب؟ سجل دخولك";
     }
 
     async function handleAuth() {
         const email = document.getElementById('email').value;
         const pass = document.getElementById('password').value;
         try {
-            if (isLoginMode) {
-                await auth.signInWithEmailAndPassword(email, pass);
-            } else {
-                await auth.createUserWithEmailAndPassword(email, pass);
-            }
-        } catch (error) {
-            alert(error.message);
-        }
+            if (isLoginMode) { await auth.signInWithEmailAndPassword(email, pass); }
+            else { await auth.createUserWithEmailAndPassword(email, pass); }
+        } catch (error) { alert("خطأ: " + error.message); }
     }
 
     auth.onAuthStateChanged(user => {
         if (user) {
             document.getElementById('auth-section').classList.add('hidden');
             document.getElementById('msg-section').classList.remove('hidden');
-            document.getElementById('user-welcome').innerText = "أهلاً بك: " + user.email;
-            
-            // Show Clear button ONLY for Admin (Ayman)
-            if (user.email === "aymanbouraaman@gmail.com") { // CHANGE THIS TO YOUR EMAIL
+            if (user.email === "ayman@spacetoon.com") { // Change this to your email!
                 document.getElementById('clear-btn').style.display = "block";
             }
+            loadHistory();
         } else {
             document.getElementById('auth-section').classList.remove('hidden');
             document.getElementById('msg-section').classList.add('hidden');
@@ -101,24 +175,40 @@
     function sendMessage() {
         const nick = document.getElementById('nickname').value || "عضو سبيستوني";
         const msgText = document.getElementById('msg').value;
+        if(!msgText) return;
 
-        if(!msgText) return alert("اكتب رسالة أولاً!");
+        const newMsg = { username: nick, text: msgText, timestamp: Date.now() };
 
-        db.ref('latestMessage').set({
-            username: nick,
-            text: msgText,
-            timestamp: Date.now()
-        }).then(() => {
-            document.getElementById('status').innerText = "تم الإرسال بنجاح! 🚀";
-            document.getElementById('msg').value = "";
-            setTimeout(() => { document.getElementById('status').innerText = ""; }, 3000);
+        // 1. Update the live bar
+        db.ref('latestMessage').set(newMsg);
+
+        // 2. Add to history list (limited to 5)
+        db.ref('history').push(newMsg);
+        
+        document.getElementById('status').innerText = "تم الإرسال لشباب المستقبل! 🌠";
+        document.getElementById('msg').value = "";
+        setTimeout(() => { document.getElementById('status').innerText = ""; }, 3000);
+    }
+
+    function loadHistory() {
+        db.ref('history').limitToLast(5).on('value', (snapshot) => {
+            const list = document.getElementById('history-list');
+            list.innerHTML = "";
+            snapshot.forEach(child => {
+                const data = child.val();
+                const div = document.createElement('div');
+                div.className = 'msg-item';
+                div.innerHTML = `<span class="msg-user">${data.username}:</span> ${data.text}`;
+                list.prepend(div);
+            });
         });
     }
 
     function clearMessages() {
-        if(confirm("هل تريد مسح الشريط فعلاً؟")) {
+        if(confirm("هل تريد مسح سجل الرسائل بالكامل؟")) {
             db.ref('latestMessage').remove();
-            alert("تم مسح الشريط");
+            db.ref('history').remove();
+            alert("تم تنظيف الكوكب!");
         }
     }
 

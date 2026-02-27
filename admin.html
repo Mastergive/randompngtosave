@@ -58,42 +58,41 @@
     <button onclick="sendMessage()">إرسال إلى OBS</button>
     <p id="status"></p>
 </div>
-
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 <script>
     // Create the communication channel
-    const bc = new BroadcastChannel('spacetoon_messages');
+    // USE THE SAME CONFIG HERE
+    const firebaseConfig = {
+        apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
+        databaseURL: "https://spacetoonold-aaac4.firebaseapp.com",
+        projectId: "spacetoonold-aaac4",
+        storageBucket: "spacetoonold-aaac4.firebasestorage.app",
+        appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
     function sendMessage() {
         const pass = document.getElementById('adminPass').value;
         const user = document.getElementById('username').value;
         const msg = document.getElementById('msg').value;
-        const status = document.getElementById('status');
 
-        // Validation
         if(pass !== "Ayman2026") {
-            alert("كلمة مرور خاطئة!");
-            return;
-        }
-        if(!user || !msg) {
-            alert("يرجى ملء جميع الحقول");
+            alert("Wrong Password");
             return;
         }
 
-        // Send data through the channel
-        bc.postMessage({
+        // Send to Cloud
+        db.ref('latestMessage').set({
             username: user,
             text: msg,
-            time: Date.now()
+            timestamp: Date.now()
+        }).then(() => {
+            document.getElementById('status').innerText = "تم الإرسال للغلاف الجوي! 🚀";
+            document.getElementById('msg').value = "";
         });
-
-        // Feedback
-        status.innerText = "🚀 تم الإرسال بنجاح!";
-        
-        // Reset message field
-        document.getElementById('msg').value = "";
-        
-        // Clear status after 3 seconds
-        setTimeout(() => { status.innerText = ""; }, 3000);
     }
 </script>
 </body>

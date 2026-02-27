@@ -262,6 +262,37 @@
         eIdx = (eIdx + 1) % emojiList.length;
         document.getElementById('emojiImg').src = emojiList[eIdx];
     }, 5000);
+
+    // Function to add a new message to the scroll
+    function addNewMessage(user, messageText) {
+        const contentDiv = document.getElementById('content');
+        const newItem = document.createElement('div');
+        newItem.className = 'item';
+        newItem.innerHTML = `
+            <span class="username">${user}:</span>
+            <span class="text">${messageText}</span>
+            <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+        `;
+        
+        // Add to the start or end
+        contentDiv.appendChild(newItem);
+        
+        // Refresh the copy for seamless loop
+        document.getElementById('copy').innerHTML = contentDiv.innerHTML;
+    }
+
+    // CHECK FOR NEW MESSAGES EVERY 2 SECONDS
+    let lastCheckedTime = Date.now();
+    setInterval(() => {
+        const rawData = localStorage.getItem('latestMessage');
+        if (rawData) {
+            const data = JSON.parse(rawData);
+            if (data.time > lastCheckedTime) {
+                addNewMessage(data.username, data.text);
+                lastCheckedTime = data.time;
+            }
+        }
+    }, 2000);
 </script>
 
 </body>

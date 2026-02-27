@@ -2,99 +2,127 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>سبيستون - لوحة التحكم</title>
+    <title>مركز رسائل سبيستون</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            background: #0a114d; 
-            color: white; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .card { 
-            background: #182694; 
-            color: white; 
-            padding: 30px; 
-            border-radius: 15px; 
-            width: 400px; 
-            box-shadow: 0 0 30px rgba(0,0,0,0.7); 
-            border: 2px solid #ffd700;
-            text-align: center;
-        }
-        h2 { color: #ffd700; text-shadow: 2px 2px 4px #000; margin-bottom: 20px; }
-        input, button, textarea { 
-            width: 100%; 
-            margin-top: 15px; 
-            padding: 12px; 
-            border-radius: 8px; 
-            border: 2px solid #fff; 
-            box-sizing: border-box; 
-            font-size: 16px;
-        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0a114d; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: #182694; padding: 30px; border-radius: 15px; width: 400px; box-shadow: 0 0 30px rgba(0,0,0,0.7); border: 2px solid #ffd700; text-align: center; }
+        h2 { color: #ffd700; text-shadow: 2px 2px 4px #000; }
+        input, button, textarea { width: 100%; margin-top: 10px; padding: 12px; border-radius: 8px; border: none; box-sizing: border-box; font-size: 16px; }
         input, textarea { background: #fff; color: #333; }
-        button { 
-            background: #ffd700; 
-            color: #182694;
-            font-weight: 900; 
-            cursor: pointer; 
-            border: none; 
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
-        button:hover { background: #fff; transform: scale(1.02); }
-        #status { margin-top: 15px; font-weight: bold; color: #3dfc4a; }
+        button { background: #ffd700; color: #182694; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #fff; }
+        .admin-only { background: #ff4d4d !important; color: white !important; margin-top: 20px; display: none; }
+        .hidden { display: none; }
+        #status { margin-top: 10px; color: #3dfc4a; font-size: 14px; }
+        .toggle-link { font-size: 12px; cursor: pointer; color: #ffd700; text-decoration: underline; display: block; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>لوحة تحكم سبيستون 🚀</h2>
-    <input type="password" id="adminPass" placeholder="كلمة المرور">
-    <input type="text" id="username" placeholder="اسم المستخدم (مثلاً: Ayman)">
-    <textarea id="msg" rows="3" placeholder="اكتب رسالتك هنا..."></textarea>
-    <button onclick="sendMessage()">إرسال إلى OBS</button>
+    <h2>قناة شباب المستقبل 🚀</h2>
+    
+    <div id="auth-section">
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <input type="password" id="password" placeholder="كلمة المرور">
+        <button id="auth-btn" onclick="handleAuth()">تسجيل الدخول</button>
+        <span class="toggle-link" onclick="toggleAuthMode()" id="toggle-text">ليس لديك حساب؟ سجل الآن</span>
+    </div>
+
+    <div id="msg-section" class="hidden">
+        <p id="user-welcome"></p>
+        <input type="text" id="nickname" placeholder="اسمك في الشريط (مثلاً: كونان)">
+        <textarea id="msg" rows="3" placeholder="اكتب رسالتك هنا..."></textarea>
+        <button onclick="sendMessage()">إرسال إلى OBS</button>
+        
+        <button id="clear-btn" class="admin-only" onclick="clearMessages()">مسح جميع الرسائل (للمشرف فقط)</button>
+        
+        <button onclick="logout()" style="background: transparent; color: #ccc; font-size: 12px; border: 1px solid #555; margin-top: 20px;">تسجيل الخروج</button>
+    </div>
+
     <p id="status"></p>
 </div>
+
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
 <script>
-    // Create the communication channel
-    // USE THE SAME CONFIG HERE
     const firebaseConfig = {
-    apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
-    // FIXED LINE BELOW
-    databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 
-    projectId: "spacetoonold-aaac4",
-    storageBucket: "spacetoonold-aaac4.firebasestorage.app",
-    appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
-};
+        apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
+        databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 
+        projectId: "spacetoonold-aaac4",
+        storageBucket: "spacetoonold-aaac4.firebasestorage.app",
+        appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
+    };
 
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     const db = firebase.database();
 
-    function sendMessage() {
-        const pass = document.getElementById('adminPass').value;
-        const user = document.getElementById('username').value;
-        const msg = document.getElementById('msg').value;
+    let isLoginMode = true;
 
-        if(pass !== "Ayman2026") {
-            alert("Wrong Password");
-            return;
+    function toggleAuthMode() {
+        isLoginMode = !isLoginMode;
+        document.getElementById('auth-btn').innerText = isLoginMode ? "تسجيل الدخول" : "إنشاء حساب جديد";
+        document.getElementById('toggle-text').innerText = isLoginMode ? "ليس لديك حساب؟ سجل الآن" : "لديك حساب بالفعل؟ ادخل هنا";
+    }
+
+    async function handleAuth() {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        try {
+            if (isLoginMode) {
+                await auth.signInWithEmailAndPassword(email, pass);
+            } else {
+                await auth.createUserWithEmailAndPassword(email, pass);
+            }
+        } catch (error) {
+            alert(error.message);
         }
+    }
 
-        // Send to Cloud
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('msg-section').classList.remove('hidden');
+            document.getElementById('user-welcome').innerText = "أهلاً بك: " + user.email;
+            
+            // Show Clear button ONLY for Admin (Ayman)
+            if (user.email === "ayman@spacetoon.com") { // CHANGE THIS TO YOUR EMAIL
+                document.getElementById('clear-btn').style.display = "block";
+            }
+        } else {
+            document.getElementById('auth-section').classList.remove('hidden');
+            document.getElementById('msg-section').classList.add('hidden');
+        }
+    });
+
+    function sendMessage() {
+        const nick = document.getElementById('nickname').value || "عضو سبيستوني";
+        const msgText = document.getElementById('msg').value;
+
+        if(!msgText) return alert("اكتب رسالة أولاً!");
+
         db.ref('latestMessage').set({
-            username: user,
-            text: msg,
+            username: nick,
+            text: msgText,
             timestamp: Date.now()
         }).then(() => {
-            document.getElementById('status').innerText = "تم الإرسال للغلاف الجوي! 🚀";
+            document.getElementById('status').innerText = "تم الإرسال بنجاح! 🚀";
             document.getElementById('msg').value = "";
+            setTimeout(() => { document.getElementById('status').innerText = ""; }, 3000);
         });
     }
+
+    function clearMessages() {
+        if(confirm("هل تريد مسح الشريط فعلاً؟")) {
+            db.ref('latestMessage').remove();
+            alert("تم مسح الشريط");
+        }
+    }
+
+    function logout() { auth.signOut(); }
 </script>
 </body>
 </html>

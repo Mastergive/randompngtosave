@@ -2,14 +2,50 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Spacetoon Admin Control</title>
+    <title>سبيستون - لوحة التحكم</title>
     <style>
-        body { font-family: Arial; background: #182694; color: white; display: flex; justify-content: center; padding: 50px; }
-        .card { background: #fff; color: #333; padding: 20px; border-radius: 10px; width: 400px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        input, button, textarea { width: 100%; margin-top: 10px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
-        button { background: #ffd700; font-weight: bold; cursor: pointer; border: none; }
-        button:hover { background: #ffcc00; }
-        .error { color: red; font-size: 12px; margin-top: 5px; display: none; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: #0a114d; 
+            color: white; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card { 
+            background: #182694; 
+            color: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            width: 400px; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.7); 
+            border: 2px solid #ffd700;
+            text-align: center;
+        }
+        h2 { color: #ffd700; text-shadow: 2px 2px 4px #000; margin-bottom: 20px; }
+        input, button, textarea { 
+            width: 100%; 
+            margin-top: 15px; 
+            padding: 12px; 
+            border-radius: 8px; 
+            border: 2px solid #fff; 
+            box-sizing: border-box; 
+            font-size: 16px;
+        }
+        input, textarea { background: #fff; color: #333; }
+        button { 
+            background: #ffd700; 
+            color: #182694;
+            font-weight: 900; 
+            cursor: pointer; 
+            border: none; 
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        button:hover { background: #fff; transform: scale(1.02); }
+        #status { margin-top: 15px; font-weight: bold; color: #3dfc4a; }
     </style>
 </head>
 <body>
@@ -17,40 +53,47 @@
 <div class="card">
     <h2>لوحة تحكم سبيستون 🚀</h2>
     <input type="password" id="adminPass" placeholder="كلمة المرور">
-    <input type="text" id="username" placeholder="اسم المستخدم (مثلاً: كونان)">
-    <textarea id="msg" placeholder="اكتب رسالتك هنا..."></textarea>
+    <input type="text" id="username" placeholder="اسم المستخدم (مثلاً: Ayman)">
+    <textarea id="msg" rows="3" placeholder="اكتب رسالتك هنا..."></textarea>
     <button onclick="sendMessage()">إرسال إلى OBS</button>
     <p id="status"></p>
 </div>
 
 <script>
-    // Simple logic: In a real app, you'd use a Backend API. 
-    // Here we use a "Webhook" or "Broadcast" service.
-    async function sendMessage() {
+    // Create the communication channel
+    const bc = new BroadcastChannel('spacetoon_messages');
+
+    function sendMessage() {
         const pass = document.getElementById('adminPass').value;
         const user = document.getElementById('username').value;
         const msg = document.getElementById('msg').value;
-        
-        if(pass !== "Ayman2026") { // Set your password here
+        const status = document.getElementById('status');
+
+        // Validation
+        if(pass !== "Ayman2026") {
             alert("كلمة مرور خاطئة!");
             return;
         }
+        if(!user || !msg) {
+            alert("يرجى ملء جميع الحقول");
+            return;
+        }
 
-        const payload = {
+        // Send data through the channel
+        bc.postMessage({
             username: user,
             text: msg,
             time: Date.now()
-        };
+        });
 
-        // We use BroadcastChannel for local testing, 
-        // but for Netlify to OBS, we save to an "endpoint"
-        // For this example, we will use 'localStorage' as a bridge 
-        // if they are on the same domain.
-        localStorage.setItem('latestMessage', JSON.stringify(payload));
-        document.getElementById('status').innerText = "تم الإرسال بنجاح!";
+        // Feedback
+        status.innerText = "🚀 تم الإرسال بنجاح!";
         
-        // Reset message but keep user/pass
+        // Reset message field
         document.getElementById('msg').value = "";
+        
+        // Clear status after 3 seconds
+        setTimeout(() => { status.innerText = ""; }, 3000);
     }
 </script>
 </body>

@@ -157,7 +157,8 @@
         </div>
     </div>
 </div>
-
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 <script>
     const content = document.getElementById('content');
     const copy = document.getElementById('copy');
@@ -199,23 +200,40 @@
     }, 5000);
 
     // MESSAGE RECEIVER (BROADCAST CHANNEL - BEST FOR OBS)
-    const bc = new BroadcastChannel('spacetoon_messages');
-    
-    bc.onmessage = (event) => {
-        const { username, text } = event.data;
-        
+    const firebaseConfig = {
+        apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
+        databaseURL: "https://spacetoonold-aaac4.firebaseapp.com",
+        projectId: "spacetoonold-aaac4",
+        storageBucket: "spacetoonold-aaac4.firebasestorage.app",
+        appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // ... (Keep your existing infoList, planet logic, and UI code) ...
+
+    function addNewMessage(user, messageText) {
         const newItem = document.createElement('div');
         newItem.className = 'item';
         newItem.innerHTML = `
-            <span class="username">${username}:</span>
-            <span class="text">${text}</span>
+            <span class="username">${user}:</span>
+            <span class="text">${messageText}</span>
             <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
         `;
-        
-        content.appendChild(newItem);
-        // Instant sync for OBS
-        copy.innerHTML = content.innerHTML;
-    };
+        document.getElementById('content').appendChild(newItem);
+        document.getElementById('copy').innerHTML = document.getElementById('content').innerHTML;
+    }
+
+    // 2. THE MAGIC: Listen for Cloud Updates
+    // This triggers automatically whenever the database changes!
+    db.ref('latestMessage').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data && data.text) {
+            addNewMessage(data.username, data.text);
+        }
+    });
 </script>
 
 </body>

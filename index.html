@@ -201,12 +201,13 @@
 
     // MESSAGE RECEIVER (BROADCAST CHANNEL - BEST FOR OBS)
     const firebaseConfig = {
-        apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
-        databaseURL: "https://spacetoonold-aaac4.firebaseapp.com",
-        projectId: "spacetoonold-aaac4",
-        storageBucket: "spacetoonold-aaac4.firebasestorage.app",
-        appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
-    };
+    apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
+    // FIXED LINE BELOW
+    databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 
+    projectId: "spacetoonold-aaac4",
+    storageBucket: "spacetoonold-aaac4.firebasestorage.app",
+    appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
+};
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);

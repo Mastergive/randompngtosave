@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع سبيستون - جيل الطيبين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --st-blue-dark: #1e3a8a;
+            --st-blue-light: #3b82f6;
+            --st-yellow: #facc15;
+            --st-purple: #6d28d9;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: #004aad;
+            background-image: radial-gradient(circle, #0056cc 10%, #003380 90%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Header & Planets Bar */
+        .top-header {
+            background: linear-gradient(to bottom, #7a288a, #4a148c);
+            padding: 15px;
+            border-bottom: 5px solid var(--st-yellow);
+            text-align: center;
+        }
+
+        .planets-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            flex-wrap: wrap;
+            border-radius: 20px;
+            margin: 10px auto;
+            max-width: 95%;
+        }
+
+        .planet-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+            width: 85px;
+        }
+
+        .planet-item:hover { transform: scale(1.1); }
+
+        .planet-img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+
+        .planet-name {
+            font-size: 0.8rem;
+            font-weight: 900;
+            margin-top: 5px;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        /* Main Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 220px 1fr 250px;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            height: fit-content;
+        }
+
+        .ad-box {
+            width: 100%;
+            height: 350px;
+            background: #111;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 2px solid var(--st-yellow);
+            overflow: hidden;
+        }
+
+        .ad-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .content-area {
+            background: rgba(37, 99, 235, 0.8);
+            border: 6px solid #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: #000;
+            border-radius: 12px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+
+        /* Social Icons */
+        .social-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .social-icon {
+            width: 45px; height: 45px;
+            background: white; color: #333;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .social-icon.yt { color: #ff0000; }
+        .social-icon:hover { transform: translateY(-5px); background: var(--st-yellow); }
+
+        /* Games Styling */
+        .game-window {
+            margin-top: 35px;
+            background: #111;
+            border: 4px solid var(--st-yellow);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .game-overlay {
+            width: 400px; height: 300px;
+            background: rgba(0,0,0,0.85);
+            position: absolute; z-index: 10;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        canvas { background: #000; display: block; margin: 0 auto; }
+
+        .btn-play {
+            background: var(--st-yellow); color: black;
+            border: none; padding: 12px 30px;
+            font-size: 1.2rem; font-weight: bold;
+            border-radius: 50px; cursor: pointer;
+        }
+
+        footer {
+            text-align: center; padding: 25px;
+            background: #111; margin-top: 50px;
+            border-top: 4px solid var(--st-yellow);
+        }
+
+        @media (max-width: 1000px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-header">
+    <img src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png" alt="Logo" width="150">
+    
+    <div class="planets-bar">
+        <div class="planet-item">
+            <img src="https://github.com/Mastergive/randompngtosave/blob/main/Action_planet-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Action'" class="planet-img">
+            <span class="planet-name">أكشن</span>
+        </div>
+        <div class="planet-item">
+            <img src="https://github.com/Mastergive/randompngtosave/blob/main/Adventure-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Adventure'" class="planet-img">
+            <span class="planet-name">مغامرات</span>
+        </div>
+        <div class="planet-item">
+            <img src="https://github.com/Mastergive/randompngtosave/blob/main/Sports-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Sports'" class="planet-img">
+            <span class="planet-name">رياضة</span>
+        </div>
+        <div class="planet-item">
+            <img src="https://github.com/Mastergive/randompngtosave/blob/main/Planet_Bon_Bon_New.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Bonbon'" class="planet-img">
+            <span class="planet-name">بون بون</span>
+        </div>
+        <div class="planet-item">
+            <img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%83%D8%A8_%D9%83%D9%88%D9%85%D9%8A%D8%AF%D9%8A%D8%A7-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Comedy'" class="planet-img">
+            <span class="planet-name">كوميديا</span>
+        </div>
+        <div class="planet-item">
+            <img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%83%D8%A8_%D8%B2%D9%85%D8%B1%D8%AF%D8%A9-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Zomoroda'" class="planet-img">
+            <span class="planet-name">زمردة</span>
+        </div>
+    </div>
+</div>
+
+<div class="main-grid">
+    <aside class="sidebar">
+        <h3 style="color:var(--st-yellow)"><i class="fas fa-download"></i> مركز التحميل</h3>
+        <div class="ad-box">
+            <img src="https://m.media-amazon.com/images/I/81L7-oO7uHL._AC_SL1500_.jpg" alt="Spider-Man Ad">
+        </div>
+        <ul style="list-style: none; padding: 0; font-weight: bold;">
+            <li style="margin: 10px 0;"><a href="#" style="color: var(--st-yellow); text-decoration: none;">🏠 الرئيسية</a></li>
+            <li style="margin: 10px 0;"><a href="#" style="color: white; text-decoration: none;">🎮 مركز الألعاب</a></li>
+        </ul>
+    </aside>
+
+    <main class="content-area">
+        <h2 style="text-align: center; color: var(--st-yellow); text-shadow: 2px 2px black;">
+            <i class="fas fa-broadcast-tower"></i> البث المباشر - شباب المستقبل
+        </h2>
+        
+        <div class="video-container">
+            <iframe src="http://odysee.com/%24/embed/%40SpacetoonOld%3Ad%2FST-Old%3A2?r=3oP8y4oegS5fUvYNrSpgDvv4miu2gSbZ&autoplay=true" allowfullscreen></iframe>
+        </div>
+
+        <div class="social-bar">
+            <a href="https://www.youtube.com/user/spacetoononline" target="_blank" class="social-icon yt"><i class="fab fa-youtube"></i></a>
+            <a href="https://facebook.com/spacetoon" target="_blank" class="social-icon yt"><i class="fab fa-facebook-f"></i></a>
+        </div>
+
+        <div class="game-window">
+            <h3 style="color: var(--st-yellow)">🎮 لعبة كوكب مغامرات 🐍</h3>
+            <div style="position: relative; display: inline-block;">
+                <div id="gameOverlay" class="game-overlay">
+                    <button class="btn-play" onclick="startGame()">إضغط للعب الآن</button>
+                </div>
+                <canvas id="snakeGame" width="400" height="300"></canvas>
+            </div>
+            <p>النقاط: <span id="score" style="color:var(--st-yellow); font-size:1.5rem">0</span></p>
+        </div>
+    </main>
+
+    <aside class="sidebar">
+        <h3 style="color:var(--st-yellow)"><i class="fas fa-newspaper"></i> آخر الأخبار</h3>
+        <p>✨ عودة المحقق كونان بجزء جديد!</p>
+        <iframe width="100%" height="160" src="https://www.youtube.com/embed/cP6DhogDqEg" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>
+    </aside>
+</div>
+
+<footer>
+    <p>© جميع الحقوق محفوظة لقناة سبيستون - نسخة أيمن</p>
+</footer>
+
+<script>
+    // SNAKE GAME CODE (STAYED THE SAME BUT FIXED FOR RESTART)
+    const canvas = document.getElementById("snakeGame");
+    const ctx = canvas.getContext("2d");
+    const overlay = document.getElementById("gameOverlay");
+    let score, snake, dx, dy, gameRunning = false;
+
+    function startGame() {
+        overlay.style.display = "none";
+        gameRunning = true;
+        score = 0;
+        snake = [{x: 200, y: 150}];
+        dx = 10; dy = 0;
+        document.getElementById('score').innerHTML = score;
+        createFood();
+        gameLoop();
+    }
+
+    function gameLoop() {
+        if (!gameRunning) return;
+        if (didGameEnd()) {
+            gameRunning = false;
+            overlay.style.display = "flex";
+            overlay.innerHTML = `<h2 style="color:red">خسرت!</h2><button class="btn-play" onclick="startGame()">حاول مرة أخرى</button>`;
+            return;
+        }
+        setTimeout(() => {
+            clearCanvas();
+            drawFood();
+            advanceSnake();
+            drawSnake();
+            gameLoop();
+        }, 100);
+    }
+
+    function clearCanvas() { ctx.fillStyle = "black"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+    function drawSnake() {
+        snake.forEach(part => {
+            ctx.fillStyle = "#facc15";
+            ctx.fillRect(part.x, part.y, 10, 10);
+        });
+    }
+    function advanceSnake() {
+        const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+        snake.unshift(head);
+        if (head.x === food.x && head.y === food.y) {
+            score += 10;
+            document.getElementById('score').innerHTML = score;
+            createFood();
+        } else { snake.pop(); }
+    }
+    function didGameEnd() {
+        return snake[0].x < 0 || snake[0].x > 390 || snake[0].y < 0 || snake[0].y > 290;
+    }
+    let food = {x: 0, y: 0};
+    function createFood() {
+        food.x = Math.floor(Math.random() * 39) * 10;
+        food.y = Math.floor(Math.random() * 29) * 10;
+    }
+    function drawFood() { ctx.fillStyle = "red"; ctx.fillRect(food.x, food.y, 10, 10); }
+
+    document.addEventListener("keydown", (e) => {
+        if (!gameRunning) return;
+        if (e.keyCode === 37 && dx === 0) { dx = -10; dy = 0; }
+        if (e.keyCode === 38 && dy === 0) { dx = 0; dy = -10; }
+        if (e.keyCode === 39 && dx === 0) { dx = 10; dy = 0; }
+        if (e.keyCode === 40 && dy === 0) { dx = 0; dy = 10; }
+    });
+</script>
+</body>
+</html>
+
+
+

@@ -33,7 +33,7 @@
             z-index: 10;
         }
 
-        /* --- LEFT BADGE (Logo & QR Flipper) --- */
+        /* --- LEFT BADGE FIX (Perfect Centering) --- */
         .left-badge {
             position: absolute;
             left: 2%;
@@ -47,22 +47,26 @@
             justify-content: center;
             z-index: 100;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            overflow: hidden;
         }
 
         .flipper-content {
-            width: 80px;
-            height: 80px;
+            position: absolute;
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: opacity 0.5s ease-in-out;
         }
         
-        #qrImg, #logoImg { position: absolute; max-width: 100%; max-height: 100%; object-fit: contain; }
+        /* QR specific fit */
+        #qrImg { width: 70px; height: 70px; background: white; padding: 4px; border-radius: 5px; }
+        /* Logo specific fit */
+        #logoImg { width: 85px; height: auto; object-fit: contain; }
+        
         .hidden { opacity: 0; visibility: hidden; }
 
-        /* --- RIGHT BADGE (Emoji Cycle) --- */
+        /* --- RIGHT BADGE (Emoji Logic) --- */
         .emoji-area {
             position: absolute;
             right: 2%;
@@ -73,13 +77,18 @@
             border-radius: 50%;
             z-index: 100;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            font-size: 50px; /* Size for emojis */
+            color: white;
+            font-weight: bold;
         }
 
-        /* --- TICKER LOGIC (Stable Speed) --- */
+        #emojiVal { font-size: 45px; }
+        #emojiNum { font-size: 18px; margin-bottom: -5px; }
+
+        /* --- TICKER --- */
         .scroll-wrapper {
             width: 100%;
             overflow: hidden;
@@ -91,7 +100,6 @@
             display: flex;
             align-items: center;
             white-space: nowrap;
-            /* Constant linear speed animation */
             animation: scroll-rtl 25s linear infinite; 
         }
 
@@ -119,7 +127,7 @@
 <body>
 
 <div class="wrapper">
-    <div class="left-badge" id="leftBadge">
+    <div class="left-badge">
         <div class="flipper-content" id="qrContainer">
             <img id="qrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spacetoonold.netlify.app/message">
         </div>
@@ -141,7 +149,10 @@
         </div>
     </div>
 
-    <div class="emoji-area" id="emojiArea">😊</div>
+    <div class="emoji-area">
+        <div id="emojiNum">(1)</div>
+        <div id="emojiVal">😀</div>
+    </div>
 
     <div class="css-candy pop-left"></div>
     <div class="css-candy pop-right" style="background: repeating-conic-gradient(#fff 0deg 30deg, #ff9800 30deg 60deg);"></div>
@@ -151,11 +162,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
-    // --- Constant Speed Logic ---
-    // If messages get long, we slow down the CSS time so speed feels "constant"
     function updateTickerSpeed() {
         const width = content.offsetWidth;
-        const duration = width / 100; // 100 pixels per second
+        const duration = width / 100; 
         content.style.animationDuration = duration + "s";
         copy.style.animationDuration = duration + "s";
     }
@@ -164,14 +173,34 @@
     const copy = document.getElementById('copy');
     copy.innerHTML = content.innerHTML;
 
-    // --- Emoji Cycle Logic (300 Emojis) ---
-    const emojiArea = document.getElementById('emojiArea');
-    let currentEmojiCode = 128512; // Start of basic emojis (😀)
-    setInterval(() => {
-        currentEmojiCode++;
-        if (currentEmojiCode > 128800) currentEmojiCode = 128512;
-        emojiArea.innerText = String.fromCodePoint(currentEmojiCode);
-    }, 3000);
+    // --- Emoji Logic: "(#)" -> Wait 1s -> Emoji ---
+    const eNum = document.getElementById('emojiNum');
+    const eVal = document.getElementById('emojiVal');
+    let count = 1;
+    let code = 128512;
+
+    async function runEmojiCycle() {
+        while(true) {
+            // Show Number
+            eVal.style.opacity = "0";
+            eNum.innerText = `(${count})`;
+            eNum.style.opacity = "1";
+            
+            await new Promise(r => setTimeout(r, 1000));
+            
+            // Show Emoji
+            eNum.style.opacity = "0.3"; 
+            eVal.innerText = String.fromCodePoint(code);
+            eVal.style.opacity = "1";
+            
+            await new Promise(r => setTimeout(r, 2000));
+            
+            count++;
+            code++;
+            if (code > 128800) { code = 128512; count = 1; }
+        }
+    }
+    runEmojiCycle();
 
     // --- Left Badge Flipper ---
     const qrC = document.getElementById('qrContainer');
@@ -181,7 +210,7 @@
         logoC.classList.toggle('hidden');
     }, 5000);
 
-    // --- Firebase Logic ---
+    // --- Firebase ---
     const firebaseConfig = {
         apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
         databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 

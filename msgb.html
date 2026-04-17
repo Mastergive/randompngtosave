@@ -20,7 +20,6 @@
             align-items: center;
         }
 
-        /* The Main Pink Bar */
         .scroll-container {
             display: flex;
             align-items: center;
@@ -34,7 +33,7 @@
             z-index: 10;
         }
 
-        /* Left Side Badge with QR Code */
+        /* --- LEFT BADGE (Logo & QR Flipper) --- */
         .left-badge {
             position: absolute;
             left: 2%;
@@ -48,18 +47,22 @@
             justify-content: center;
             z-index: 100;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
 
-        .qr-wrapper {
-            width: 75px;
-            height: 75px;
-            background: white;
-            padding: 5px;
-            border-radius: 8px;
+        .flipper-content {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-in-out;
         }
-        .qr-wrapper img { width: 100%; height: 100%; }
+        
+        #qrImg, #logoImg { position: absolute; max-width: 100%; max-height: 100%; object-fit: contain; }
+        .hidden { opacity: 0; visibility: hidden; }
 
-        /* Right Side Mascot Badge */
+        /* --- RIGHT BADGE (Emoji Cycle) --- */
         .emoji-area {
             position: absolute;
             right: 2%;
@@ -73,10 +76,10 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 50px; /* Size for emojis */
         }
-        .emoji-gif { width: 75%; height: 75%; object-fit: contain; }
 
-        /* Seamless Ticker Logic */
+        /* --- TICKER LOGIC (Stable Speed) --- */
         .scroll-wrapper {
             width: 100%;
             overflow: hidden;
@@ -88,7 +91,8 @@
             display: flex;
             align-items: center;
             white-space: nowrap;
-            animation: scroll-rtl 20s linear infinite; 
+            /* Constant linear speed animation */
+            animation: scroll-rtl 25s linear infinite; 
         }
 
         @keyframes scroll-rtl {
@@ -99,52 +103,33 @@
         .item { display: flex; align-items: center; padding-left: 100px; }
         .text { font-size: 28px; color: #ef4a81; font-weight: bold; } 
         .username { color: #8e24aa; font-weight: 900; font-size: 28px; margin-left: 10px; }
-        
         .scroll-logo { height: 40px; margin: 0 20px; }
 
-        /* CSS PURE CANDY DECORATIONS (No External Images Needed) */
         .css-candy {
-            position: absolute;
-            z-index: 110;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
+            position: absolute; z-index: 110; width: 45px; height: 45px; border-radius: 50%;
             background: repeating-conic-gradient(#fff 0deg 30deg, #ef4a81 30deg 60deg);
-            border: 3px solid #fff;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            border: 3px solid #fff; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
         }
-
-        .css-candy::after { /* The Stick */
-            content: '';
-            position: absolute;
-            bottom: -25px;
-            left: 50%;
-            width: 6px;
-            height: 30px;
-            background: #eee;
-            transform: translateX(-50%);
-            z-index: -1;
-            border-radius: 3px;
-        }
-
+        .css-candy::after { content: ''; position: absolute; bottom: -25px; left: 50%; width: 6px; height: 30px; background: #eee; transform: translateX(-50%); z-index: -1; border-radius: 3px; }
         .pop-left { left: 10%; bottom: -10px; transform: rotate(-15deg); }
         .pop-mid { left: 50%; bottom: -25px; transform: translateX(-50%) scale(0.8); }
         .pop-right { right: 12%; top: -15px; transform: rotate(15deg); }
-
     </style>
 </head>
 <body>
 
 <div class="wrapper">
-    <div class="left-badge">
-        <div class="qr-wrapper">
-             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spacetoonold.netlify.app/message">
+    <div class="left-badge" id="leftBadge">
+        <div class="flipper-content" id="qrContainer">
+            <img id="qrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spacetoonold.netlify.app/message">
+        </div>
+        <div class="flipper-content hidden" id="logoContainer">
+            <img id="logoImg" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
         </div>
     </div>
 
     <div class="scroll-container">
         <div class="css-candy pop-mid"></div>
-        
         <div class="scroll-wrapper">
             <div class="scroll-content" id="content">
                 <div class="item">
@@ -156,9 +141,7 @@
         </div>
     </div>
 
-    <div class="emoji-area">
-        <img id="emojiImg" class="emoji-gif" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif1.gif">
-    </div>
+    <div class="emoji-area" id="emojiArea">😊</div>
 
     <div class="css-candy pop-left"></div>
     <div class="css-candy pop-right" style="background: repeating-conic-gradient(#fff 0deg 30deg, #ff9800 30deg 60deg);"></div>
@@ -166,24 +149,39 @@
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
 <script>
+    // --- Constant Speed Logic ---
+    // If messages get long, we slow down the CSS time so speed feels "constant"
+    function updateTickerSpeed() {
+        const width = content.offsetWidth;
+        const duration = width / 100; // 100 pixels per second
+        content.style.animationDuration = duration + "s";
+        copy.style.animationDuration = duration + "s";
+    }
+
     const content = document.getElementById('content');
     const copy = document.getElementById('copy');
     copy.innerHTML = content.innerHTML;
 
-    const emojiList = [
-        "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif1.gif", 
-        "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif2.gif",
-        "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif3.gif",
-        "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif4.gif",
-        "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/gif5.gif"
-    ];
-    let eIdx = 0;
+    // --- Emoji Cycle Logic (300 Emojis) ---
+    const emojiArea = document.getElementById('emojiArea');
+    let currentEmojiCode = 128512; // Start of basic emojis (😀)
     setInterval(() => {
-        eIdx = (eIdx + 1) % emojiList.length;
-        document.getElementById('emojiImg').src = emojiList[eIdx];
+        currentEmojiCode++;
+        if (currentEmojiCode > 128800) currentEmojiCode = 128512;
+        emojiArea.innerText = String.fromCodePoint(currentEmojiCode);
+    }, 3000);
+
+    // --- Left Badge Flipper ---
+    const qrC = document.getElementById('qrContainer');
+    const logoC = document.getElementById('logoContainer');
+    setInterval(() => {
+        qrC.classList.toggle('hidden');
+        logoC.classList.toggle('hidden');
     }, 5000);
 
+    // --- Firebase Logic ---
     const firebaseConfig = {
         apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
         databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 
@@ -204,6 +202,7 @@
         `;
         content.appendChild(newItem);
         copy.innerHTML = content.innerHTML; 
+        updateTickerSpeed();
     }
 
     db.ref('latestMessage').on('value', (snapshot) => {
@@ -212,6 +211,8 @@
             addNewMessage(data.username, data.text);
         }
     });
+
+    window.onload = updateTickerSpeed;
 </script>
 
 </body>

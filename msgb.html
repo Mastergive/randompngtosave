@@ -5,583 +5,271 @@
 <meta charset="UTF-8">
 
 <style>
-
 body{
     margin:0;
     padding:0;
     overflow:hidden;
     background:transparent;
-
     font-family:Tahoma, Arial, sans-serif;
-
     width:100vw;
-
     image-rendering:auto;
-
-    filter:
-    contrast(1.08)
-    saturate(0.92)
-    blur(0.1px);
+    filter: contrast(1.08) saturate(0.92) blur(0.1px);
 }
 
 /* ================= OLD TV NOISE ================= */
-
 body::after{
-
     content:"";
-
     position:fixed;
-
     inset:0;
-
     pointer-events:none;
-
     opacity:0.04;
-
-    background-image:
-    repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.08) 0px,
-        rgba(255,255,255,0.08) 1px,
-        transparent 1px,
-        transparent 3px
-    );
-
+    background-image: repeating-linear-gradient(to bottom, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 3px);
     z-index:9999;
 }
 
-/* ================= WRAPPER ================= */
-
 .wrapper{
-
     margin-top:58px;
-
     position:relative;
-
     width:100%;
-
     height:130px;
-
     display:flex;
-
     align-items:center;
 }
 
 /* ================= MAIN BAR ================= */
-
 .scroll-container{
-
     display:flex;
-
     align-items:center;
-
     height:44px;
-
     width:92%;
-
     margin:0 auto;
-
     position:relative;
-
     overflow:hidden;
-
     z-index:10;
-
-    background:
-    linear-gradient(
-        to bottom,
-
-        #4e86c2 0%,
-        #2c65a3 10%,
-        #1c4d84 11%,
-        #1b4375 49%,
-        #11345c 50%,
-        #0a2342 100%
-    );
-
+    background: linear-gradient(to bottom, #4e86c2 0%, #2c65a3 10%, #1c4d84 11%, #1b4375 49%, #11345c 50%, #0a2342 100%);
     border-top:3px solid #d8e9ff;
-
     border-bottom:3px solid #d8e9ff;
-
-    box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.3),
-    0 0 8px rgba(0,0,0,0.8);
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.3), 0 0 8px rgba(0,0,0,0.8);
 }
-
-/* ================= TV GLOSS ================= */
-
-.scroll-container::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-    top:0;
-
-    width:100%;
-    height:50%;
-
-    background:
-    linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.28),
-        transparent
-    );
-
-    pointer-events:none;
-}
-
-/* ================= LEFT BOX ================= */
 
 .left-badge{
-
     position:absolute;
-
     left:1.5%;
-
     width:82px;
     height:58px;
-
-    background:
-    linear-gradient(
-        to bottom,
-        #3d73ad,
-        #13345c
-    );
-
+    background: linear-gradient(to bottom, #3d73ad, #13345c);
     border:3px solid #dbeaff;
-
-    clip-path:polygon(
-        10% 0%,
-        100% 0%,
-        90% 100%,
-        0% 100%
-    );
-
+    clip-path:polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     z-index:100;
-
-    box-shadow:
-    0 2px 5px rgba(0,0,0,0.7);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.7);
 }
 
 .flipper-content{
-
     position:absolute;
-
     width:100%;
     height:100%;
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     transition:opacity 0.5s ease-in-out;
 }
 
-/* QR */
+#qrImg{ width:38px; height:38px; background:white; padding:2px; filter:blur(0.2px); }
+#logoImg{ width:58px; filter: blur(0.4px) brightness(0.95); }
+.hidden{ opacity:0; visibility:hidden; }
 
-#qrImg{
-
-    width:38px;
-    height:38px;
-
-    background:white;
-
-    padding:2px;
-
-    filter:blur(0.2px);
-}
-
-/* LOGO */
-
-#logoImg{
-
-    width:58px;
-
-    filter:
-    blur(0.4px)
-    brightness(0.95);
-}
-
-.hidden{
-
-    opacity:0;
-
-    visibility:hidden;
-}
-
-/* ================= RIGHT BOX ================= */
-
+/* ================= RIGHT BOX (Fixed for Images) ================= */
 .emoji-area{
-
     position:absolute;
-
     right:1.5%;
-
     width:84px;
     height:58px;
-
-    background:
-    linear-gradient(
-        to bottom,
-        #3d73ad,
-        #13345c
-    );
-
+    background: linear-gradient(to bottom, #3d73ad, #13345c);
     border:3px solid #dbeaff;
-
-    clip-path:polygon(
-        10% 0%,
-        100% 0%,
-        90% 100%,
-        0% 100%
-    );
-
+    clip-path:polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
     z-index:100;
-
     display:flex;
-
     flex-direction:column;
-
     align-items:center;
-
     justify-content:center;
-
-    color:white;
-
-    font-weight:bold;
-
-    box-shadow:
-    0 2px 5px rgba(0,0,0,0.7);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.7);
 }
 
-#emojiVal{
+#emojiVal{ width:35px; height:35px; object-fit: contain; transition: opacity 0.5s; }
+#emojiNum{ font-size:13px; color: white; margin-bottom:-2px; text-shadow: 2px 2px 0 #00152f; }
 
-    font-size:27px;
-
-    text-shadow:
-    2px 2px 0 #00152f;
-
-    margin-top:-2px;
-}
-
-#emojiNum{
-
-    font-size:13px;
-
-    margin-bottom:-4px;
-
-    text-shadow:
-    2px 2px 0 #00152f;
-}
-
-/* ================= TICKER ================= */
-
+/* ================= TICKER LOOP FIX ================= */
 .scroll-wrapper{
-
     width:100%;
-
     overflow:hidden;
-
     display:flex;
-
-    margin:0 90px;
+    flex-direction: row; /* Ensure they stay side-by-side */
 }
-
-/* REVERTED ORIGINAL SYSTEM */
 
 .scroll-content{
-
     display:flex;
-
     align-items:center;
-
     white-space:nowrap;
-
-    animation:scroll-rtl 32s linear infinite;
+    animation: scroll-loop 32s linear infinite;
 }
 
-@keyframes scroll-rtl{
-
-    0%{
-        transform:translateX(0);
-    }
-
-    100%{
-        transform:translateX(-100%);
-    }
+@keyframes scroll-loop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(100%); } /* RTL scrolling direction */
 }
-
-/* ================= ITEMS ================= */
 
 .item{
-
     display:flex;
-
     align-items:center;
-
     padding-left:130px;
 }
 
-/* ================= TEXT ================= */
-
 .text{
-
     font-size:24px;
-
     color:#ffe600;
-
     font-weight:bold;
-
     letter-spacing:-1px;
-
-    text-shadow:
-    2px 2px 0 #00152f;
+    text-shadow: 2px 2px 0 #00152f;
 }
 
 .username{
-
     color:#ffffff;
-
     font-weight:900;
-
     font-size:25px;
-
     margin-left:10px;
-
-    text-shadow:
-    2px 2px 0 #00152f;
+    text-shadow: 2px 2px 0 #00152f;
 }
-
-/* ================= LOGO ================= */
 
 .scroll-logo{
-
     height:31px;
-
     margin:0 15px;
-
     opacity:0.88;
-
-    filter:
-    blur(0.5px)
-    brightness(0.95);
+    filter: blur(0.5px) brightness(0.95);
 }
-
 </style>
 </head>
 
 <body>
 
 <div class="wrapper">
-
-    <!-- LEFT BOX -->
-
     <div class="left-badge">
-
         <div class="flipper-content" id="qrContainer">
-
-            <img
-            id="qrImg"
-            src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spacetoonold.netlify.app/message">
-
+            <img id="qrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spacetoonold.netlify.app/message">
         </div>
-
         <div class="flipper-content hidden" id="logoContainer">
-
-            <img
-            id="logoImg"
-            src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
-
+            <img id="logoImg" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
         </div>
-
     </div>
-
-    <!-- MAIN BAR -->
 
     <div class="scroll-container">
-
         <div class="scroll-wrapper">
-
             <div class="scroll-content" id="content">
-
                 <div class="item">
-
-                    <span class="text">
-                        أرسل رسالتك الآن لتظهر على الشاشة
-                    </span>
-
-                    <img
-                    class="scroll-logo"
-                    src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
-
+                    <span class="text">أرسل رسالتك الآن لتظهر على الشاشة</span>
+                    <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
                 </div>
-
             </div>
-
             <div class="scroll-content" id="copy"></div>
-
         </div>
-
     </div>
-
-    <!-- RIGHT BOX -->
 
     <div class="emoji-area">
-
         <div id="emojiNum">(1)</div>
-
-        <div id="emojiVal">😀</div>
-
+        <img id="emojiVal" src="">
     </div>
-
 </div>
-
-<!-- ================= FIREBASE ================= -->
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
-
-/* ================= ORIGINAL TICKER SYSTEM ================= */
+const content = document.getElementById('content');
+const copy = document.getElementById('copy');
 
 function updateTickerSpeed(){
-
     const width = content.offsetWidth;
-
-    const duration = width / 65;
-
+    const duration = width / 65; 
     content.style.animationDuration = duration + "s";
     copy.style.animationDuration = duration + "s";
 }
 
-const content = document.getElementById('content');
-const copy = document.getElementById('copy');
-
-copy.innerHTML = content.innerHTML;
-
-/* ================= EMOJI CYCLE ================= */
-
+/* ================= RANDOM GITHUB EMOJIS ================= */
 const eNum = document.getElementById('emojiNum');
 const eVal = document.getElementById('emojiVal');
+const archiveEmojis = [
+    "old/biggrin_v1.png", "old/bloodeatinggrin_v1.png", "old/pog_v1.png", "old/smile_v1.png",
+    "current/biggrin.png", "current/coolguy.png", "current/haha.png", "current/laugh.png", 
+    "current/love.png", "current/pog.png", "current/shocked.png", "current/vibe.png"
+];
 
 let count = 1;
-let code = 128512;
-
 async function runEmojiCycle(){
-
     while(true){
+        const randomPath = archiveEmojis[Math.floor(Math.random() * archiveEmojis.length)];
+        const fullUrl = `https://raw.githubusercontent.com/lospec/emoji-archive/main/${randomPath}`;
 
         eVal.style.opacity = "0";
-
         eNum.innerText = `(${count})`;
-
         eNum.style.opacity = "1";
-
-        await new Promise(r => setTimeout(r,1000));
+        await new Promise(r => setTimeout(r, 1000));
 
         eNum.style.opacity = "0.4";
-
-        eVal.innerText = String.fromCodePoint(code);
-
+        eVal.src = fullUrl;
         eVal.style.opacity = "1";
-
-        await new Promise(r => setTimeout(r,2000));
+        await new Promise(r => setTimeout(r, 2500));
 
         count++;
-        code++;
-
-        if(code > 128800){
-
-            code = 128512;
-            count = 1;
-        }
+        if(count > 99) count = 1;
     }
 }
-
 runEmojiCycle();
 
 /* ================= LEFT BOX FLIP ================= */
-
 const qrC = document.getElementById('qrContainer');
 const logoC = document.getElementById('logoContainer');
-
 setInterval(() => {
-
     qrC.classList.toggle('hidden');
     logoC.classList.toggle('hidden');
-
-},5000);
+}, 5000);
 
 /* ================= FIREBASE ================= */
-
 const firebaseConfig = {
-
-    apiKey:"AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
-
-    databaseURL:"https://spacetoonold-aaac4-default-rtdb.firebaseio.com",
-
-    projectId:"spacetoonold-aaac4",
-
-    appId:"1:511855750136:web:d353fa9309ac5e54a9040d"
+    apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
+    databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com",
+    projectId: "spacetoonold-aaac4",
+    appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
 };
-
 firebase.initializeApp(firebaseConfig);
-
 const db = firebase.database();
 
-/* ================= ADD MESSAGE ================= */
-
-function addNewMessage(user,messageText){
-
+function addNewMessage(user, messageText){
     const newItem = document.createElement('div');
-
     newItem.className = 'item';
-
     newItem.innerHTML = `
-
         <span class="username">${user}:</span>
-
         <span class="text">${messageText}</span>
-
-        <img
-        class="scroll-logo"
-        src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+        <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
     `;
-
     content.appendChild(newItem);
-
+    // Sync the loop
     copy.innerHTML = content.innerHTML;
-
     updateTickerSpeed();
 }
 
-/* ================= FIREBASE LISTENER ================= */
-
-db.ref('latestMessage').on('value',(snapshot) => {
-
+db.ref('latestMessage').on('value', (snapshot) => {
     const data = snapshot.val();
-
     if(data && data.text){
-
-        addNewMessage(data.username,data.text);
+        addNewMessage(data.username, data.text);
     }
 });
 
-window.onload = updateTickerSpeed;
-
+window.onload = () => {
+    copy.innerHTML = content.innerHTML;
+    updateTickerSpeed();
+};
 </script>
-
 </body>
-
 </html>

@@ -11,15 +11,24 @@ body{
     padding:0;
     overflow:hidden;
     background:transparent;
+
     font-family:Tahoma, Arial, sans-serif;
+
     width:100vw;
 
-    filter:contrast(1.05) saturate(1.1);
+    image-rendering:auto;
+
+    filter:
+    contrast(1.08)
+    saturate(0.92)
+    blur(0.1px);
 }
 
-/* ================= TV NOISE ================= */
+/* ================= OLD TV NOISE ================= */
 
-.noise{
+body::after{
+
+    content:"";
 
     position:fixed;
 
@@ -27,15 +36,15 @@ body{
 
     pointer-events:none;
 
-    opacity:0.05;
+    opacity:0.04;
 
     background-image:
-    repeating-radial-gradient(
-        circle at 0 0,
-        rgba(255,255,255,0.4),
-        rgba(255,255,255,0.4) 1px,
+    repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.08) 0px,
+        rgba(255,255,255,0.08) 1px,
         transparent 1px,
-        transparent 4px
+        transparent 3px
     );
 
     z-index:9999;
@@ -45,13 +54,13 @@ body{
 
 .wrapper{
 
-    margin-top:60px;
+    margin-top:58px;
 
     position:relative;
 
     width:100%;
 
-    height:140px;
+    height:130px;
 
     display:flex;
 
@@ -66,26 +75,11 @@ body{
 
     align-items:center;
 
-    height:58px;
+    height:44px;
 
     width:92%;
 
     margin:0 auto;
-
-    background:
-    linear-gradient(
-        to bottom,
-        #2f67a3 0%,
-        #2f67a3 12%,
-        #0f3970 13%,
-        #0f3970 55%,
-        #08254a 56%,
-        #08254a 100%
-    );
-
-    border-top:4px solid #ffffff;
-
-    border-bottom:4px solid #ffffff;
 
     position:relative;
 
@@ -93,12 +87,28 @@ body{
 
     z-index:10;
 
+    background:
+    linear-gradient(
+        to bottom,
+
+        #4e86c2 0%,
+        #2c65a3 10%,
+        #1c4d84 11%,
+        #1b4375 49%,
+        #11345c 50%,
+        #0a2342 100%
+    );
+
+    border-top:3px solid #d8e9ff;
+
+    border-bottom:3px solid #d8e9ff;
+
     box-shadow:
-    inset 0 3px 8px rgba(255,255,255,0.25),
-    0 0 12px rgba(0,0,0,0.5);
+    inset 0 2px 4px rgba(255,255,255,0.3),
+    0 0 8px rgba(0,0,0,0.8);
 }
 
-/* glossy effect */
+/* ================= TV GLOSS ================= */
 
 .scroll-container::before{
 
@@ -106,8 +116,8 @@ body{
 
     position:absolute;
 
-    top:0;
     left:0;
+    top:0;
 
     width:100%;
     height:50%;
@@ -115,37 +125,11 @@ body{
     background:
     linear-gradient(
         to bottom,
-        rgba(255,255,255,0.35),
+        rgba(255,255,255,0.28),
         transparent
     );
 
     pointer-events:none;
-}
-
-/* ================= YELLOW SIDE ================= */
-
-.yellow-strip{
-
-    position:absolute;
-
-    right:0;
-    top:0;
-
-    width:190px;
-    height:100%;
-
-    background:
-    linear-gradient(
-        to bottom,
-        #ffe600 0%,
-        #ffd000 45%,
-        #e0a800 46%,
-        #c98b00 100%
-    );
-
-    clip-path:polygon(12% 0,100% 0,100% 100%,0% 100%);
-
-    z-index:1;
 }
 
 /* ================= LEFT BOX ================= */
@@ -156,21 +140,24 @@ body{
 
     left:1.5%;
 
-    width:115px;
-    height:85px;
+    width:82px;
+    height:58px;
 
     background:
     linear-gradient(
         to bottom,
-        #3c6fb0,
-        #0a2952
+        #3d73ad,
+        #13345c
     );
 
-    border:4px solid white;
+    border:3px solid #dbeaff;
 
-    border-radius:12px;
-
-    transform:skewX(-8deg);
+    clip-path:polygon(
+        10% 0%,
+        100% 0%,
+        90% 100%,
+        0% 100%
+    );
 
     display:flex;
 
@@ -181,7 +168,7 @@ body{
     z-index:100;
 
     box-shadow:
-    0 4px 10px rgba(0,0,0,0.6);
+    0 2px 5px rgba(0,0,0,0.7);
 }
 
 .flipper-content{
@@ -200,32 +187,29 @@ body{
     transition:opacity 0.5s ease-in-out;
 }
 
+/* QR */
+
 #qrImg{
 
-    width:60px;
-
-    height:60px;
+    width:38px;
+    height:38px;
 
     background:white;
 
-    padding:4px;
+    padding:2px;
 
-    border-radius:5px;
-
-    transform:skewX(8deg);
+    filter:blur(0.2px);
 }
+
+/* LOGO */
 
 #logoImg{
 
-    width:80px;
+    width:58px;
 
-    height:auto;
-
-    object-fit:contain;
-
-    transform:skewX(8deg);
-
-    filter:blur(0.3px);
+    filter:
+    blur(0.4px)
+    brightness(0.95);
 }
 
 .hidden{
@@ -243,21 +227,24 @@ body{
 
     right:1.5%;
 
-    width:115px;
-    height:85px;
+    width:84px;
+    height:58px;
 
     background:
     linear-gradient(
         to bottom,
-        #3c6fb0,
-        #0a2952
+        #3d73ad,
+        #13345c
     );
 
-    border:4px solid white;
+    border:3px solid #dbeaff;
 
-    border-radius:12px;
-
-    transform:skewX(-8deg);
+    clip-path:polygon(
+        10% 0%,
+        100% 0%,
+        90% 100%,
+        0% 100%
+    );
 
     z-index:100;
 
@@ -269,37 +256,35 @@ body{
 
     justify-content:center;
 
-    box-shadow:
-    0 4px 10px rgba(0,0,0,0.6);
-
     color:white;
 
     font-weight:bold;
+
+    box-shadow:
+    0 2px 5px rgba(0,0,0,0.7);
 }
 
 #emojiVal{
 
-    font-size:42px;
-
-    transform:skewX(8deg);
+    font-size:27px;
 
     text-shadow:
-    2px 2px 0 #000;
+    2px 2px 0 #00152f;
+
+    margin-top:-2px;
 }
 
 #emojiNum{
 
-    font-size:17px;
+    font-size:13px;
 
-    margin-bottom:-5px;
-
-    transform:skewX(8deg);
+    margin-bottom:-4px;
 
     text-shadow:
-    2px 2px 0 #000;
+    2px 2px 0 #00152f;
 }
 
-/* ================= CONTINUOUS TV TICKER ================= */
+/* ================= TICKER ================= */
 
 .scroll-wrapper{
 
@@ -307,42 +292,36 @@ body{
 
     overflow:hidden;
 
-    position:relative;
-
-    margin:0 130px;
-
-    z-index:2;
-
-    height:100%;
-
     display:flex;
 
-    align-items:center;
+    margin:0 90px;
 }
 
-.ticker-track{
+/* REVERTED ORIGINAL SYSTEM */
+
+.scroll-content{
 
     display:flex;
 
     align-items:center;
-
-    width:max-content;
 
     white-space:nowrap;
 
-    animation:tickerMove 35s linear infinite;
+    animation:scroll-rtl 32s linear infinite;
 }
 
-@keyframes tickerMove{
+@keyframes scroll-rtl{
 
-    from{
+    0%{
         transform:translateX(0);
     }
 
-    to{
-        transform:translateX(-50%);
+    100%{
+        transform:translateX(-100%);
     }
 }
+
+/* ================= ITEMS ================= */
 
 .item{
 
@@ -350,23 +329,23 @@ body{
 
     align-items:center;
 
-    padding-left:120px;
+    padding-left:130px;
 }
 
 /* ================= TEXT ================= */
 
 .text{
 
-    font-size:30px;
+    font-size:24px;
 
-    color:#ffe100;
+    color:#ffe600;
 
     font-weight:bold;
 
     letter-spacing:-1px;
 
     text-shadow:
-    3px 3px 0 #00142f;
+    2px 2px 0 #00152f;
 }
 
 .username{
@@ -375,35 +354,33 @@ body{
 
     font-weight:900;
 
-    font-size:31px;
+    font-size:25px;
 
-    margin-left:12px;
+    margin-left:10px;
 
     text-shadow:
-    3px 3px 0 #00142f;
+    2px 2px 0 #00152f;
 }
 
 /* ================= LOGO ================= */
 
 .scroll-logo{
 
-    height:38px;
+    height:31px;
 
-    margin:0 18px;
+    margin:0 15px;
 
-    opacity:0.95;
+    opacity:0.88;
 
     filter:
-    blur(0.3px)
-    drop-shadow(2px 2px 2px rgba(0,0,0,0.7));
+    blur(0.5px)
+    brightness(0.95);
 }
 
 </style>
 </head>
 
 <body>
-
-<div class="noise"></div>
 
 <div class="wrapper">
 
@@ -433,11 +410,9 @@ body{
 
     <div class="scroll-container">
 
-        <div class="yellow-strip"></div>
-
         <div class="scroll-wrapper">
 
-            <div class="ticker-track" id="tickerTrack">
+            <div class="scroll-content" id="content">
 
                 <div class="item">
 
@@ -452,6 +427,8 @@ body{
                 </div>
 
             </div>
+
+            <div class="scroll-content" id="copy"></div>
 
         </div>
 
@@ -476,25 +453,22 @@ body{
 
 <script>
 
-/* ================= TICKER ================= */
+/* ================= ORIGINAL TICKER SYSTEM ================= */
 
-const tickerTrack = document.getElementById('tickerTrack');
+function updateTickerSpeed(){
 
-/* duplicate starter content many times */
+    const width = content.offsetWidth;
 
-function fillTicker(){
+    const duration = width / 65;
 
-    const original = tickerTrack.innerHTML;
-
-    tickerTrack.innerHTML = "";
-
-    for(let i = 0; i < 12; i++){
-
-        tickerTrack.innerHTML += original;
-    }
+    content.style.animationDuration = duration + "s";
+    copy.style.animationDuration = duration + "s";
 }
 
-fillTicker();
+const content = document.getElementById('content');
+const copy = document.getElementById('copy');
+
+copy.innerHTML = content.innerHTML;
 
 /* ================= EMOJI CYCLE ================= */
 
@@ -516,7 +490,7 @@ async function runEmojiCycle(){
 
         await new Promise(r => setTimeout(r,1000));
 
-        eNum.style.opacity = "0.3";
+        eNum.style.opacity = "0.4";
 
         eVal.innerText = String.fromCodePoint(code);
 
@@ -530,7 +504,6 @@ async function runEmojiCycle(){
         if(code > 128800){
 
             code = 128512;
-
             count = 1;
         }
     }
@@ -586,7 +559,11 @@ function addNewMessage(user,messageText){
         src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
     `;
 
-    tickerTrack.appendChild(newItem);
+    content.appendChild(newItem);
+
+    copy.innerHTML = content.innerHTML;
+
+    updateTickerSpeed();
 }
 
 /* ================= FIREBASE LISTENER ================= */
@@ -601,7 +578,10 @@ db.ref('latestMessage').on('value',(snapshot) => {
     }
 });
 
+window.onload = updateTickerSpeed;
+
 </script>
 
 </body>
+
 </html>

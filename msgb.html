@@ -1,247 +1,542 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <style>
-        body { 
-            margin: 0; padding: 0; 
-            overflow: hidden; 
-            background-color: transparent; 
-            font-family: 'Segoe UI', Arial, sans-serif;
-            width: 100vw;
-        }
-        
-        .wrapper {
-            margin-top: 60px; 
-            position: relative;
-            width: 100%;
-            height: 140px; 
-            display: flex;
-            align-items: center;
-        }
+<meta charset="UTF-8">
 
-        .scroll-container {
-            display: flex;
-            align-items: center;
-            height: 50px;
-            width: 90%;
-            margin: 0 auto;
-            background: #ffdae9; 
-            border-top: 6px dashed #ef4a81;
-            border-bottom: 6px dashed #ef4a81;
-            position: relative;
-            z-index: 10;
-        }
+<style>
 
-        /* --- LEFT BADGE FIX (Perfect Centering) --- */
-        .left-badge {
-            position: absolute;
-            left: 2%;
-            width: 110px;
-            height: 110px;
-            background: radial-gradient(circle, #ffdae9 60%, #ef4a81 100%);
-            border: 4px solid #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+body{
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    background:transparent;
+    font-family:Tahoma, Arial, sans-serif;
+    width:100vw;
+}
 
-        .flipper-content {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s ease-in-out;
-        }
-        
-        /* QR specific fit */
-        #qrImg { width: 70px; height: 70px; background: white; padding: 4px; border-radius: 5px; }
-        /* Logo specific fit */
-        #logoImg { width: 85px; height: auto; object-fit: contain; }
-        
-        .hidden { opacity: 0; visibility: hidden; }
+/* ================= WRAPPER ================= */
 
-        /* --- RIGHT BADGE (Emoji Logic) --- */
-        .emoji-area {
-            position: absolute;
-            right: 2%;
-            width: 105px;
-            height: 105px;
-            background: #ef4a81;
-            border: 4px solid #fff;
-            border-radius: 50%;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            color: white;
-            font-weight: bold;
-        }
+.wrapper{
+    margin-top:60px;
+    position:relative;
+    width:100%;
+    height:140px;
+    display:flex;
+    align-items:center;
+}
 
-        #emojiVal { font-size: 45px; }
-        #emojiNum { font-size: 18px; margin-bottom: -5px; }
+/* ================= MAIN BAR ================= */
 
-        /* --- TICKER --- */
-        .scroll-wrapper {
-            width: 100%;
-            overflow: hidden;
-            display: flex;
-            margin: 0 120px; 
-        }
+.scroll-container{
 
-        .scroll-content {
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-            animation: scroll-rtl 25s linear infinite; 
-        }
+    display:flex;
+    align-items:center;
 
-        @keyframes scroll-rtl {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(100%); }
-        }
+    height:58px;
+    width:92%;
 
-        .item { display: flex; align-items: center; padding-left: 100px; }
-        .text { font-size: 28px; color: #ef4a81; font-weight: bold; } 
-        .username { color: #8e24aa; font-weight: 900; font-size: 28px; margin-left: 10px; }
-        .scroll-logo { height: 40px; margin: 0 20px; }
+    margin:0 auto;
 
-        .css-candy {
-            position: absolute; z-index: 110; width: 45px; height: 45px; border-radius: 50%;
-            background: repeating-conic-gradient(#fff 0deg 30deg, #ef4a81 30deg 60deg);
-            border: 3px solid #fff; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-        }
-        .css-candy::after { content: ''; position: absolute; bottom: -25px; left: 50%; width: 6px; height: 30px; background: #eee; transform: translateX(-50%); z-index: -1; border-radius: 3px; }
-        .pop-left { left: 10%; bottom: -10px; transform: rotate(-15deg); }
-        .pop-mid { left: 50%; bottom: -25px; transform: translateX(-50%) scale(0.8); }
-        .pop-right { right: 12%; top: -15px; transform: rotate(15deg); }
-    </style>
+    background:
+    linear-gradient(
+        to bottom,
+        #1d5ea8 0%,
+        #11457d 45%,
+        #0b2f5a 100%
+    );
+
+    border-top:4px solid #ffffff;
+    border-bottom:4px solid #ffffff;
+
+    position:relative;
+    overflow:hidden;
+
+    z-index:10;
+
+    box-shadow:
+    inset 0 3px 8px rgba(255,255,255,0.25),
+    0 0 12px rgba(0,0,0,0.5);
+}
+
+/* glossy effect */
+
+.scroll-container::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:50%;
+
+    background:
+    linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.35),
+        transparent
+    );
+
+    pointer-events:none;
+}
+
+/* ================= YELLOW SIDE ================= */
+
+.yellow-strip{
+
+    position:absolute;
+
+    right:0;
+    top:0;
+
+    width:190px;
+    height:100%;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #ffe600,
+        #ffbf00
+    );
+
+    clip-path:polygon(12% 0,100% 0,100% 100%,0% 100%);
+
+    z-index:1;
+}
+
+/* ================= LEFT BOX ================= */
+
+.left-badge{
+
+    position:absolute;
+
+    left:1.5%;
+
+    width:115px;
+    height:85px;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #1c5ca3,
+        #0b2f5a
+    );
+
+    border:4px solid white;
+
+    border-radius:12px;
+
+    transform:skewX(-8deg);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    z-index:100;
+
+    box-shadow:
+    0 4px 10px rgba(0,0,0,0.5);
+}
+
+.flipper-content{
+
+    position:absolute;
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:opacity 0.5s ease-in-out;
+}
+
+/* QR */
+
+#qrImg{
+
+    width:60px;
+    height:60px;
+
+    background:white;
+
+    padding:4px;
+
+    border-radius:5px;
+
+    transform:skewX(8deg);
+}
+
+/* Logo */
+
+#logoImg{
+
+    width:80px;
+    height:auto;
+
+    object-fit:contain;
+
+    transform:skewX(8deg);
+}
+
+.hidden{
+    opacity:0;
+    visibility:hidden;
+}
+
+/* ================= RIGHT BOX ================= */
+
+.emoji-area{
+
+    position:absolute;
+
+    right:1.5%;
+
+    width:115px;
+    height:85px;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #1c5ca3,
+        #0b2f5a
+    );
+
+    border:4px solid white;
+
+    border-radius:12px;
+
+    transform:skewX(-8deg);
+
+    z-index:100;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    box-shadow:
+    0 4px 10px rgba(0,0,0,0.5);
+
+    color:white;
+    font-weight:bold;
+}
+
+#emojiVal{
+
+    font-size:42px;
+
+    transform:skewX(8deg);
+
+    text-shadow:
+    2px 2px 0 #000;
+}
+
+#emojiNum{
+
+    font-size:17px;
+
+    margin-bottom:-5px;
+
+    transform:skewX(8deg);
+
+    text-shadow:
+    2px 2px 0 #000;
+}
+
+/* ================= TICKER ================= */
+
+.scroll-wrapper{
+
+    width:100%;
+
+    overflow:hidden;
+
+    display:flex;
+
+    margin:0 130px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+.scroll-content{
+
+    display:flex;
+    align-items:center;
+
+    white-space:nowrap;
+
+    animation:scroll-rtl 25s linear infinite;
+}
+
+@keyframes scroll-rtl{
+
+    0%{
+        transform:translateX(100%);
+    }
+
+    100%{
+        transform:translateX(-100%);
+    }
+}
+
+.item{
+
+    display:flex;
+    align-items:center;
+
+    padding-left:100px;
+}
+
+/* ================= TEXT ================= */
+
+.text{
+
+    font-size:28px;
+
+    color:#ffe600;
+
+    font-weight:bold;
+
+    text-shadow:
+    2px 2px 0 #000,
+    0 0 6px rgba(0,0,0,0.5);
+}
+
+.username{
+
+    color:#ffffff;
+
+    font-weight:900;
+
+    font-size:30px;
+
+    margin-left:10px;
+
+    text-shadow:
+    2px 2px 0 #000;
+}
+
+/* ================= LOGO ================= */
+
+.scroll-logo{
+
+    height:40px;
+
+    margin:0 20px;
+
+    filter:drop-shadow(2px 2px 3px rgba(0,0,0,0.6));
+}
+
+</style>
 </head>
+
 <body>
 
 <div class="wrapper">
+
+    <!-- LEFT BOX -->
+
     <div class="left-badge">
+
         <div class="flipper-content" id="qrContainer">
-            <img id="qrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spacetoonold.netlify.app/message">
+
+            <img
+            id="qrImg"
+            src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spacetoonold.netlify.app/message">
+
         </div>
+
         <div class="flipper-content hidden" id="logoContainer">
-            <img id="logoImg" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+
+            <img
+            id="logoImg"
+            src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+
         </div>
+
     </div>
+
+    <!-- MAIN BAR -->
 
     <div class="scroll-container">
-        <div class="css-candy pop-mid"></div>
+
+        <div class="yellow-strip"></div>
+
         <div class="scroll-wrapper">
+
             <div class="scroll-content" id="content">
+
                 <div class="item">
-                    <span class="text">أرسل رسالتك الآن لتظهر على الشاشة</span>
-                    <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+
+                    <span class="text">
+                        أرسل رسالتك الآن لتظهر على الشاشة
+                    </span>
+
+                    <img
+                    class="scroll-logo"
+                    src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+
                 </div>
+
             </div>
+
             <div class="scroll-content" id="copy"></div>
+
         </div>
+
     </div>
+
+    <!-- RIGHT BOX -->
 
     <div class="emoji-area">
+
         <div id="emojiNum">(1)</div>
+
         <div id="emojiVal">😀</div>
+
     </div>
 
-    <div class="css-candy pop-left"></div>
-    <div class="css-candy pop-right" style="background: repeating-conic-gradient(#fff 0deg 30deg, #ff9800 30deg 60deg);"></div>
 </div>
+
+<!-- ================= FIREBASE ================= -->
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
-    function updateTickerSpeed() {
-        const width = content.offsetWidth;
-        const duration = width / 100; 
-        content.style.animationDuration = duration + "s";
-        copy.style.animationDuration = duration + "s";
-    }
 
-    const content = document.getElementById('content');
-    const copy = document.getElementById('copy');
+function updateTickerSpeed(){
+
+    const width = content.offsetWidth;
+
+    const duration = width / 100;
+
+    content.style.animationDuration = duration + "s";
+    copy.style.animationDuration = duration + "s";
+}
+
+const content = document.getElementById('content');
+const copy = document.getElementById('copy');
+
+copy.innerHTML = content.innerHTML;
+
+/* ================= EMOJI CYCLE ================= */
+
+const eNum = document.getElementById('emojiNum');
+const eVal = document.getElementById('emojiVal');
+
+let count = 1;
+let code = 128512;
+
+async function runEmojiCycle(){
+
+    while(true){
+
+        /* show number */
+
+        eVal.style.opacity = "0";
+
+        eNum.innerText = `(${count})`;
+
+        eNum.style.opacity = "1";
+
+        await new Promise(r => setTimeout(r,1000));
+
+        /* show emoji */
+
+        eNum.style.opacity = "0.3";
+
+        eVal.innerText = String.fromCodePoint(code);
+
+        eVal.style.opacity = "1";
+
+        await new Promise(r => setTimeout(r,2000));
+
+        count++;
+        code++;
+
+        if(code > 128800){
+
+            code = 128512;
+            count = 1;
+        }
+    }
+}
+
+runEmojiCycle();
+
+/* ================= LEFT BOX FLIP ================= */
+
+const qrC = document.getElementById('qrContainer');
+const logoC = document.getElementById('logoContainer');
+
+setInterval(() => {
+
+    qrC.classList.toggle('hidden');
+    logoC.classList.toggle('hidden');
+
+},5000);
+
+/* ================= FIREBASE ================= */
+
+const firebaseConfig = {
+
+    apiKey:"AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
+
+    databaseURL:"https://spacetoonold-aaac4-default-rtdb.firebaseio.com",
+
+    projectId:"spacetoonold-aaac4",
+
+    appId:"1:511855750136:web:d353fa9309ac5e54a9040d"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
+function addNewMessage(user,messageText){
+
+    const newItem = document.createElement('div');
+
+    newItem.className = 'item';
+
+    newItem.innerHTML = `
+
+        <span class="username">${user}:</span>
+
+        <span class="text">${messageText}</span>
+
+        <img
+        class="scroll-logo"
+        src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+    `;
+
+    content.appendChild(newItem);
+
     copy.innerHTML = content.innerHTML;
 
-    // --- Emoji Logic: "(#)" -> Wait 1s -> Emoji ---
-    const eNum = document.getElementById('emojiNum');
-    const eVal = document.getElementById('emojiVal');
-    let count = 1;
-    let code = 128512;
+    updateTickerSpeed();
+}
 
-    async function runEmojiCycle() {
-        while(true) {
-            // Show Number
-            eVal.style.opacity = "0";
-            eNum.innerText = `(${count})`;
-            eNum.style.opacity = "1";
-            
-            await new Promise(r => setTimeout(r, 1000));
-            
-            // Show Emoji
-            eNum.style.opacity = "0.3"; 
-            eVal.innerText = String.fromCodePoint(code);
-            eVal.style.opacity = "1";
-            
-            await new Promise(r => setTimeout(r, 2000));
-            
-            count++;
-            code++;
-            if (code > 128800) { code = 128512; count = 1; }
-        }
+db.ref('latestMessage').on('value',(snapshot) => {
+
+    const data = snapshot.val();
+
+    if(data && data.text){
+
+        addNewMessage(data.username,data.text);
     }
-    runEmojiCycle();
+});
 
-    // --- Left Badge Flipper ---
-    const qrC = document.getElementById('qrContainer');
-    const logoC = document.getElementById('logoContainer');
-    setInterval(() => {
-        qrC.classList.toggle('hidden');
-        logoC.classList.toggle('hidden');
-    }, 5000);
+window.onload = updateTickerSpeed;
 
-    // --- Firebase ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
-        databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 
-        projectId: "spacetoonold-aaac4",
-        appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    function addNewMessage(user, messageText) {
-        const newItem = document.createElement('div');
-        newItem.className = 'item';
-        newItem.innerHTML = `
-            <span class="username">${user}:</span>
-            <span class="text">${messageText}</span>
-            <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
-        `;
-        content.appendChild(newItem);
-        copy.innerHTML = content.innerHTML; 
-        updateTickerSpeed();
-    }
-
-    db.ref('latestMessage').on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data && data.text) {
-            addNewMessage(data.username, data.text);
-        }
-    });
-
-    window.onload = updateTickerSpeed;
 </script>
 
 </body>

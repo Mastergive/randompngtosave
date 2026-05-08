@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
 
@@ -12,16 +13,48 @@ body{
     background:transparent;
     font-family:Tahoma, Arial, sans-serif;
     width:100vw;
+
+    filter:contrast(1.05) saturate(1.1);
+}
+
+/* ================= TV NOISE ================= */
+
+.noise{
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    opacity:0.05;
+
+    background-image:
+    repeating-radial-gradient(
+        circle at 0 0,
+        rgba(255,255,255,0.4),
+        rgba(255,255,255,0.4) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+
+    z-index:9999;
 }
 
 /* ================= WRAPPER ================= */
 
 .wrapper{
+
     margin-top:60px;
+
     position:relative;
+
     width:100%;
+
     height:140px;
+
     display:flex;
+
     align-items:center;
 }
 
@@ -30,9 +63,11 @@ body{
 .scroll-container{
 
     display:flex;
+
     align-items:center;
 
     height:58px;
+
     width:92%;
 
     margin:0 auto;
@@ -40,15 +75,20 @@ body{
     background:
     linear-gradient(
         to bottom,
-        #1d5ea8 0%,
-        #11457d 45%,
-        #0b2f5a 100%
+        #2f67a3 0%,
+        #2f67a3 12%,
+        #0f3970 13%,
+        #0f3970 55%,
+        #08254a 56%,
+        #08254a 100%
     );
 
     border-top:4px solid #ffffff;
+
     border-bottom:4px solid #ffffff;
 
     position:relative;
+
     overflow:hidden;
 
     z-index:10;
@@ -97,8 +137,10 @@ body{
     background:
     linear-gradient(
         to bottom,
-        #ffe600,
-        #ffbf00
+        #ffe600 0%,
+        #ffd000 45%,
+        #e0a800 46%,
+        #c98b00 100%
     );
 
     clip-path:polygon(12% 0,100% 0,100% 100%,0% 100%);
@@ -120,8 +162,8 @@ body{
     background:
     linear-gradient(
         to bottom,
-        #1c5ca3,
-        #0b2f5a
+        #3c6fb0,
+        #0a2952
     );
 
     border:4px solid white;
@@ -131,13 +173,15 @@ body{
     transform:skewX(-8deg);
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
     z-index:100;
 
     box-shadow:
-    0 4px 10px rgba(0,0,0,0.5);
+    0 4px 10px rgba(0,0,0,0.6);
 }
 
 .flipper-content{
@@ -148,17 +192,18 @@ body{
     height:100%;
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
     transition:opacity 0.5s ease-in-out;
 }
 
-/* QR */
-
 #qrImg{
 
     width:60px;
+
     height:60px;
 
     background:white;
@@ -170,20 +215,23 @@ body{
     transform:skewX(8deg);
 }
 
-/* Logo */
-
 #logoImg{
 
     width:80px;
+
     height:auto;
 
     object-fit:contain;
 
     transform:skewX(8deg);
+
+    filter:blur(0.3px);
 }
 
 .hidden{
+
     opacity:0;
+
     visibility:hidden;
 }
 
@@ -201,8 +249,8 @@ body{
     background:
     linear-gradient(
         to bottom,
-        #1c5ca3,
-        #0b2f5a
+        #3c6fb0,
+        #0a2952
     );
 
     border:4px solid white;
@@ -214,15 +262,18 @@ body{
     z-index:100;
 
     display:flex;
+
     flex-direction:column;
 
     align-items:center;
+
     justify-content:center;
 
     box-shadow:
-    0 4px 10px rgba(0,0,0,0.5);
+    0 4px 10px rgba(0,0,0,0.6);
 
     color:white;
+
     font-weight:bold;
 }
 
@@ -248,7 +299,7 @@ body{
     2px 2px 0 #000;
 }
 
-/* ================= TICKER ================= */
+/* ================= CONTINUOUS TV TICKER ================= */
 
 .scroll-wrapper{
 
@@ -256,57 +307,66 @@ body{
 
     overflow:hidden;
 
-    display:flex;
+    position:relative;
 
     margin:0 130px;
 
-    position:relative;
-
     z-index:2;
-}
 
-.scroll-content{
+    height:100%;
 
     display:flex;
+
     align-items:center;
+}
+
+.ticker-track{
+
+    display:flex;
+
+    align-items:center;
+
+    width:max-content;
 
     white-space:nowrap;
 
-    animation:scroll-rtl 25s linear infinite;
+    animation:tickerMove 35s linear infinite;
 }
 
-@keyframes scroll-rtl{
+@keyframes tickerMove{
 
-    0%{
-        transform:translateX(100%);
+    from{
+        transform:translateX(0);
     }
 
-    100%{
-        transform:translateX(-100%);
+    to{
+        transform:translateX(-50%);
     }
 }
 
 .item{
 
     display:flex;
+
     align-items:center;
 
-    padding-left:100px;
+    padding-left:120px;
 }
 
 /* ================= TEXT ================= */
 
 .text{
 
-    font-size:28px;
+    font-size:30px;
 
-    color:#ffe600;
+    color:#ffe100;
 
     font-weight:bold;
 
+    letter-spacing:-1px;
+
     text-shadow:
-    2px 2px 0 #000,
-    0 0 6px rgba(0,0,0,0.5);
+    3px 3px 0 #00142f;
 }
 
 .username{
@@ -315,29 +375,35 @@ body{
 
     font-weight:900;
 
-    font-size:30px;
+    font-size:31px;
 
-    margin-left:10px;
+    margin-left:12px;
 
     text-shadow:
-    2px 2px 0 #000;
+    3px 3px 0 #00142f;
 }
 
 /* ================= LOGO ================= */
 
 .scroll-logo{
 
-    height:40px;
+    height:38px;
 
-    margin:0 20px;
+    margin:0 18px;
 
-    filter:drop-shadow(2px 2px 3px rgba(0,0,0,0.6));
+    opacity:0.95;
+
+    filter:
+    blur(0.3px)
+    drop-shadow(2px 2px 2px rgba(0,0,0,0.7));
 }
 
 </style>
 </head>
 
 <body>
+
+<div class="noise"></div>
 
 <div class="wrapper">
 
@@ -371,7 +437,7 @@ body{
 
         <div class="scroll-wrapper">
 
-            <div class="scroll-content" id="content">
+            <div class="ticker-track" id="tickerTrack">
 
                 <div class="item">
 
@@ -386,8 +452,6 @@ body{
                 </div>
 
             </div>
-
-            <div class="scroll-content" id="copy"></div>
 
         </div>
 
@@ -412,20 +476,25 @@ body{
 
 <script>
 
-function updateTickerSpeed(){
+/* ================= TICKER ================= */
 
-    const width = content.offsetWidth;
+const tickerTrack = document.getElementById('tickerTrack');
 
-    const duration = width / 100;
+/* duplicate starter content many times */
 
-    content.style.animationDuration = duration + "s";
-    copy.style.animationDuration = duration + "s";
+function fillTicker(){
+
+    const original = tickerTrack.innerHTML;
+
+    tickerTrack.innerHTML = "";
+
+    for(let i = 0; i < 12; i++){
+
+        tickerTrack.innerHTML += original;
+    }
 }
 
-const content = document.getElementById('content');
-const copy = document.getElementById('copy');
-
-copy.innerHTML = content.innerHTML;
+fillTicker();
 
 /* ================= EMOJI CYCLE ================= */
 
@@ -439,8 +508,6 @@ async function runEmojiCycle(){
 
     while(true){
 
-        /* show number */
-
         eVal.style.opacity = "0";
 
         eNum.innerText = `(${count})`;
@@ -448,8 +515,6 @@ async function runEmojiCycle(){
         eNum.style.opacity = "1";
 
         await new Promise(r => setTimeout(r,1000));
-
-        /* show emoji */
 
         eNum.style.opacity = "0.3";
 
@@ -465,6 +530,7 @@ async function runEmojiCycle(){
         if(code > 128800){
 
             code = 128512;
+
             count = 1;
         }
     }
@@ -501,6 +567,8 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.database();
 
+/* ================= ADD MESSAGE ================= */
+
 function addNewMessage(user,messageText){
 
     const newItem = document.createElement('div');
@@ -518,12 +586,10 @@ function addNewMessage(user,messageText){
         src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
     `;
 
-    content.appendChild(newItem);
-
-    copy.innerHTML = content.innerHTML;
-
-    updateTickerSpeed();
+    tickerTrack.appendChild(newItem);
 }
+
+/* ================= FIREBASE LISTENER ================= */
 
 db.ref('latestMessage').on('value',(snapshot) => {
 
@@ -534,8 +600,6 @@ db.ref('latestMessage').on('value',(snapshot) => {
         addNewMessage(data.username,data.text);
     }
 });
-
-window.onload = updateTickerSpeed;
 
 </script>
 

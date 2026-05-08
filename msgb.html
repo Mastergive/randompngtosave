@@ -81,7 +81,7 @@ body::after{
 #logoImg{ width:58px; filter: blur(0.4px) brightness(0.95); }
 .hidden{ opacity:0; visibility:hidden; }
 
-/* ================= RIGHT BOX (Fixed for Images) ================= */
+/* ================= RIGHT BOX (Fixed Spacing) ================= */
 .emoji-area{
     position:absolute;
     right:1.5%;
@@ -94,19 +94,32 @@ body::after{
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:center;
+    justify-content: space-evenly; /* Keeps them separated vertically */
     box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+    padding: 2px 0;
 }
 
-#emojiVal{ width:35px; height:35px; object-fit: contain; transition: opacity 0.5s; }
-#emojiNum{ font-size:13px; color: white; margin-bottom:-2px; text-shadow: 2px 2px 0 #00152f; }
+#emojiVal{
+    font-size: 27px;
+    text-shadow: 2px 2px 0 #00152f;
+    transition: opacity 0.5s;
+    height: 30px;
+    line-height: 30px;
+}
+
+#emojiNum{
+    font-size: 13px;
+    color: white;
+    text-shadow: 2px 2px 0 #00152f;
+    font-weight: bold;
+    transition: opacity 0.5s;
+}
 
 /* ================= TICKER LOOP FIX ================= */
 .scroll-wrapper{
     width:100%;
     overflow:hidden;
     display:flex;
-    flex-direction: row; /* Ensure they stay side-by-side */
 }
 
 .scroll-content{
@@ -118,7 +131,7 @@ body::after{
 
 @keyframes scroll-loop {
     0% { transform: translateX(0); }
-    100% { transform: translateX(100%); } /* RTL scrolling direction */
+    100% { transform: translateX(100%); } /* RTL Direction */
 }
 
 .item{
@@ -178,7 +191,7 @@ body::after{
 
     <div class="emoji-area">
         <div id="emojiNum">(1)</div>
-        <img id="emojiVal" src="">
+        <div id="emojiVal">😀</div>
     </div>
 </div>
 
@@ -196,33 +209,33 @@ function updateTickerSpeed(){
     copy.style.animationDuration = duration + "s";
 }
 
-/* ================= RANDOM GITHUB EMOJIS ================= */
+/* ================= UNICODE EMOJI CYCLE ================= */
 const eNum = document.getElementById('emojiNum');
 const eVal = document.getElementById('emojiVal');
-const archiveEmojis = [
-    "old/biggrin_v1.png", "old/bloodeatinggrin_v1.png", "old/pog_v1.png", "old/smile_v1.png",
-    "current/biggrin.png", "current/coolguy.png", "current/haha.png", "current/laugh.png", 
-    "current/love.png", "current/pog.png", "current/shocked.png", "current/vibe.png"
-];
 
 let count = 1;
+let code = 128512;
+
 async function runEmojiCycle(){
     while(true){
-        const randomPath = archiveEmojis[Math.floor(Math.random() * archiveEmojis.length)];
-        const fullUrl = `https://raw.githubusercontent.com/lospec/emoji-archive/main/${randomPath}`;
-
-        eVal.style.opacity = "0";
+        // Phase 1: Focus on Number
+        eVal.style.opacity = "0.2"; // Dim emoji
         eNum.innerText = `(${count})`;
         eNum.style.opacity = "1";
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise(r => setTimeout(r, 1200));
 
-        eNum.style.opacity = "0.4";
-        eVal.src = fullUrl;
+        // Phase 2: Focus on Emoji
+        eNum.style.opacity = "0.4"; // Dim number
+        eVal.innerText = String.fromCodePoint(code);
         eVal.style.opacity = "1";
         await new Promise(r => setTimeout(r, 2500));
 
         count++;
-        if(count > 99) count = 1;
+        code++;
+        if(code > 128800){
+            code = 128512;
+            count = 1;
+        }
     }
 }
 runEmojiCycle();
@@ -254,7 +267,6 @@ function addNewMessage(user, messageText){
         <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
     `;
     content.appendChild(newItem);
-    // Sync the loop
     copy.innerHTML = content.innerHTML;
     updateTickerSpeed();
 }

@@ -18,6 +18,7 @@
             --st-blue-light: #3b82f6;
             --st-yellow: #facc15;
             --st-purple: #6d28d9;
+            --st-pink: #ec4899;
         }
 
         body {
@@ -54,11 +55,12 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: transform 0.3s, filter 0.3s;
             width: 85px;
         }
 
-        .planet-item:hover { transform: scale(1.1); }
+        .planet-item:hover { transform: scale(1.1); filter: brightness(1.2); }
+        .planet-item:active { transform: scale(0.95); }
 
         .planet-img {
             width: 70px;
@@ -74,10 +76,10 @@
             text-shadow: 2px 2px 4px #000;
         }
 
-        /* Main Layout */
+        /* Layout المطور - متجاوب بالكامل للكمبيوتر والموبايل تلقائياً */
         .main-grid {
             display: grid;
-            grid-template-columns: 220px 1fr 250px;
+            grid-template-columns: 240px 1fr 260px;
             gap: 20px;
             padding: 20px;
             max-width: 1400px;
@@ -85,7 +87,7 @@
         }
 
         .sidebar {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.3);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 15px;
             padding: 15px;
@@ -94,7 +96,7 @@
 
         .ad-box {
             width: 100%;
-            height: 350px;
+            height: 280px;
             background: #111;
             margin-bottom: 20px;
             border-radius: 10px;
@@ -104,18 +106,48 @@
 
         .ad-box img { width: 100%; height: 100%; object-fit: cover; }
 
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .sidebar-menu li {
+            margin: 12px 0;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .sidebar-menu a:hover {
+            background: var(--st-yellow);
+            color: black;
+            transform: translateX(-5px);
+        }
+
         .content-area {
-            background: rgba(37, 99, 235, 0.8);
+            background: rgba(37, 99, 235, 0.85);
             border: 6px solid #fff;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             padding: 20px;
         }
 
-        /* حاوية أدوات اختيار المشغل والتحكم */
+        /* اختيار المشغل والتحكم */
         .player-selector-zone {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 10px;
         }
 
         .player-select {
@@ -132,7 +164,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        /* تثبيت الأبعاد المطلوبة 4:3 كلاسيكي على كافة المشغلات */
+        /* أبعاد 4:3 كلاسيكية ثابتة آمنة */
         .video-wrapper {
             width: 100%;
             max-width: 720px;
@@ -140,29 +172,18 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-            border: 3px solid var(--st-yellow);
+            border: 4px solid var(--st-yellow);
             background: black;
+            aspect-ratio: 4 / 3;
+            position: relative;
         }
 
-        /* إجبار مشغل الـ HTML5 العادي (Hls.js) على الالتزام بالأبعاد */
-        .native-4-3-player {
-            width: 100%;
-            aspect-ratio: 4 / 3 !important;
-            display: block;
-            background: black;
-        }
-
-        /* إجبار مشغل Video.js على الالتزام بالأبعاد */
-        .video-js.vjs-4-3-retro {
-            aspect-ratio: 4 / 3 !important;
+        /* محاذاة كل أنواع المشغلات داخل الحاوية */
+        .native-4-3-player, .video-js, .plyr {
             width: 100% !important;
-            height: auto !important;
-        }
-
-        /* إجبار مشغل Plyr على الالتزام بالأبعاد */
-        .plyr-4-3-container .plyr {
+            height: 100% !important;
             aspect-ratio: 4 / 3 !important;
-            width: 100% !important;
+            object-fit: contain;
         }
 
         /* Social Icons */
@@ -183,9 +204,10 @@
         }
 
         .social-icon.yt { color: #ff0000; }
-        .social-icon:hover { transform: translateY(-5px); background: var(--st-yellow); }
+        .social-icon.fb { color: #1877f2; }
+        .social-icon:hover { transform: translateY(-5px); background: var(--st-yellow); color: black; }
 
-        /* Games Styling */
+        /* الألعاب والتحكم اللمسي للموبايل */
         .game-window {
             margin-top: 35px;
             background: #111;
@@ -198,19 +220,26 @@
         .game-container-box {
             position: relative;
             display: inline-block;
-            width: 400px;
-            height: 300px;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 4 / 3;
+        }
+
+        #snakeGame {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: block;
+            border-radius: 10px;
         }
 
         .game-overlay {
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.9);
             position: absolute; top:0; left:0; z-index: 10;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             border-radius: 10px;
         }
-
-        canvas { background: #000; display: block; border-radius: 10px; }
 
         .btn-play {
             background: var(--st-yellow); color: black;
@@ -218,8 +247,30 @@
             font-size: 1.2rem; font-weight: bold;
             border-radius: 50px; cursor: pointer;
             transition: 0.2s;
+            font-family: 'Cairo', sans-serif;
         }
         .btn-play:hover { transform: scale(1.05); }
+
+        /* أزرار لمسية تظهر فقط على الموبايل للتحكم في اللعبة */
+        .mobile-controls {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 180px;
+            margin: 15px auto 0 auto;
+        }
+
+        .touch-btn {
+            background: #222;
+            border: 2px solid var(--st-yellow);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            user-select: none;
+        }
+        .touch-btn:active { background: var(--st-yellow); color: black; }
 
         footer {
             text-align: center; padding: 25px;
@@ -227,39 +278,86 @@
             border-top: 4px solid var(--st-yellow);
         }
 
-        @media (max-width: 1000px) {
-            .main-grid { grid-template-columns: 1fr; }
-            .sidebar { display: none; }
+        /* Responsive Mobile Layout Rule (تخصيص كامل للهواتف الذكية والأجهزة اللوحية) */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr; /* دمج الأعمدة في مسار عمودي واحد */
+                padding: 10px;
+                gap: 15px;
+            }
+            
+            .sidebar {
+                order: 3; /* إنزال الشريط الجانبي الأيسر للأسفل */
+            }
+            
+            .sidebar-news {
+                order: 2; /* وضع الأخبار تحت المشغل مباشرة */
+            }
+
+            .content-area {
+                order: 1; /* المشغل والبث في القمة دائماً */
+                padding: 12px;
+                border-width: 4px;
+            }
+
+            .planets-bar {
+                gap: 8px;
+                padding: 10px;
+            }
+
+            .planet-item {
+                width: 65px;
+            }
+
+            .planet-img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .planet-name {
+                font-size: 0.7rem;
+            }
+
+            .player-selector-zone label {
+                display: block;
+                margin-bottom: 8px;
+                font-size: 0.9rem;
+            }
+
+            /* إظهار أزرار الموبايل للعبة الثعبان تلقائياً هنا */
+            .mobile-controls {
+                display: grid;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="top-header">
-    <img src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png" alt="Logo" width="150">
+    <img src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png" alt="Logo" width="130" style="cursor: pointer;" onclick="location.reload();">
     
     <div class="planets-bar">
-        <div class="planet-item">
+        <div class="planet-item" onclick="filterPlanet('action')">
             <img src="https://github.com/Mastergive/randompngtosave/blob/main/Action_planet-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Action'" class="planet-img">
             <span class="planet-name">أكشن</span>
         </div>
-        <div class="planet-item">
+        <div class="planet-item" onclick="filterPlanet('adventure')">
             <img src="https://github.com/Mastergive/randompngtosave/blob/main/Adventure-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Adventure'" class="planet-img">
             <span class="planet-name">مغامرات</span>
         </div>
-        <div class="planet-item">
+        <div class="planet-item" onclick="filterPlanet('sports')">
             <img src="https://github.com/Mastergive/randompngtosave/blob/main/Sports-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Sports'" class="planet-img">
             <span class="planet-name">رياضة</span>
         </div>
-        <div class="planet-item">
+        <div class="planet-item" onclick="filterPlanet('bonbon')">
             <img src="https://github.com/Mastergive/randompngtosave/blob/main/Planet_Bon_Bon_New.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Bonbon'" class="planet-img">
             <span class="planet-name">بون بون</span>
         </div>
-        <div class="planet-item">
-            <img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%8%D8%A8_%D9%83%D9%88%D9%85%D9%8A%D8%AF%D9%8A%D8%A7-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Comedy'" class="planet-img">
+        <div class="planet-item" onclick="filterPlanet('comedy')">
+            <img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%8%D8%A8_%D9%83%D9%8Field_%D9%83%D9%88%D9%85%D9%8A%D8%A4%D9%8A%D8%A7-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Comedy'" class="planet-img">
             <span class="planet-name">كوميديا</span>
         </div>
-        <div class="planet-item">
+        <div class="planet-item" onclick="filterPlanet('zomoroda')">
             <img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%8%D8%A8_%D8%B2%D9%85%D8%B1%D8%AF%D8%A9-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Zomoroda'" class="planet-img">
             <span class="planet-name">زمردة</span>
         </div>
@@ -267,58 +365,73 @@
 </div>
 
 <div class="main-grid">
+    <!-- الشريط الجانبي الأيمن -->
     <aside class="sidebar">
-        <h3 style="color:var(--st-yellow)"><i class="fas fa-download"></i> مركز التحميل</h3>
+        <h3 style="color:var(--st-yellow); margin-top:0;"><i class="fas fa-download"></i> مركز التحميل</h3>
         <div class="ad-box">
             <img src="https://m.media-amazon.com/images/I/81L7-oO7uHL._AC_SL1500_.jpg" alt="Spider-Man Ad">
         </div>
-        <ul style="list-style: none; padding: 0; font-weight: bold;">
-            <li style="margin: 10px 0;"><a href="#" style="color: var(--st-yellow); text-decoration: none;">🏠 الرئيسية</a></li>
-            <li style="margin: 10px 0;"><a href="#" style="color: white; text-decoration: none;">🎮 مركز الألعاب</a></li>
+        <ul class="sidebar-menu">
+            <li><a href="#" onclick="alert('أهلاً بك في الصفحة الرئيسية!'); return false;">🏠 الرئيسية</a></li>
+            <li><a href="#games" onclick="document.querySelector('.game-window').scrollIntoView({behavior: 'smooth'}); return false;">🎮 مركز الألعاب</a></li>
         </ul>
     </aside>
 
+    <!-- منطقة المحتوى البث والمشغل -->
     <main class="content-area">
-        <h2 style="text-align: center; color: var(--st-yellow); text-shadow: 2px 2px black;">
-            <i class="fas fa-broadcast-tower"></i> البث المباشر - شباب المستقبل (4:3)
+        <h2 style="text-align: center; color: var(--st-yellow); text-shadow: 2px 2px black; font-size: 1.5rem; margin-top: 0;">
+            <i class="fas fa-broadcast-tower"></i> البث المباشر - جيل الطيبين (4:3)
         </h2>
 
-        <!-- زر الانتقال واختيار نوع المشغل المفضل لديك لدعم خوادم النيتليفاي -->
         <div class="player-selector-zone">
-            <label for="playerSelect" style="font-weight: bold; margin-left: 10px;">اختر مشغل البث البديل في حال واجهت تقطيعاً: </label>
+            <label for="playerSelect" style="font-weight: bold;">اختر مشغل البث البديل: </label>
             <select id="playerSelect" class="player-select" onchange="switchPlayer(this.value)">
                 <option value="vjs">Video.js (المشغل الأساسي)</option>
-                <option value="hlsjs">Hls.js + HTML5 (موصى به للسرعة والثبات)</option>
-                <option value="plyr">Plyr Player (واجهة حديثة مخصصة)</option>
+                <option value="hlsjs">Hls.js + HTML5 (سريع ومباشر)</option>
+                <option value="plyr">Plyr Player (واجهة حديثة)</option>
             </select>
         </div>
         
-        <!-- الحاوية الديناميكية التي تتبدل بداخلها الأكواد تلقائياً -->
         <div class="video-wrapper" id="playerContainer">
-            <!-- سيتم حقن كود المشغل المحدد هنا برمجياً -->
+            <!-- يتم حقن كود المشغلات هنا تلقائياً -->
         </div>
 
         <div class="social-bar">
             <a href="https://www.youtube.com/user/spacetoononline" target="_blank" class="social-icon yt"><i class="fab fa-youtube"></i></a>
-            <a href="https://facebook.com/spacetoon" target="_blank" class="social-icon yt"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://facebook.com/spacetoon" target="_blank" class="social-icon fb"><i class="fab fa-facebook-f"></i></a>
         </div>
 
-        <div class="game-window">
-            <h3 style="color: var(--st-yellow)">🎮 لعبة كوكب مغامرات 🐍</h3>
+        <!-- منطقة الألعاب -->
+        <div class="game-window" id="games">
+            <h3 style="color: var(--st-yellow); margin-top:0;">🎮 لعبة كوكب مغامرات 🐍</h3>
             <div class="game-container-box">
                 <div id="gameOverlay" class="game-overlay">
                     <button class="btn-play" onclick="startGame()">إضغط للعب الآن</button>
                 </div>
                 <canvas id="snakeGame" width="400" height="300"></canvas>
             </div>
-            <p>النقاط: <span id="score" style="color:var(--st-yellow); font-size:1.5rem">0</span></p>
+            <p style="margin: 10px 0 0 0;">النقاط: <span id="score" style="color:var(--st-yellow); font-size:1.5rem; font-weight: bold;">0</span></p>
+            
+            <!-- أزرار اللمس للموبايل (مخفية بالكمبيوتر وتظهر تلقائياً بالموبايل) -->
+            <div class="mobile-controls">
+                <div></div>
+                <button class="touch-btn" onclick="triggerKey(38)"><i class="fas fa-chevron-up"></i></button>
+                <div></div>
+                <button class="touch-btn" onclick="triggerKey(37)"><i class="fas fa-chevron-right"></i></button>
+                <button class="touch-btn" style="background:#444; border-color:#fff;"><i class="fas fa-circle"></i></button>
+                <button class="touch-btn" onclick="triggerKey(39)"><i class="fas fa-chevron-left"></i></button>
+                <div></div>
+                <button class="touch-btn" onclick="triggerKey(40)"><i class="fas fa-chevron-down"></i></button>
+                <div></div>
+            </div>
         </div>
     </main>
 
-    <aside class="sidebar">
-        <h3 style="color:var(--st-yellow)"><i class="fas fa-newspaper"></i> آخر الأخبار</h3>
-        <p>✨ عودة المحقق كونان بجزء جديد!</p>
-        <iframe width="100%" height="160" src="https://www.youtube.com/embed/cP6DhogDqEg" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>
+    <!-- الشريط الجانبي الأيسر (الأخبار) -->
+    <aside class="sidebar sidebar-news">
+        <h3 style="color:var(--st-yellow); margin-top:0;"><i class="fas fa-newspaper"></i> آخر الأخبار</h3>
+        <p style="font-size: 0.95rem; line-height: 1.6;">✨ سبيستون كافيه يفتتح أبوابه رسمياً لجيل الطيبين لاستعادة ذكريات الطفولة!</p>
+        <iframe width="100%" height="160" src="https://www.youtube.com/embed/cP6DhogDqEg" frameborder="0" allowfullscreen style="border-radius: 8px; border: 2px solid rgba(255,255,255,0.2);"></iframe>
     </aside>
 </div>
 
@@ -326,80 +439,105 @@
     <p>© جميع الحقوق محفوظة لقناة سبيستون - هورايزون تي في</p>
 </footer>
 
-<!-- استدعاء كافة مكاتب التشغيل المطلوبة -->
+<!-- جلب مكاتب التشغيل الأساسية -->
 <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
 <script>
-    // رابط البث المباشر النهائي الموحد
+    // رابط البث النهائي الموحد الخاص بك
     const streamUrl = 'https://gjbtzxxvod.localto.net/live/spacetoonold/index.m3u8';
-    let currentVjsPlayer = null;
+    
+    // متغيرات تتبع الكائنات لمنع تدمير الذاكرة وتصادم المشغلات
+    let mtxVjsPlayer = null;
+    let mtxHlsInstance = null;
+    let mtxPlyrInstance = null;
 
-    // سكربت التبديل الذكي والديناميكي بين الـ 3 مشغلات
-    function switchPlayer(playerType) {
-        const container = document.getElementById('playerContainer');
-        
-        // تنظيف وحذف أي بقايا أو مراجع للمشغل السابق لتفادي تعليق الذاكرة في المتصفح
-        if (currentVjsPlayer) {
-            currentVjsPlayer.dispose();
-            currentVjsPlayer = null;
+    function cleanExistingPlayers() {
+        // تدمير مشغل Video.js بالكامل ونظافة الكود
+        if (mtxVjsPlayer) {
+            mtxVjsPlayer.dispose();
+            mtxVjsPlayer = null;
         }
-        container.className = "video-wrapper"; // إعادة تصفير الكلاسات
+        // تدمير أي نسخة مفعلة من Hls.js
+        if (mtxHlsInstance) {
+            mtxHlsInstance.destroy();
+            mtxHlsInstance = null;
+        }
+        // تدمير مشغل Plyr
+        if (mtxPlyrInstance) {
+            mtxPlyrInstance.destroy();
+            mtxPlyrInstance = null;
+        }
+        
+        const container = document.getElementById('playerContainer');
         container.innerHTML = ""; 
+    }
+
+    // متحكم التبديل الذكي والمضمون بدون كراش
+    function switchPlayer(playerType) {
+        cleanExistingPlayers();
+        const container = document.getElementById('playerContainer');
 
         if (playerType === 'vjs') {
-            // 1. إعادة بناء مشغل Video.js
             container.innerHTML = `
-                <video id="spacetoon-vjs" class="video-js vjs-default-skin vjs-4-3-retro" controls autoplay preload="auto" muted>
+                <video id="spacetoon-vjs" class="video-js vjs-default-skin" controls autoplay preload="auto" muted playsinline>
                     <source src="${streamUrl}" type="application/x-mpegURL">
                 </video>
             `;
-            currentVjsPlayer = videojs('spacetoon-vjs', {
-                fluid: false,
-                autoplay: 'muted'
+            mtxVjsPlayer = videojs('spacetoon-vjs', {
+                autoplay: 'muted',
+                controls: true,
+                preload: 'auto'
             });
 
         } else if (playerType === 'hlsjs') {
-            // 2. بناء مشغل Hls.js فائق الخفة والمباشر
             container.innerHTML = `<video id="spacetoon-hlsjs" class="native-4-3-player" controls autoplay muted playsinline></video>`;
             const video = document.getElementById('spacetoon-hlsjs');
 
             if (Hls.isSupported()) {
-                const hls = new Hls({ maxBufferLength: 10, enableWorker: true });
-                hls.loadSource(streamUrl);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+                mtxHlsInstance = new Hls({ maxBufferLength: 10, enableWorker: true });
+                mtxHlsInstance.loadSource(streamUrl);
+                mtxHlsInstance.attachMedia(video);
+                mtxHlsInstance.on(Hls.Events.MANIFEST_PARSED, () => { video.play().catch(e=>console.log(e)); });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = streamUrl;
-                video.addEventListener('loadedmetadata', () => video.play());
+                video.addEventListener('loadedmetadata', () => { video.play(); });
             }
 
         } else if (playerType === 'plyr') {
-            // 3. بناء واجهة تشغيل مشغل Plyr الفاخرة متوافقة مع Hls.js
-            container.classList.add('plyr-4-3-container');
-            container.innerHTML = `<video id="spacetoon-plyr" controls autoplay muted playsinline crossorigin></video>`;
+            container.innerHTML = `<video id="spacetoon-plyr" controls autoplay muted playsinline></video>`;
             const video = document.getElementById('spacetoon-plyr');
 
-            const hls = new Hls();
-            hls.loadSource(streamUrl);
-            hls.attachMedia(video);
+            if (Hls.isSupported()) {
+                mtxHlsInstance = new Hls();
+                mtxHlsInstance.loadSource(streamUrl);
+                mtxHlsInstance.attachMedia(video);
+            } else {
+                video.src = streamUrl;
+            }
 
-            const player = new Plyr(video, {
+            mtxPlyrInstance = new Plyr(video, {
                 controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
                 ratio: '4:3'
             });
-            video.play();
+            
+            video.play().catch(e => console.log("Autoplay blocked or waiting: ", e));
         }
     }
 
-    // تشغيل مشغل الفيديو التلقائي عند فتح الموقع لأول مرة (تبدأ بـ Video.js)
+    // تفاعل أزرار الكواكب عند النقر عليها
+    function filterPlanet(planetKey) {
+        alert("لقد دخلت الآن إلى كوكب " + planetKey + "! سيتم تحديث جدول العروض قريباً.");
+    }
+
+    // بدء تشغيل الموقع تلقائياً بأمان عالي
     document.addEventListener("DOMContentLoaded", () => {
         switchPlayer('vjs');
     });
 
     // ==========================================
-    // كود لعبة الثعبان المحدث والمصلح تماماً
+    // كود لعبة الثعبان المتجاوب للموبايل والكمبيوتر
     // ==========================================
     const canvas = document.getElementById("snakeGame");
     const ctx = canvas.getContext("2d");
@@ -437,7 +575,7 @@
             gameRunning = false;
             clearInterval(gameInterval);
             overlay.style.display = "flex";
-            overlay.innerHTML = `<h2 style="color:#ef4444; margin-bottom:15px;">خسرت!</h2><button class="btn-play" onclick="startGame()">حاول مرة أخرى</button>`;
+            overlay.innerHTML = `<h2 style="color:#ef4444; margin: 0 0 15px 0;">خسرت!</h2><button class="btn-play" onclick="startGame()">حاول مرة أخرى</button>`;
             return;
         }
 
@@ -499,24 +637,32 @@
         ctx.fillRect(food.x, food.y, 10, 10); 
     }
 
-    document.addEventListener("keydown", (e) => {
-        if (!gameRunning) return;
-        
-        const keyPressed = e.keyCode;
+    // معالجة التحكم عبر لوحة المفاتيح (للكمبيوتر)
+    function handleDirection(keyCode) {
         const GOING_LEFT = dx === -10;
         const GOING_RIGHT = dx === 10;
         const GOING_UP = dy === -10;
         const GOING_DOWN = dy === 10;
 
-        if([37, 38, 39, 40].includes(keyPressed)) {
-            e.preventDefault();
-        }
+        if (keyCode === 37 && !GOING_RIGHT) { nextDx = -10; nextDy = 0; }
+        if (keyCode === 38 && !GOING_DOWN) { nextDx = 0; nextDy = -10; }
+        if (keyCode === 39 && !GOING_LEFT)  { nextDx = 10; nextDy = 0; }
+        if (keyCode === 40 && !GOING_UP)   { nextDx = 0; nextDy = 10; }
+    }
 
-        if (keyPressed === 37 && !GOING_RIGHT) { nextDx = -10; nextDy = 0; }
-        if (keyPressed === 38 && !GOING_DOWN) { nextDx = 0; nextDy = -10; }
-        if (keyPressed === 39 && !GOING_LEFT)  { nextDx = 10; nextDy = 0; }
-        if (keyPressed === 40 && !GOING_UP)   { nextDx = 0; nextDy = 10; }
+    document.addEventListener("keydown", (e) => {
+        if (!gameRunning) return;
+        if([37, 38, 39, 40].includes(e.keyCode)) {
+            e.preventDefault(); // منع الصفحة من الاهتزاز أو النزول لأسفل أثناء اللعب
+            handleDirection(e.keyCode);
+        }
     });
+
+    // دالة محاكاة النقر بالأزرار اللمسية (للموبايل)
+    function triggerKey(code) {
+        if (!gameRunning) return;
+        handleDirection(code);
+    }
 </script>
 </body>
 </html>

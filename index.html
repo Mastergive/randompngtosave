@@ -6,7 +6,11 @@
     <title>موقع سبيستون - جيل الطيبين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- مكتبات المشغلات (CSS) -->
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png" type="image/x-icon">
     <style>
         :root {
@@ -108,7 +112,27 @@
             padding: 20px;
         }
 
-        /* تحديث الحاوية لتثبيت أبعاد الأنمي الكلاسيكي 4:3 */
+        /* حاوية أدوات اختيار المشغل والتحكم */
+        .player-selector-zone {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .player-select {
+            font-family: 'Cairo', sans-serif;
+            background: #111;
+            color: var(--st-yellow);
+            border: 2px solid var(--st-yellow);
+            padding: 8px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* تثبيت الأبعاد المطلوبة 4:3 كلاسيكي على كافة المشغلات */
         .video-wrapper {
             width: 100%;
             max-width: 720px;
@@ -117,12 +141,28 @@
             overflow: hidden;
             box-shadow: 0 8px 20px rgba(0,0,0,0.6);
             border: 3px solid var(--st-yellow);
+            background: black;
         }
 
+        /* إجبار مشغل الـ HTML5 العادي (Hls.js) على الالتزام بالأبعاد */
+        .native-4-3-player {
+            width: 100%;
+            aspect-ratio: 4 / 3 !important;
+            display: block;
+            background: black;
+        }
+
+        /* إجبار مشغل Video.js على الالتزام بالأبعاد */
         .video-js.vjs-4-3-retro {
             aspect-ratio: 4 / 3 !important;
             width: 100% !important;
             height: auto !important;
+        }
+
+        /* إجبار مشغل Plyr على الالتزام بالأبعاد */
+        .plyr-4-3-container .plyr {
+            aspect-ratio: 4 / 3 !important;
+            width: 100% !important;
         }
 
         /* Social Icons */
@@ -216,11 +256,11 @@
             <span class="planet-name">بون بون</span>
         </div>
         <div class="planet-item">
-            <img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%83%D8%A8_%D9%83%D9%88%D9%85%D9%8A%D8%AF%D9%8A%D8%A7-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Comedy'" class="planet-img">
+            <img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%8%D8%A8_%D9%83%D9%88%D9%85%D9%8A%D8%AF%D9%8A%D8%A7-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Comedy'" class="planet-img">
             <span class="planet-name">كوميديا</span>
         </div>
         <div class="planet-item">
-            <img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%83%D8%A8_%D8%B2%D9%85%D8%B1%D8%AF%D8%A9-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Zomoroda'" class="planet-img">
+            <img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%8%D8%A8_%D8%B2%D9%85%D8%B1%D8%AF%D8%A9-Photoroom.png?raw=true" onerror="this.src='https://via.placeholder.com/70?text=Zomoroda'" class="planet-img">
             <span class="planet-name">زمردة</span>
         </div>
     </div>
@@ -242,12 +282,20 @@
         <h2 style="text-align: center; color: var(--st-yellow); text-shadow: 2px 2px black;">
             <i class="fas fa-broadcast-tower"></i> البث المباشر - شباب المستقبل (4:3)
         </h2>
+
+        <!-- زر الانتقال واختيار نوع المشغل المفضل لديك لدعم خوادم النيتليفاي -->
+        <div class="player-selector-zone">
+            <label for="playerSelect" style="font-weight: bold; margin-left: 10px;">اختر مشغل البث البديل في حال واجهت تقطيعاً: </label>
+            <select id="playerSelect" class="player-select" onchange="switchPlayer(this.value)">
+                <option value="vjs">Video.js (المشغل الأساسي)</option>
+                <option value="hlsjs">Hls.js + HTML5 (موصى به للسرعة والثبات)</option>
+                <option value="plyr">Plyr Player (واجهة حديثة مخصصة)</option>
+            </select>
+        </div>
         
-        <div class="video-wrapper">
-            <video id="spacetoon-live-player" class="video-js vjs-default-skin vjs-4-3-retro" controls autoplay preload="auto" muted>
-                <source src="https://gjbtzxxvod.localto.net/live/spacetoonold/index.m3u8?cookieCheck=1" type="application/x-mpegURL">
-                <p class="vjs-no-js">لمشاهدة البث المباشر، يرجى تفعيل جافا سكريبت أو استخدام متصفح يدعم فيديو HTML5.</p>
-            </video>
+        <!-- الحاوية الديناميكية التي تتبدل بداخلها الأكواد تلقائياً -->
+        <div class="video-wrapper" id="playerContainer">
+            <!-- سيتم حقن كود المشغل المحدد هنا برمجياً -->
         </div>
 
         <div class="social-bar">
@@ -278,10 +326,81 @@
     <p>© جميع الحقوق محفوظة لقناة سبيستون - هورايزون تي في</p>
 </footer>
 
+<!-- استدعاء كافة مكاتب التشغيل المطلوبة -->
 <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
 <script>
-    // إصلاح شامل وترقية للعبة الثعبان
+    // رابط البث المباشر النهائي الموحد
+    const streamUrl = 'https://gjbtzxxvod.localto.net/live/spacetoonold/index.m3u8?cookieCheck=1';
+    let currentVjsPlayer = null;
+
+    // سكربت التبديل الذكي والديناميكي بين الـ 3 مشغلات
+    function switchPlayer(playerType) {
+        const container = document.getElementById('playerContainer');
+        
+        // تنظيف وحذف أي بقايا أو مراجع للمشغل السابق لتفادي تعليق الذاكرة في المتصفح
+        if (currentVjsPlayer) {
+            currentVjsPlayer.dispose();
+            currentVjsPlayer = null;
+        }
+        container.className = "video-wrapper"; // إعادة تصفير الكلاسات
+        container.innerHTML = ""; 
+
+        if (playerType === 'vjs') {
+            // 1. إعادة بناء مشغل Video.js
+            container.innerHTML = `
+                <video id="spacetoon-vjs" class="video-js vjs-default-skin vjs-4-3-retro" controls autoplay preload="auto" muted>
+                    <source src="${streamUrl}" type="application/x-mpegURL">
+                </video>
+            `;
+            currentVjsPlayer = videojs('spacetoon-vjs', {
+                fluid: false,
+                autoplay: 'muted'
+            });
+
+        } else if (playerType === 'hlsjs') {
+            // 2. بناء مشغل Hls.js فائق الخفة والمباشر
+            container.innerHTML = `<video id="spacetoon-hlsjs" class="native-4-3-player" controls autoplay muted playsinline></video>`;
+            const video = document.getElementById('spacetoon-hlsjs');
+
+            if (Hls.isSupported()) {
+                const hls = new Hls({ maxBufferLength: 10, enableWorker: true });
+                hls.loadSource(streamUrl);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = streamUrl;
+                video.addEventListener('loadedmetadata', () => video.play());
+            }
+
+        } else if (playerType === 'plyr') {
+            // 3. بناء واجهة تشغيل مشغل Plyr الفاخرة متوافقة مع Hls.js
+            container.classList.add('plyr-4-3-container');
+            container.innerHTML = `<video id="spacetoon-plyr" controls autoplay muted playsinline crossorigin></video>`;
+            const video = document.getElementById('spacetoon-plyr');
+
+            const hls = new Hls();
+            hls.loadSource(streamUrl);
+            hls.attachMedia(video);
+
+            const player = new Plyr(video, {
+                controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+                ratio: '4:3'
+            });
+            video.play();
+        }
+    }
+
+    // تشغيل مشغل الفيديو التلقائي عند فتح الموقع لأول مرة (تبدأ بـ Video.js)
+    document.addEventListener("DOMContentLoaded", () => {
+        switchPlayer('vjs');
+    });
+
+    // ==========================================
+    // كود لعبة الثعبان المحدث والمصلح تماماً
+    // ==========================================
     const canvas = document.getElementById("snakeGame");
     const ctx = canvas.getContext("2d");
     const overlay = document.getElementById("gameOverlay");
@@ -294,14 +413,13 @@
         overlay.style.display = "none";
         gameRunning = true;
         score = 0;
-        // يبدأ الثعبان من المنتصف بحجم 3 مربعات لتجنب الخسارة الفورية
         snake = [
             {x: 200, y: 150},
             {x: 190, y: 150},
             {x: 180, y: 150}
         ];
         dx = 10; dy = 0;
-        nextDx = 10; nextDy = 0; // نظام حجز الحركة لتفادي ضغط الأزرار السريع الخاطئ
+        nextDx = 10; nextDy = 0; 
         document.getElementById('score').innerHTML = score;
         createFood();
         
@@ -312,7 +430,6 @@
     function gameStep() {
         if (!gameRunning) return;
 
-        // تحديث الاتجاه الفعلي بناءً على المدخلات الأخيرة المحجوزة
         dx = nextDx;
         dy = nextDy;
 
@@ -337,7 +454,6 @@
 
     function drawSnake() {
         snake.forEach((part, index) => {
-            // لون مميز للرأس ولون آخر للجسد
             ctx.fillStyle = index === 0 ? "#facc15" : "#eab308";
             ctx.fillRect(part.x, part.y, 10, 10);
             ctx.strokeStyle = "#111";
@@ -360,11 +476,9 @@
 
     function didGameEnd() {
         const head = snake[0];
-        // فحص الاصطدام بالجدران بدقة متناهية (الحدود من 0 إلى العرض/الارتفاع ناقص حجم المربع)
         if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
             return true;
         }
-        // فحص الاصطدام بالجسد نفسه
         for (let i = 1; i < snake.length; i++) {
             if (head.x === snake[i].x && head.y === snake[i].y) return true;
         }
@@ -372,7 +486,6 @@
     }
 
     function createFood() {
-        // توليد الطعام بشكل عشوائي تماماً داخل مساحة اللعب وتفادي ظهوره فوق جسد الثعبان
         let foodOnSnake = true;
         while(foodOnSnake) {
             food.x = Math.floor(Math.random() * (canvas.width / 10)) * 10;
@@ -386,7 +499,6 @@
         ctx.fillRect(food.x, food.y, 10, 10); 
     }
 
-    // إصلاح التحكم بالكيبورد ومنع انتحار الثعبان بالرجوع العكسي
     document.addEventListener("keydown", (e) => {
         if (!gameRunning) return;
         
@@ -396,7 +508,6 @@
         const GOING_UP = dy === -10;
         const GOING_DOWN = dy === 10;
 
-        // منع التمرير الافتراضي للمتصفح عند الضغط على الأسهم لعدم تحرك الصفحة
         if([37, 38, 39, 40].includes(keyPressed)) {
             e.preventDefault();
         }

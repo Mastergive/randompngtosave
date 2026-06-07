@@ -65,6 +65,7 @@
         const img = new Image();
         
         // --- FIXED: Back to a normal path! Netlify handles the security policies flawlessly ---
+        img.crossOrigin = "anonymous";
         img.src = "Stoon3D.png";
 
         let shineInterval;

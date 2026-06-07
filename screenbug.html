@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Screenbug (Transparent Clipped Loop)</title>
+    <title>Spacetoon Screenbug (Ultra-Optimized Canvas 25FPS)</title>
     <style>
         * {
             margin: 0;
@@ -36,48 +36,14 @@
             animation: spacetoonMasterLoop 12s ease-in-out infinite;
         }
 
-        .bug-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: inline-block;
-            overflow: hidden;
-        }
-
-        .bug-image {
+        /* The canvas element replaces standard images and wrappers */
+        #bug-canvas {
+            display: block;
             width: 100%;
             height: auto;
-            display: block;
         }
 
-        /* --- FIX: Only Shine Inside the Logo Pixels --- */
-        .bug-wrapper::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: var(--shine-pos, -150%); 
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                -90deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0) 30%,
-                rgba(255, 255, 255, 0.75) 50%,
-                rgba(255, 255, 255, 0) 70%,
-                transparent 100%
-            );
-            transform: skewX(25deg);
-
-            /* This magical mask forces the shine to clip perfectly to the PNG's alpha channel */
-            -webkit-mask-image: url('Stoon3D.png');
-            mask-image: url('Stoon3D.png');
-            -webkit-mask-size: contain;
-            mask-size: contain;
-            -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
-        }
-
-        /* --- Master Animation Sequence Keyframes --- */
+        /* Master Animation Sequence Keyframes */
         @keyframes spacetoonMasterLoop {
             0% {
                 opacity: 0;
@@ -112,51 +78,81 @@
 <body>
 
     <div id="logo-container">
-        <div class="bug-wrapper" id="wrapper">
-            <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
-        </div>
+        <canvas id="bug-canvas"></canvas>
     </div>
 
     <script>
         const container = document.getElementById('logo-container');
-        const wrapper = document.getElementById('wrapper');
+        const canvas = document.getElementById('bug-canvas');
+        const ctx = canvas.getContext('2d');
         
+        const img = new Image();
+        img.src = 'Stoon3D.png';
+
         let shineInterval;
-        const targetFPS = 20; 
-        const frameDuration = 1000 / targetFPS; 
+        const targetFPS = 25; // Directly locked to your stream target framerate
+        const frameDuration = 1000 / targetFPS; // 40ms interval steps
 
-        function runOptimizedShine() {
-            if (shineInterval) clearInterval(shineInterval);
+        let currentPos = -1.5; // Shine starting offset position multiplier
 
-            let currentPos = -150;
-            const endPos = 150;
-            const totalFrames = (1.2 * 1000) / frameDuration; 
-            const stepIncrement = (endPos - currentPos) / totalFrames;
+        img.onload = () => {
+            // Set canvas resolutions to match the source file dimensions perfectly
+            canvas.width = img.width;
+            canvas.height = img.height;
+            startScreenbug();
+        };
 
-            shineInterval = setInterval(() => {
-                currentPos += stepIncrement;
-                
-                if (currentPos >= endPos) {
-                    currentPos = -150;
-                }
-                
-                wrapper.style.setProperty('--shine-pos', `${currentPos}%`);
-            }, frameDuration);
+        function drawFrame() {
+            // 1. Clear previous frame
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 2. Draw the primary base Spacetoon 3D logo
+            ctx.drawImage(img, 0, 0);
+
+            // 3. Composite mode 'source-in' works as an instant, zero-lag clipping mask.
+            // It ensures anything drawn next ONLY shows up on the solid pixels of the logo!
+            ctx.globalCompositeOperation = 'source-in';
+
+            // 4. Set up your perfect right-to-left linear shine gradient
+            const shineWidth = canvas.width * 0.8;
+            const startX = canvas.width + (canvas.width * currentPos);
+            const gradient = ctx.createLinearGradient(startX, 0, startX - shineWidth, 0);
+            
+            gradient.addColorStop(0, 'rgba(255,255,255,0)');
+            gradient.addColorStop(0.3, 'rgba(255,255,255,0)');
+            gradient.addColorStop(0.5, 'rgba(255,255,255,0.75)'); // Beautiful golden-era sheen intensity
+            gradient.addColorStop(0.7, 'rgba(255,255,255,0)');
+            gradient.addColorStop(1, 'rgba(255,255,255,0)');
+
+            ctx.fillStyle = gradient;
+            
+            // Draw a tilted rectangle across the composite surface to create the perfect RTL angle
+            ctx.save();
+            ctx.translate(startX, canvas.height / 2);
+            ctx.skewX(0.44); // Matches the original 25deg tilt perfectly
+            ctx.fillRect(-shineWidth, -canvas.height, shineWidth * 2, canvas.height * 2);
+            ctx.restore();
+
+            // 5. Reset composition back to normal so the next loop draws correctly
+            ctx.globalCompositeOperation = 'source-over';
+
+            // 6. Advance position to loop smoothly every 1.2 seconds at 25 FPS
+            currentPos += 0.1; 
+            if (currentPos >= 1.5) {
+                currentPos = -1.5;
+            }
         }
 
         function startScreenbug() {
             container.classList.add('looping-active');
-            runOptimizedShine();
+            if (shineInterval) clearInterval(shineInterval);
+            shineInterval = setInterval(drawFrame, frameDuration);
         }
 
         function stopScreenbug() {
             container.classList.remove('looping-active');
             if (shineInterval) clearInterval(shineInterval);
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            startScreenbug();
-        });
 
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {

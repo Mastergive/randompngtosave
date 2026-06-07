@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Old Screenbug Loop (10s Hold)</title>
+    <title>Spacetoon Screenbug (FPS Optimized Loop)</title>
     <style>
         * {
             margin: 0;
@@ -27,20 +27,16 @@
             height: auto;
             opacity: 0;
             transform-origin: center;
+            /* Force hardware acceleration for smooth handling inside OBS */
+            will-change: transform, opacity;
+            transform: translateZ(0);
         }
 
-        /* --- THE MASTER LOOP ANIMATION --- 
-           Total Duration: 12 seconds
-           0s - 0.8s: Intro / Flying in
-           0.8s - 10.0s: Staying visible & perfect shining (10 seconds total hold!)
-           10.0s - 11.0s: Moving letters / Disappearing transition
-           11.0s - 12.0s: Hidden / Reset period
-        */
+        /* --- Master 12-Second Visibility Loop --- */
         .looping-active {
             animation: spacetoonMasterLoop 12s ease-in-out infinite;
         }
 
-        /* The image container holding your perfect right-to-left sheen */
         .bug-wrapper {
             position: relative;
             width: 100%;
@@ -49,19 +45,19 @@
             overflow: hidden;
         }
 
-        /* The 3D logo image */
         .bug-image {
             width: 100%;
             height: auto;
             display: block;
         }
 
-        /* --- UNTOUCHED: Your Perfect Shine Effect --- */
+        /* --- Optimized Shine Overlay Layer --- */
         .bug-wrapper::after {
             content: '';
             position: absolute;
             top: 0;
-            right: -150%; 
+            /* We control this exact variable via JS step-intervals now */
+            right: var(--shine-pos, -150%); 
             width: 100%;
             height: 100%;
             background: linear-gradient(
@@ -75,57 +71,34 @@
             transform: skewX(25deg);
         }
 
-        .shine-active::after {
-            animation: logoShineRTL 1.2s ease-in-out infinite;
-        }
-
-        /* --- Keyframes --- */
-
-        /* Master Animation Sequence adjusted for a 10-second hold */
+        /* --- Master Animation Sequence Keyframes --- */
         @keyframes spacetoonMasterLoop {
-            /* 0% to 6.6%: Intro pop-in (Maintains the fast 0.8s entrance speed) */
             0% {
                 opacity: 0;
-                transform: scale(0) rotate(25deg) translateX(50px);
+                transform: scale(0) rotate(25deg) translateX(50px) translateZ(0);
             }
             4.8% {
-                transform: scale(1.08) rotate(-5deg) translateX(-5px);
+                transform: scale(1.08) rotate(-5deg) translateX(-5px) translateZ(0);
             }
             6.6% {
                 opacity: 0.93;
-                transform: scale(1) rotate(0deg) translateX(0);
+                transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
             }
-
-            /* 6.6% to 83.3%: Stay perfectly still on screen while shining (Exactly 10 seconds hold) */
             83.3% {
                 opacity: 0.93;
-                transform: scale(1) rotate(0deg) translateX(0);
+                transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
             }
-
-            /* 83.3% to 91.6%: Disappearing movement (Stretching/shifting away like letters collapsing) */
             86.5% {
                 opacity: 0.7;
-                transform: scale(0.9, 1.05) rotate(-3deg) translateX(-15px);
+                transform: scale(0.9, 1.05) rotate(-3deg) translateX(-15px) translateZ(0);
             }
             91.6% {
                 opacity: 0;
-                transform: scale(0) rotate(15deg) translateX(40px);
+                transform: scale(0) rotate(15deg) translateX(40px) translateZ(0);
             }
-
-            /* 91.6% to 100%: Hidden rest period before restarting the loop (1 second) */
             100% {
                 opacity: 0;
-                transform: scale(0) rotate(25deg) translateX(50px);
-            }
-        }
-
-        /* Sweeps beautifully from Right to Left (Untouched) */
-        @keyframes logoShineRTL {
-            0% {
-                right: -150%;
-            }
-            100% {
-                right: 150%;
+                transform: scale(0) rotate(25deg) translateX(50px) translateZ(0);
             }
         }
     </style>
@@ -133,34 +106,55 @@
 <body>
 
     <div id="logo-container">
-        <div class="bug-wrapper">
-            <img src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
+        <div class="bug-wrapper" id="wrapper">
+            <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
         </div>
     </div>
 
     <script>
         const container = document.getElementById('logo-container');
-        const wrapper = document.querySelector('.bug-wrapper');
+        const wrapper = document.getElementById('wrapper');
+        
+        let shineInterval;
+        const targetFPS = 20; // Locks engine step calculations exactly to your stream FPS
+        const frameDuration = 1000 / targetFPS; // 50ms steps
+
+        function runOptimizedShine() {
+            if (shineInterval) clearInterval(shineInterval);
+
+            let currentPos = -150;
+            const endPos = 150;
+            // Calculations mapped exactly to your 1.2s sweep timing requirements
+            const totalFrames = (1.2 * 1000) / frameDuration; 
+            const stepIncrement = (endPos - currentPos) / totalFrames;
+
+            shineInterval = setInterval(() => {
+                currentPos += stepIncrement;
+                
+                // Once it reaches across the text, reset back to the right side
+                if (currentPos >= endPos) {
+                    currentPos = -150;
+                }
+                
+                // Directly update the layout rendering engine variable
+                wrapper.style.setProperty('--shine-pos', `${currentPos}%`);
+            }, frameDuration);
+        }
 
         function startScreenbug() {
-            // Instantly start the background shine loop
-            wrapper.classList.add('shine-active');
-            
-            // Trigger the 12-second master visibility sequence loop
             container.classList.add('looping-active');
+            runOptimizedShine();
         }
 
         function stopScreenbug() {
             container.classList.remove('looping-active');
-            wrapper.classList.remove('shine-active');
+            if (shineInterval) clearInterval(shineInterval);
         }
 
-        // Initialize when page loads
         window.addEventListener('DOMContentLoaded', () => {
             startScreenbug();
         });
 
-        /* OBS Browser Source Visibility Hooks */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 startScreenbug();

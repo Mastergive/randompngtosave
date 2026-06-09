@@ -24,7 +24,7 @@
             top: 35px;
             right: 45px; 
             width: 220px; 
-            height: 150px; /* Adjust this to match your image aspect ratios */
+            height: 150px; 
         }
 
         .bug-wrapper {
@@ -35,7 +35,6 @@
             overflow: hidden;
         }
 
-        /* --- FIXED: Both images sit perfectly on top of each other --- */
         .bug-image {
             position: absolute;
             top: 0;
@@ -68,16 +67,16 @@
             height: 100%;
             pointer-events: none;
             
-            background: linear-gradient(
+            /* --- FIXED: The gradient color mix is now a dynamic CSS variable --- */
+            background: var(--shine-gradient, linear-gradient(
                 115deg,
                 transparent 30%,
                 rgba(255, 255, 255, 0.75) 50%,
-                transparent 70%
-            );
+                transparent 70
+            ));
             background-size: 200% 100%;
             background-position: var(--shine-pos, 150%) 0;
 
-            /* Changes dynamically via JS to match the active logo's shape */
             -webkit-mask-image: var(--current-mask, url('Stoon3D.png'));
             mask-image: var(--current-mask, url('Stoon3D.png'));
             -webkit-mask-size: contain;
@@ -88,7 +87,7 @@
             mask-position: center;
         }
 
-        /* --- Spacetoon Timeline (Visible: 0s - 5s, then fades out) --- */
+        /* --- Spacetoon Timeline (Visible: 0s - 5s) --- */
         @keyframes spacetoonMasterLoop {
             0% {
                 opacity: 0;
@@ -97,11 +96,11 @@
             2.5% { 
                 transform: scale(1.08) rotate(-5deg) translateX(-5px) translateZ(0);
             }
-            4.1% { /* Locked in at 1s */
+            4.1% { 
                 opacity: 0.93;
                 transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
             }
-            16.6% { /* Starts fading out right before 5s to hand over to Space Power */
+            16.6% { 
                 opacity: 0.93;
                 transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
             }
@@ -111,21 +110,21 @@
             }
         }
 
-        /* --- Space Power Timeline (Visible: 5s - 20s, then exits) --- */
+        /* --- Space Power Timeline (Visible: 5s - 20s) --- */
         @keyframes spacePowerSubLoop {
-            0%, 16.6% { /* Hidden completely for the first 4 seconds */
+            0%, 16.6% { 
                 opacity: 0;
                 transform: scale(0.8) rotate(10deg) translateZ(0);
             }
-            20.8% { /* Appears flawlessly at the 5-second mark in the EXACT same position */
+            20.8% { 
                 opacity: 0.93;
                 transform: scale(1) rotate(0deg) translateZ(0);
             }
-            83.3% { /* Stays on screen for 15 seconds (until the 20s mark) */
+            83.3% { 
                 opacity: 0.93;
                 transform: scale(1) rotate(0deg) translateZ(0);
             }
-            87.5%, 100% { /* Smooth spin out exit at 21s */
+            87.5%, 100% { 
                 opacity: 0;
                 transform: scale(0) rotate(15deg) translateX(40px) translateZ(0);
             }
@@ -152,9 +151,26 @@
         const targetFPS = 25; 
         const frameDuration = 1000 / targetFPS; 
 
-        function triggerSingleShine(logoFileName) {
-            // Dynamically updates the clipping mask to match whichever logo is currently showing
-            wrapper.style.setProperty('--current-mask', `url('${logoFileName}')`);
+        // --- Profiles for the different look of the shine streams ---
+        const shineProfiles = {
+            'Stoon3D.png': {
+                mask: "url('Stoon3D.png')",
+                // Classic vibrant bright white gleam
+                gradient: "linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.75) 50%, transparent 70%)"
+            },
+            'SpacePower.png': {
+                mask: "url('SpacePower.png')",
+                // Toned down translucent icy soft blue tint so it blends beautifully with white/blue graphics
+                gradient: "linear-gradient(115deg, transparent 30%, rgba(180, 220, 255, 0.4) 50%, transparent 70%)"
+            }
+        };
+
+        function triggerSingleShine(logoKey) {
+            const profile = shineProfiles[logoKey];
+            
+            // Set mask outline shape and specific light mixture
+            wrapper.style.setProperty('--current-mask', profile.mask);
+            wrapper.style.setProperty('--shine-gradient', profile.gradient);
 
             let currentPos = 150;
             const endPos = -50;
@@ -177,12 +193,12 @@
         function runBroadcastTimeline() {
             clearAllTimeouts();
 
-            // 1. Shine on Spacetoon at 1 second mark
+            // 1. Vibrant sharp white shine across Spacetoon at 1s
             timelineTimeout1 = setTimeout(() => {
                 triggerSingleShine('Stoon3D.png');
             }, 1000);
 
-            // 2. Shine on Space Power at 6 second mark (1s after it appears)
+            // 2. Soft, low-opacity ice-blue blend shine across Space Power at 6s
             timelineTimeout2 = setTimeout(() => {
                 triggerSingleShine('SpacePower.png');
             }, 6000);

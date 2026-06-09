@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon / Space Power Screenbug</title>
+    <title>Spacetoon 2018 Space Power Block Screenbug</title>
     <style>
         * {
             margin: 0;
@@ -18,54 +18,54 @@
             height: 100vh;
         }
 
-        /* --- FIXED: Added explicit width and height so the container doesn't collapse --- */
+        /* Top-Right corner positioning matching standard 2018 broadcast */
         #logo-container {
             position: absolute;
             top: 35px;
             right: 45px; 
-            width: 220px;
-            height: 150px; /* Adjust this height if your logos look squished */
-            transform-origin: center;
-            will-change: transform, opacity;
-            transform: translateZ(0);
+            width: 180px; /* Aligned with standard bug width */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
         }
 
-        /* --- FIXED: Fills out the parent container container completely --- */
+        /* --- Main Spacetoon Logo Container --- */
         .bug-wrapper {
             position: relative;
             width: 100%;
-            height: 100%;
-            display: block;
+            height: auto;
             overflow: hidden;
         }
 
-        /* Absolute positioning handles stacking the images cleanly */
         .bug-image {
-            position: absolute;
-            top: 0;
-            right: 0;
             width: 100%;
-            height: 100%;
-            object-fit: contain; /* Ensures images maintain aspect ratios perfectly without warping */
-            opacity: 0;
+            height: auto;
             display: block;
-            pointer-events: none;
+            opacity: 0;
         }
 
-        /* --- Master Timed Loops --- */
-        /* Space Power shows up for the first half of the cycle */
-        .looping-active #spacepower-logo {
-            animation: logoSequence 10s ease-in-out infinite;
-            animation-delay: 0s;
+        /* Active class handles the infinite loop of the main Spacetoon icon */
+        .looping-active .bug-image {
+            animation: spacetoonMasterLoop 10s ease-in-out infinite;
         }
 
-        /* Spacetoon shows up for the second half of the cycle */
-        .looping-active #spacetoon-logo {
-            animation: logoSequence 10s ease-in-out infinite;
-            animation-delay: 5s; /* Perfect 5-second offset */
+        /* --- Space Power Sub-text Banner --- */
+        .sub-banner {
+            width: 75%; /* Smaller, resting neatly under the main emblem */
+            height: auto;
+            margin-top: 8px;
+            display: block;
+            opacity: 0;
+            will-change: transform, opacity;
         }
 
-        /* --- Dynamic Clipped Shine Layer --- */
+        /* Space power subtitle timing: pops in right after Spacetoon settles */
+        .looping-active .sub-banner {
+            animation: spacePowerSubLoop 10s ease-in-out infinite;
+        }
+
+        /* --- Fixed Alpha Channel Shine strictly inside Spacetoon Logo --- */
         .bug-wrapper::after {
             content: '';
             position: absolute;
@@ -84,9 +84,8 @@
             background-size: 200% 100%;
             background-position: var(--shine-pos, 150%) 0;
 
-            /* The mask image variable is updated by JavaScript dynamically depending on who is visible */
-            -webkit-mask-image: var(--current-mask, url('SpacePower.png'));
-            mask-image: var(--current-mask, url('SpacePower.png'));
+            -webkit-mask-image: url('Stoon3D.png');
+            mask-image: url('Stoon3D.png');
             -webkit-mask-size: contain;
             mask-size: contain;
             -webkit-mask-repeat: no-repeat;
@@ -95,30 +94,50 @@
             mask-position: center;
         }
 
-        /* --- Spacetoon Broadcast Keyframes --- */
-        @keyframes logoSequence {
+        /* --- Main Spacetoon Entrance & Exit Sequence --- */
+        @keyframes spacetoonMasterLoop {
             0% {
                 opacity: 0;
                 transform: scale(0) rotate(25deg) translateX(50px) translateZ(0);
             }
-            12% {
+            6% {
                 transform: scale(1.08) rotate(-5deg) translateX(-5px) translateZ(0);
             }
-            20% {
+            10% {
                 opacity: 0.93;
                 transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
             }
-            80% {
+            85% {
                 opacity: 0.93;
                 transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
             }
-            88% {
+            89% {
                 opacity: 0.7;
                 transform: scale(0.9, 1.05) rotate(-3deg) translateX(-15px) translateZ(0);
             }
-            96%, 100% {
+            95%, 100% {
                 opacity: 0;
                 transform: scale(0) rotate(15deg) translateX(40px) translateZ(0);
+            }
+        }
+
+        /* --- Space Power Sub-Text Sequence --- */
+        @keyframes spacePowerSubLoop {
+            0%, 12% {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.8);
+            }
+            18% { /* Smoothly slides down and fades in right after Spacetoon settles */
+                opacity: 0.9;
+                transform: translateY(0) scale(1);
+            }
+            82% {
+                opacity: 0.9;
+                transform: translateY(0) scale(1);
+            }
+            86%, 100% { /* Leaves slightly before the main logo retreats */
+                opacity: 0;
+                transform: translateY(-5px) scale(0.8);
             }
         }
     </style>
@@ -127,10 +146,10 @@
 
     <div id="logo-container">
         <div class="bug-wrapper" id="wrapper">
-            <!-- Both images reside inside the wrapper, layered perfectly over each other -->
-            <img src="SpacePower.png" alt="Space Power Logo" id="spacepower-logo" class="bug-image">
-            <img src="Stoon3D.png" alt="Spacetoon Logo" id="spacetoon-logo" class="bug-image">
+            <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
         </div>
+        
+        <img src="SpacePower.png" alt="Space Power" class="sub-banner">
     </div>
 
     <script>
@@ -138,16 +157,11 @@
         const wrapper = document.getElementById('wrapper');
         
         let shineInterval;
-        let timelineTimeout1, timelineTimeout2;
-        let masterInterval;
-        
+        let masterLoopInterval;
         const targetFPS = 25; 
         const frameDuration = 1000 / targetFPS; 
 
-        function triggerSingleShine(logoFileName) {
-            // Update the CSS masking image explicitly right before shining
-            wrapper.style.setProperty('--current-mask', `url('${logoFileName}')`);
-
+        function triggerSingleShine() {
             let currentPos = 150;
             const endPos = -50;
             const shineDuration = 1200; 
@@ -166,47 +180,30 @@
             }, frameDuration);
         }
 
-        function runBroadcastTimeline() {
-            clearAllTimeouts();
-
-            // --- FIRST HALF: Space Power (0s - 5s) ---
-            timelineTimeout1 = setTimeout(() => {
-                triggerSingleShine('SpacePower.png');
-            }, 1000);
-
-            // --- SECOND HALF: Spacetoon (5s - 10s) ---
-            timelineTimeout2 = setTimeout(() => {
-                triggerSingleShine('Stoon3D.png');
-            }, 6000);
-        }
-
-        function clearAllTimeouts() {
-            clearTimeout(timelineTimeout1);
-            clearTimeout(timelineTimeout2);
-        }
-
         function startScreenbug() {
             stopScreenbug(); 
 
             container.classList.add('looping-active');
-            runBroadcastTimeline();
-            masterInterval = setInterval(runBroadcastTimeline, 10000);
+
+            // Matches when Spacetoon locks into place
+            setTimeout(triggerSingleShine, 1000);
+
+            masterLoopInterval = setInterval(() => {
+                setTimeout(triggerSingleShine, 1000); 
+            }, 10000);
         }
 
         function stopScreenbug() {
             container.classList.remove('looping-active');
             if (shineInterval) clearInterval(shineInterval);
-            if (masterInterval) clearInterval(masterInterval);
-            clearAllTimeouts();
+            if (masterLoopInterval) clearInterval(masterLoopInterval);
             wrapper.style.setProperty('--shine-pos', '150%');
         }
 
-        // Fire instantly on launch
         window.addEventListener('DOMContentLoaded', () => {
             startScreenbug();
         });
 
-        // OBS Source Visibility Handling
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 startScreenbug();

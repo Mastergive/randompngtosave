@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon 2018 Space Power Block Screenbug</title>
+    <title>Spacetoon & Space Power Same Position Loop</title>
     <style>
         * {
             margin: 0;
@@ -18,54 +18,47 @@
             height: 100vh;
         }
 
-        /* Top-Right corner positioning matching standard 2018 broadcast */
+        /* Top-Right corner positioning */
         #logo-container {
             position: absolute;
             top: 35px;
             right: 45px; 
-            width: 180px; /* Aligned with standard bug width */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
+            width: 220px; 
+            height: 150px; /* Adjust this to match your image aspect ratios */
         }
 
-        /* --- Main Spacetoon Logo Container --- */
         .bug-wrapper {
             position: relative;
             width: 100%;
-            height: auto;
+            height: 100%;
+            display: block;
             overflow: hidden;
         }
 
+        /* --- FIXED: Both images sit perfectly on top of each other --- */
         .bug-image {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
-            display: block;
+            height: 100%;
+            object-fit: contain;
             opacity: 0;
-        }
-
-        /* Active class handles the infinite loop of the main Spacetoon icon */
-        .looping-active .bug-image {
-            animation: spacetoonMasterLoop 10s ease-in-out infinite;
-        }
-
-        /* --- Space Power Sub-text Banner --- */
-        .sub-banner {
-            width: 75%; /* Smaller, resting neatly under the main emblem */
-            height: auto;
-            margin-top: 8px;
             display: block;
-            opacity: 0;
+            pointer-events: none;
             will-change: transform, opacity;
         }
 
-        /* Space power subtitle timing: pops in right after Spacetoon settles */
-        .looping-active .sub-banner {
-            animation: spacePowerSubLoop 10s ease-in-out infinite;
+        /* --- Master 24-Second Timeline Activation --- */
+        .looping-active #spacetoon-logo {
+            animation: spacetoonMasterLoop 24s ease-in-out infinite;
         }
 
-        /* --- Fixed Alpha Channel Shine strictly inside Spacetoon Logo --- */
+        .looping-active #spacepower-logo {
+            animation: spacePowerSubLoop 24s ease-in-out infinite;
+        }
+
+        /* --- Dynamic Clipped Shine Layer --- */
         .bug-wrapper::after {
             content: '';
             position: absolute;
@@ -84,8 +77,9 @@
             background-size: 200% 100%;
             background-position: var(--shine-pos, 150%) 0;
 
-            -webkit-mask-image: url('Stoon3D.png');
-            mask-image: url('Stoon3D.png');
+            /* Changes dynamically via JS to match the active logo's shape */
+            -webkit-mask-image: var(--current-mask, url('Stoon3D.png'));
+            mask-image: var(--current-mask, url('Stoon3D.png'));
             -webkit-mask-size: contain;
             mask-size: contain;
             -webkit-mask-repeat: no-repeat;
@@ -94,50 +88,46 @@
             mask-position: center;
         }
 
-        /* --- Main Spacetoon Entrance & Exit Sequence --- */
+        /* --- Spacetoon Timeline (Visible: 0s - 5s, then fades out) --- */
         @keyframes spacetoonMasterLoop {
             0% {
                 opacity: 0;
                 transform: scale(0) rotate(25deg) translateX(50px) translateZ(0);
             }
-            6% {
+            2.5% { 
                 transform: scale(1.08) rotate(-5deg) translateX(-5px) translateZ(0);
             }
-            10% {
+            4.1% { /* Locked in at 1s */
                 opacity: 0.93;
                 transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
             }
-            85% {
+            16.6% { /* Starts fading out right before 5s to hand over to Space Power */
                 opacity: 0.93;
                 transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
             }
-            89% {
-                opacity: 0.7;
-                transform: scale(0.9, 1.05) rotate(-3deg) translateX(-15px) translateZ(0);
-            }
-            95%, 100% {
+            20.8%, 100% {
                 opacity: 0;
-                transform: scale(0) rotate(15deg) translateX(40px) translateZ(0);
+                transform: scale(0.8) rotate(-10deg) translateZ(0);
             }
         }
 
-        /* --- Space Power Sub-Text Sequence --- */
+        /* --- Space Power Timeline (Visible: 5s - 20s, then exits) --- */
         @keyframes spacePowerSubLoop {
-            0%, 12% {
+            0%, 16.6% { /* Hidden completely for the first 4 seconds */
                 opacity: 0;
-                transform: translateY(-10px) scale(0.8);
+                transform: scale(0.8) rotate(10deg) translateZ(0);
             }
-            18% { /* Smoothly slides down and fades in right after Spacetoon settles */
-                opacity: 0.9;
-                transform: translateY(0) scale(1);
+            20.8% { /* Appears flawlessly at the 5-second mark in the EXACT same position */
+                opacity: 0.93;
+                transform: scale(1) rotate(0deg) translateZ(0);
             }
-            82% {
-                opacity: 0.9;
-                transform: translateY(0) scale(1);
+            83.3% { /* Stays on screen for 15 seconds (until the 20s mark) */
+                opacity: 0.93;
+                transform: scale(1) rotate(0deg) translateZ(0);
             }
-            86%, 100% { /* Leaves slightly before the main logo retreats */
+            87.5%, 100% { /* Smooth spin out exit at 21s */
                 opacity: 0;
-                transform: translateY(-5px) scale(0.8);
+                transform: scale(0) rotate(15deg) translateX(40px) translateZ(0);
             }
         }
     </style>
@@ -146,10 +136,9 @@
 
     <div id="logo-container">
         <div class="bug-wrapper" id="wrapper">
-            <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
+            <img src="Stoon3D.png" alt="Spacetoon Logo" id="spacetoon-logo" class="bug-image">
+            <img src="SpacePower.png" alt="Space Power Logo" id="spacepower-logo" class="bug-image">
         </div>
-        
-        <img src="SpacePower.png" alt="Space Power" class="sub-banner">
     </div>
 
     <script>
@@ -157,11 +146,16 @@
         const wrapper = document.getElementById('wrapper');
         
         let shineInterval;
-        let masterLoopInterval;
+        let timelineTimeout1, timelineTimeout2;
+        let masterInterval;
+        
         const targetFPS = 25; 
         const frameDuration = 1000 / targetFPS; 
 
-        function triggerSingleShine() {
+        function triggerSingleShine(logoFileName) {
+            // Dynamically updates the clipping mask to match whichever logo is currently showing
+            wrapper.style.setProperty('--current-mask', `url('${logoFileName}')`);
+
             let currentPos = 150;
             const endPos = -50;
             const shineDuration = 1200; 
@@ -180,23 +174,38 @@
             }, frameDuration);
         }
 
+        function runBroadcastTimeline() {
+            clearAllTimeouts();
+
+            // 1. Shine on Spacetoon at 1 second mark
+            timelineTimeout1 = setTimeout(() => {
+                triggerSingleShine('Stoon3D.png');
+            }, 1000);
+
+            // 2. Shine on Space Power at 6 second mark (1s after it appears)
+            timelineTimeout2 = setTimeout(() => {
+                triggerSingleShine('SpacePower.png');
+            }, 6000);
+        }
+
+        function clearAllTimeouts() {
+            clearTimeout(timelineTimeout1);
+            clearTimeout(timelineTimeout2);
+        }
+
         function startScreenbug() {
             stopScreenbug(); 
 
             container.classList.add('looping-active');
-
-            // Matches when Spacetoon locks into place
-            setTimeout(triggerSingleShine, 1000);
-
-            masterLoopInterval = setInterval(() => {
-                setTimeout(triggerSingleShine, 1000); 
-            }, 10000);
+            runBroadcastTimeline();
+            masterInterval = setInterval(runBroadcastTimeline, 24000);
         }
 
         function stopScreenbug() {
             container.classList.remove('looping-active');
             if (shineInterval) clearInterval(shineInterval);
-            if (masterLoopInterval) clearInterval(masterLoopInterval);
+            if (masterInterval) clearInterval(masterInterval);
+            clearAllTimeouts();
             wrapper.style.setProperty('--shine-pos', '150%');
         }
 

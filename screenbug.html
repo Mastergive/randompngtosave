@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Screenbug (Netlify Production 25FPS)</title>
+    <title>Spacetoon Screenbug (Transparent Clipped Loop)</title>
     <style>
         * {
             margin: 0;
@@ -18,6 +18,7 @@
             height: 100vh;
         }
 
+        /* Top-Right corner positioning */
         #logo-container {
             position: absolute;
             top: 35px;
@@ -30,96 +31,132 @@
             transform: translateZ(0);
         }
 
+        /* Master 12-Second Visibility Loop */
         .looping-active {
             animation: spacetoonMasterLoop 12s ease-in-out infinite;
         }
 
-        #bug-canvas {
-            display: block;
+        .bug-wrapper {
+            position: relative;
             width: 100%;
-            height: auto;
+            height: 100%;
+            display: inline-block;
+            overflow: hidden;
         }
 
+        .bug-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* --- FIX: Only Shine Inside the Logo Pixels --- */
+        .bug-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: var(--shine-pos, -150%); 
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                -90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0) 30%,
+                rgba(255, 255, 255, 0.75) 50%,
+                rgba(255, 255, 255, 0) 70%,
+                transparent 100%
+            );
+            transform: skewX(25deg);
+
+            /* This magical mask forces the shine to clip perfectly to the PNG's alpha channel */
+            -webkit-mask-image: url('Stoon3D.png');
+            mask-image: url('Stoon3D.png');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+        }
+
+        /* --- Master Animation Sequence Keyframes --- */
         @keyframes spacetoonMasterLoop {
-            0% { opacity: 0; transform: scale(0) rotate(25deg) translateX(50px) translateZ(0); }
-            4.8% { transform: scale(1.08) rotate(-5deg) translateX(-5px) translateZ(0); }
-            6.6% { opacity: 0.93; transform: scale(1) rotate(0deg) translateX(0) translateZ(0); }
-            83.3% { opacity: 0.93; transform: scale(1) rotate(0deg) translateX(0) translateZ(0); }
-            86.5% { opacity: 0.7; transform: scale(0.9, 1.05) rotate(-3deg) translateX(-15px) translateZ(0); }
-            91.6% { opacity: 0; transform: scale(0) rotate(15deg) translateX(40px) translateZ(0); }
-            100% { opacity: 0; transform: scale(0) rotate(25deg) translateX(50px) translateZ(0); }
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(25deg) translateX(50px) translateZ(0);
+            }
+            4.8% {
+                transform: scale(1.08) rotate(-5deg) translateX(-5px) translateZ(0);
+            }
+            6.6% {
+                opacity: 0.93;
+                transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
+            }
+            83.3% {
+                opacity: 0.93;
+                transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
+            }
+            86.5% {
+                opacity: 0.7;
+                transform: scale(0.9, 1.05) rotate(-3deg) translateX(-15px) translateZ(0);
+            }
+            91.6% {
+                opacity: 0;
+                transform: scale(0) rotate(15deg) translateX(40px) translateZ(0);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0) rotate(25deg) translateX(50px) translateZ(0);
+            }
         }
     </style>
 </head>
 <body>
 
     <div id="logo-container">
-        <canvas id="bug-canvas"></canvas>
+        <div class="bug-wrapper" id="wrapper">
+            <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
+        </div>
     </div>
 
     <script>
         const container = document.getElementById('logo-container');
-        const canvas = document.getElementById('bug-canvas');
-        const ctx = canvas.getContext('2d');
+        const wrapper = document.getElementById('wrapper');
         
-        const img = new Image();
-        
-        // --- FIXED: Back to a normal path! Netlify handles the security policies flawlessly ---
-        img.crossOrigin = "anonymous";
-        img.src = "Stoon3D.png";
-
         let shineInterval;
-        const targetFPS = 25; 
+        const targetFPS = 20; 
         const frameDuration = 1000 / targetFPS; 
-        let currentPos = -1.5; 
 
-        img.onload = () => {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            startScreenbug();
-        };
+        function runOptimizedShine() {
+            if (shineInterval) clearInterval(shineInterval);
 
-        function drawFrame() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0);
-            ctx.globalCompositeOperation = 'source-in';
+            let currentPos = -150;
+            const endPos = 150;
+            const totalFrames = (1.2 * 1000) / frameDuration; 
+            const stepIncrement = (endPos - currentPos) / totalFrames;
 
-            const shineWidth = canvas.width * 0.8;
-            const startX = canvas.width + (canvas.width * currentPos);
-            const gradient = ctx.createLinearGradient(startX, 0, startX - shineWidth, 0);
-            
-            gradient.addColorStop(0, 'rgba(255,255,255,0)');
-            gradient.addColorStop(0.3, 'rgba(255,255,255,0)');
-            gradient.addColorStop(0.5, 'rgba(255,255,255,0.75)'); 
-            gradient.addColorStop(0.7, 'rgba(255,255,255,0)');
-            gradient.addColorStop(1, 'rgba(255,255,255,0)');
-
-            ctx.fillStyle = gradient;
-            
-            ctx.save();
-            ctx.translate(startX, canvas.height / 2);
-            ctx.transform(1, 0, 0.46, 1, 0, 0); // Smooth 2D matrix skew transformation
-            ctx.fillRect(-shineWidth, -canvas.height, shineWidth * 2, canvas.height * 2);
-            ctx.restore();
-
-            ctx.globalCompositeOperation = 'source-over';
-
-            currentPos += 0.1; 
-            if (currentPos >= 1.5) {
-                currentPos = -1.5;
-            }
+            shineInterval = setInterval(() => {
+                currentPos += stepIncrement;
+                
+                if (currentPos >= endPos) {
+                    currentPos = -150;
+                }
+                
+                wrapper.style.setProperty('--shine-pos', `${currentPos}%`);
+            }, frameDuration);
         }
 
         function startScreenbug() {
             container.classList.add('looping-active');
-            if (shineInterval) clearInterval(shineInterval);
-            shineInterval = setInterval(drawFrame, frameDuration);
+            runOptimizedShine();
         }
 
         function stopScreenbug() {
             container.classList.remove('looping-active');
             if (shineInterval) clearInterval(shineInterval);
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            startScreenbug();
+        });
 
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {

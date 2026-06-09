@@ -50,31 +50,35 @@
             display: block;
         }
 
-        /* --- FIX: Only Shine Inside the Logo Pixels --- */
+        /* --- FIXED: Shine strictly inside the Logo Pixels --- */
         .bug-wrapper::after {
             content: '';
             position: absolute;
             top: 0;
-            right: var(--shine-pos, -150%); 
+            left: 0; /* Kept at 0 so the mask stays aligned with the image */
             width: 100%;
             height: 100%;
+            
+            /* The shine gradient */
             background: linear-gradient(
-                -90deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0) 30%,
+                115deg,
+                transparent 30%,
                 rgba(255, 255, 255, 0.75) 50%,
-                rgba(255, 255, 255, 0) 70%,
-                transparent 100%
+                transparent 70%
             );
-            transform: skewX(25deg);
+            background-size: 200% 100%;
+            /* Control the sweep via background position instead of moving the whole element */
+            background-position: var(--shine-pos, 150%) 0;
 
-            /* This magical mask forces the shine to clip perfectly to the PNG's alpha channel */
+            /* Alpha Channel Masking */
             -webkit-mask-image: url('Stoon3D.png');
             mask-image: url('Stoon3D.png');
             -webkit-mask-size: contain;
             mask-size: contain;
             -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
         }
 
         /* --- Master Animation Sequence Keyframes --- */
@@ -128,16 +132,17 @@
         function runOptimizedShine() {
             if (shineInterval) clearInterval(shineInterval);
 
-            let currentPos = -150;
-            const endPos = 150;
+            // Adjusted coordinates to move the background-position smoothly
+            let currentPos = 150;
+            const endPos = -50;
             const totalFrames = (1.2 * 1000) / frameDuration; 
             const stepIncrement = (endPos - currentPos) / totalFrames;
 
             shineInterval = setInterval(() => {
                 currentPos += stepIncrement;
                 
-                if (currentPos >= endPos) {
-                    currentPos = -150;
+                if (currentPos <= endPos) {
+                    currentPos = 150; // Reset loop
                 }
                 
                 wrapper.style.setProperty('--shine-pos', `${currentPos}%`);

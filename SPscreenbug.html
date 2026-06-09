@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon & Space Power Same Position Loop</title>
+    <title>Spacetoon & Space Power Looping Shine</title>
     <style>
         * {
             margin: 0;
@@ -67,12 +67,11 @@
             height: 100%;
             pointer-events: none;
             
-            /* --- FIXED: The gradient color mix is now a dynamic CSS variable --- */
             background: var(--shine-gradient, linear-gradient(
                 115deg,
                 transparent 30%,
                 rgba(255, 255, 255, 0.75) 50%,
-                transparent 70
+                transparent 70%
             ));
             background-size: 200% 100%;
             background-position: var(--shine-pos, 150%) 0;
@@ -145,30 +144,26 @@
         const wrapper = document.getElementById('wrapper');
         
         let shineInterval;
-        let timelineTimeout1, timelineTimeout2;
+        let timelineTimeout1, timelineTimeout2, timelineTimeout3;
         let masterInterval;
         
         const targetFPS = 25; 
         const frameDuration = 1000 / targetFPS; 
 
-        // --- Profiles for the different look of the shine streams ---
         const shineProfiles = {
             'Stoon3D.png': {
                 mask: "url('Stoon3D.png')",
-                // Classic vibrant bright white gleam
                 gradient: "linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.75) 50%, transparent 70%)"
             },
             'SpacePower.png': {
                 mask: "url('SpacePower.png')",
-                // Toned down translucent icy soft blue tint so it blends beautifully with white/blue graphics
                 gradient: "linear-gradient(115deg, transparent 30%, rgba(180, 220, 255, 0.4) 50%, transparent 70%)"
             }
         };
 
-        function triggerSingleShine(logoKey) {
+        function triggerShine(logoKey, keepLooping) {
             const profile = shineProfiles[logoKey];
             
-            // Set mask outline shape and specific light mixture
             wrapper.style.setProperty('--current-mask', profile.mask);
             wrapper.style.setProperty('--shine-gradient', profile.gradient);
 
@@ -182,8 +177,13 @@
 
             shineInterval = setInterval(() => {
                 currentPos += stepIncrement;
+                
                 if (currentPos <= endPos) {
-                    clearInterval(shineInterval);
+                    if (keepLooping) {
+                        currentPos = 150; // --- FIXED: Loops back to the start instantly
+                    } else {
+                        clearInterval(shineInterval);
+                    }
                 } else {
                     wrapper.style.setProperty('--shine-pos', `${currentPos}%`);
                 }
@@ -192,21 +192,29 @@
 
         function runBroadcastTimeline() {
             clearAllTimeouts();
+            if (shineInterval) clearInterval(shineInterval);
 
-            // 1. Vibrant sharp white shine across Spacetoon at 1s
+            // 1. Spacetoon shines once at 1s mark
             timelineTimeout1 = setTimeout(() => {
-                triggerSingleShine('Stoon3D.png');
+                triggerShine('Stoon3D.png', false);
             }, 1000);
 
-            // 2. Soft, low-opacity ice-blue blend shine across Space Power at 6s
+            // 2. Space Power enters at 5s, infinite loop shine starts at 5.5s
             timelineTimeout2 = setTimeout(() => {
-                triggerSingleShine('SpacePower.png');
-            }, 6000);
+                triggerShine('SpacePower.png', true);
+            }, 5500);
+
+            // 3. Safety Cutoff: Stop the loop at 19.5s right before Space Power leaves
+            timelineTimeout3 = setTimeout(() => {
+                if (shineInterval) clearInterval(shineInterval);
+                wrapper.style.setProperty('--shine-pos', '150%');
+            }, 19500);
         }
 
         function clearAllTimeouts() {
             clearTimeout(timelineTimeout1);
             clearTimeout(timelineTimeout2);
+            clearTimeout(timelineTimeout3);
         }
 
         function startScreenbug() {

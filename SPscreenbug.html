@@ -18,23 +18,24 @@
             height: 100vh;
         }
 
-        /* Top-Right corner positioning matching standard broadcast */
+        /* --- FIXED: Added explicit width and height so the container doesn't collapse --- */
         #logo-container {
             position: absolute;
             top: 35px;
             right: 45px; 
             width: 220px;
-            height: auto;
+            height: 150px; /* Adjust this height if your logos look squished */
             transform-origin: center;
             will-change: transform, opacity;
             transform: translateZ(0);
         }
 
+        /* --- FIXED: Fills out the parent container container completely --- */
         .bug-wrapper {
             position: relative;
             width: 100%;
             height: 100%;
-            display: inline-block;
+            display: block;
             overflow: hidden;
         }
 
@@ -44,7 +45,8 @@
             top: 0;
             right: 0;
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: contain; /* Ensures images maintain aspect ratios perfectly without warping */
             opacity: 0;
             display: block;
             pointer-events: none;
@@ -93,7 +95,7 @@
             mask-position: center;
         }
 
-        /* --- Spacetoon Broadcast Broadcast Keyframes --- */
+        /* --- Spacetoon Broadcast Keyframes --- */
         @keyframes logoSequence {
             0% {
                 opacity: 0;
@@ -125,6 +127,7 @@
 
     <div id="logo-container">
         <div class="bug-wrapper" id="wrapper">
+            <!-- Both images reside inside the wrapper, layered perfectly over each other -->
             <img src="SpacePower.png" alt="Space Power Logo" id="spacepower-logo" class="bug-image">
             <img src="Stoon3D.png" alt="Spacetoon Logo" id="spacetoon-logo" class="bug-image">
         </div>
@@ -135,7 +138,7 @@
         const wrapper = document.getElementById('wrapper');
         
         let shineInterval;
-        let timelineTimeout1, timelineTimeout2, timelineTimeout3, timelineTimeout4;
+        let timelineTimeout1, timelineTimeout2;
         let masterInterval;
         
         const targetFPS = 25; 
@@ -164,17 +167,14 @@
         }
 
         function runBroadcastTimeline() {
-            // Clear any lingering timeouts to prevent overlap bugs
             clearAllTimeouts();
 
             // --- FIRST HALF: Space Power (0s - 5s) ---
-            // Arrives at 0s, settles at 1s -> Trigger Shine on SpacePower
             timelineTimeout1 = setTimeout(() => {
                 triggerSingleShine('SpacePower.png');
             }, 1000);
 
             // --- SECOND HALF: Spacetoon (5s - 10s) ---
-            // Arrives at 5s, settles at 6s -> Trigger Shine on Stoon3D
             timelineTimeout2 = setTimeout(() => {
                 triggerSingleShine('Stoon3D.png');
             }, 6000);
@@ -183,20 +183,13 @@
         function clearAllTimeouts() {
             clearTimeout(timelineTimeout1);
             clearTimeout(timelineTimeout2);
-            clearTimeout(timelineTimeout3);
-            clearTimeout(timelineTimeout4);
         }
 
         function startScreenbug() {
             stopScreenbug(); 
 
-            // 1. Kickstart CSS animations
             container.classList.add('looping-active');
-
-            // 2. Fire the first rotation timeline immediately
             runBroadcastTimeline();
-
-            // 3. Repeat the timeline configuration perfectly every 10 seconds
             masterInterval = setInterval(runBroadcastTimeline, 10000);
         }
 
@@ -213,7 +206,7 @@
             startScreenbug();
         });
 
-        // OBS Scene Controller Integration
+        // OBS Source Visibility Handling
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 startScreenbug();

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Screenbug (Transparent Clipped Loop)</title>
+    <title>Spacetoon Screenbug (10s Loop)</title>
     <style>
         * {
             margin: 0;
@@ -31,9 +31,9 @@
             transform: translateZ(0);
         }
 
-        /* --- CHANGED: This now triggers a quick intro pop immediately, then stays visible --- */
+        /* --- Master 10-Second Loop --- */
         .looping-active {
-            animation: spacetoonIntro 1.2s ease-out forwards;
+            animation: spacetoonMasterLoop 10s ease-in-out infinite;
         }
 
         .bug-wrapper {
@@ -78,19 +78,30 @@
             mask-position: center;
         }
 
-        /* --- NEW: Cleaned-up Intro Keyframes --- */
-        /* This handles the scale and rotation instantly on load, then locks it at 100% visible */
-        @keyframes spacetoonIntro {
-            0% {
+        /* --- Perfectly Timed 10s Keyframes --- */
+        @keyframes spacetoonMasterLoop {
+            0% { /* Arrives instantly on start */
                 opacity: 0;
                 transform: scale(0) rotate(25deg) translateX(50px) translateZ(0);
             }
-            60% {
+            6% {
                 transform: scale(1.08) rotate(-5deg) translateX(-5px) translateZ(0);
             }
-            100% {
+            10% { /* Fully locked in by 1 second */
                 opacity: 0.93;
                 transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
+            }
+            80% { /* Stays completely still on screen until 8 seconds */
+                opacity: 0.93;
+                transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
+            }
+            84% {
+                opacity: 0.7;
+                transform: scale(0.9, 1.05) rotate(-3deg) translateX(-15px) translateZ(0);
+            }
+            90%, 100% { /* Disappears completely for the last 1 second before restarting */
+                opacity: 0;
+                transform: scale(0) rotate(15deg) translateX(40px) translateZ(0);
             }
         }
     </style>
@@ -108,48 +119,57 @@
         const wrapper = document.getElementById('wrapper');
         
         let shineInterval;
-        const targetFPS = 20; 
+        let masterLoopInterval;
+        const targetFPS = 25; 
         const frameDuration = 1000 / targetFPS; 
 
-        function runOptimizedShine() {
-            if (shineInterval) clearInterval(shineInterval);
-
+        function triggerSingleShine() {
             let currentPos = 150;
             const endPos = -50;
-            const totalFrames = (1.2 * 1000) / frameDuration; 
+            const shineDuration = 1200; // Shine lasts 1.2 seconds
+            const totalFrames = shineDuration / frameDuration; 
             const stepIncrement = (endPos - currentPos) / totalFrames;
+
+            if (shineInterval) clearInterval(shineInterval);
 
             shineInterval = setInterval(() => {
                 currentPos += stepIncrement;
-                
                 if (currentPos <= endPos) {
-                    currentPos = 150; // Continuously loop the shine sequence
+                    clearInterval(shineInterval); // Stop once it sweeps across completely
+                } else {
+                    wrapper.style.setProperty('--shine-pos', `${currentPos}%`);
                 }
-                
-                wrapper.style.setProperty('--shine-pos', `${currentPos}%`);
             }, frameDuration);
         }
 
         function startScreenbug() {
-            // Reset the animation class to force a fresh restart if toggled via OBS
-            container.classList.remove('looping-active');
-            void container.offsetWidth; // Clever trick to force browser reflow
-            
+            stopScreenbug(); // Clear any existing timelines
+
+            // 1. Start the CSS animation loop
             container.classList.add('looping-active');
-            runOptimizedShine();
+
+            // 2. Trigger the first shine right after it pops into view (at 1 second)
+            setTimeout(triggerSingleShine, 1000);
+
+            // 3. Keep triggering a single shine every 10 seconds perfectly synchronized
+            masterLoopInterval = setInterval(() => {
+                setTimeout(triggerSingleShine, 1000); 
+            }, 10000);
         }
 
         function stopScreenbug() {
             container.classList.remove('looping-active');
             if (shineInterval) clearInterval(shineInterval);
+            if (masterLoopInterval) clearInterval(masterLoopInterval);
+            wrapper.style.setProperty('--shine-pos', '150%');
         }
 
-        // Triggers instantly when you open the file
+        // Run instantly when loaded
         window.addEventListener('DOMContentLoaded', () => {
             startScreenbug();
         });
 
-        // Handles OBS scenes switching properly
+        // OBS Source Visibility Handling
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 startScreenbug();

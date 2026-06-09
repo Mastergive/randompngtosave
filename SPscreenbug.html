@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spacetoon / Space Power Screenbug</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: transparent;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Top-Right corner positioning matching standard broadcast */
+        #logo-container {
+            position: absolute;
+            top: 35px;
+            right: 45px; 
+            width: 220px;
+            height: auto;
+            transform-origin: center;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+
+        .bug-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        /* Absolute positioning handles stacking the images cleanly */
+        .bug-image {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: auto;
+            opacity: 0;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* --- Master Timed Loops --- */
+        /* Space Power shows up for the first half of the cycle */
+        .looping-active #spacepower-logo {
+            animation: logoSequence 10s ease-in-out infinite;
+            animation-delay: 0s;
+        }
+
+        /* Spacetoon shows up for the second half of the cycle */
+        .looping-active #spacetoon-logo {
+            animation: logoSequence 10s ease-in-out infinite;
+            animation-delay: 5s; /* Perfect 5-second offset */
+        }
+
+        /* --- Dynamic Clipped Shine Layer --- */
+        .bug-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0; 
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            
+            background: linear-gradient(
+                115deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.75) 50%,
+                transparent 70%
+            );
+            background-size: 200% 100%;
+            background-position: var(--shine-pos, 150%) 0;
+
+            /* The mask image variable is updated by JavaScript dynamically depending on who is visible */
+            -webkit-mask-image: var(--current-mask, url('SpacePower.png'));
+            mask-image: var(--current-mask, url('SpacePower.png'));
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+        }
+
+        /* --- Spacetoon Broadcast Broadcast Keyframes --- */
+        @keyframes logoSequence {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(25deg) translateX(50px) translateZ(0);
+            }
+            12% {
+                transform: scale(1.08) rotate(-5deg) translateX(-5px) translateZ(0);
+            }
+            20% {
+                opacity: 0.93;
+                transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
+            }
+            80% {
+                opacity: 0.93;
+                transform: scale(1) rotate(0deg) translateX(0) translateZ(0);
+            }
+            88% {
+                opacity: 0.7;
+                transform: scale(0.9, 1.05) rotate(-3deg) translateX(-15px) translateZ(0);
+            }
+            96%, 100% {
+                opacity: 0;
+                transform: scale(0) rotate(15deg) translateX(40px) translateZ(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="logo-container">
+        <div class="bug-wrapper" id="wrapper">
+            <img src="SpacePower.png" alt="Space Power Logo" id="spacepower-logo" class="bug-image">
+            <img src="Stoon3D.png" alt="Spacetoon Logo" id="spacetoon-logo" class="bug-image">
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('logo-container');
+        const wrapper = document.getElementById('wrapper');
+        
+        let shineInterval;
+        let timelineTimeout1, timelineTimeout2, timelineTimeout3, timelineTimeout4;
+        let masterInterval;
+        
+        const targetFPS = 25; 
+        const frameDuration = 1000 / targetFPS; 
+
+        function triggerSingleShine(logoFileName) {
+            // Update the CSS masking image explicitly right before shining
+            wrapper.style.setProperty('--current-mask', `url('${logoFileName}')`);
+
+            let currentPos = 150;
+            const endPos = -50;
+            const shineDuration = 1200; 
+            const totalFrames = shineDuration / frameDuration; 
+            const stepIncrement = (endPos - currentPos) / totalFrames;
+
+            if (shineInterval) clearInterval(shineInterval);
+
+            shineInterval = setInterval(() => {
+                currentPos += stepIncrement;
+                if (currentPos <= endPos) {
+                    clearInterval(shineInterval);
+                } else {
+                    wrapper.style.setProperty('--shine-pos', `${currentPos}%`);
+                }
+            }, frameDuration);
+        }
+
+        function runBroadcastTimeline() {
+            // Clear any lingering timeouts to prevent overlap bugs
+            clearAllTimeouts();
+
+            // --- FIRST HALF: Space Power (0s - 5s) ---
+            // Arrives at 0s, settles at 1s -> Trigger Shine on SpacePower
+            timelineTimeout1 = setTimeout(() => {
+                triggerSingleShine('SpacePower.png');
+            }, 1000);
+
+            // --- SECOND HALF: Spacetoon (5s - 10s) ---
+            // Arrives at 5s, settles at 6s -> Trigger Shine on Stoon3D
+            timelineTimeout2 = setTimeout(() => {
+                triggerSingleShine('Stoon3D.png');
+            }, 6000);
+        }
+
+        function clearAllTimeouts() {
+            clearTimeout(timelineTimeout1);
+            clearTimeout(timelineTimeout2);
+            clearTimeout(timelineTimeout3);
+            clearTimeout(timelineTimeout4);
+        }
+
+        function startScreenbug() {
+            stopScreenbug(); 
+
+            // 1. Kickstart CSS animations
+            container.classList.add('looping-active');
+
+            // 2. Fire the first rotation timeline immediately
+            runBroadcastTimeline();
+
+            // 3. Repeat the timeline configuration perfectly every 10 seconds
+            masterInterval = setInterval(runBroadcastTimeline, 10000);
+        }
+
+        function stopScreenbug() {
+            container.classList.remove('looping-active');
+            if (shineInterval) clearInterval(shineInterval);
+            if (masterInterval) clearInterval(masterInterval);
+            clearAllTimeouts();
+            wrapper.style.setProperty('--shine-pos', '150%');
+        }
+
+        // Fire instantly on launch
+        window.addEventListener('DOMContentLoaded', () => {
+            startScreenbug();
+        });
+
+        // OBS Scene Controller Integration
+        window.addEventListener('obsSourceVisibleChanged', function(event) {
+            if (event.detail.visible) {
+                startScreenbug();
+            } else {
+                stopScreenbug();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -137,6 +137,7 @@
 <div class="card">
     <h2>شريط ذكريات سبيستون 🚀</h2>
     
+    <!-- قسم تسجيل الدخول عبر جوجل -->
     <div id="auth-section">
         <p style="margin-bottom: 25px; color: #ccc; font-size: 14px;">مرحباً بك في مركز بث كواكب سبيستون، سجل دخولك عبر حسابك في Google لتنضم إلى شباب المستقبل!</p>
         <button onclick="loginWithGoogle()" class="btn-google">
@@ -145,18 +146,21 @@
         </button>
     </div>
 
+    <!-- قسم إعداد اسم المستخدم لأول مرة -->
     <div id="username-setup-section" class="hidden">
         <p style="color: var(--stoon-gold); font-size: 14px;">أنت هنا لأول مرة! يرجى اختيار اسمك السبيستوني المميز والفريد:</p>
         <input type="text" id="new-unique-username" placeholder="مثال: المحقق_كونان">
         <button onclick="setupInitialUsername()">حفظ والوصول إلى الكوكب</button>
     </div>
 
+    <!-- لوحة التحكم الرئيسية بعد الدخول -->
     <div id="main-section" class="hidden">
         <div class="nav-tabs">
             <span id="tab-home" class="nav-link active" onclick="switchTab('home')">الشريط العام</span>
             <span id="tab-settings" class="nav-link" onclick="switchTab('settings')">الإعدادات</span>
         </div>
 
+        <!-- واجهة إرسال الرسائل والشريط -->
         <div id="content-home">
             <p style="font-size: 13px; color: #aaa; margin-top: 15px; text-align: right;">مرحباً بك: <span id="display-nickname" style="color:var(--stoon-gold); font-weight:bold;">...</span></p>
             <textarea id="msg" rows="3" placeholder="اكتب رسالتك لتظهر على القناة..."></textarea>
@@ -170,6 +174,7 @@
             <button id="clear-btn" class="admin-only hidden" onclick="clearMessages()">مسح الشريط (للمشرف)</button>
         </div>
 
+        <!-- واجهة الإعدادات -->
         <div id="content-settings" class="hidden">
             <h3 style="color: var(--stoon-gold); font-size: 18px; margin-top: 20px;">تعديل الملف السبيستوني</h3>
             <p style="font-size: 12px; color: #ccc;">يمكنك تغيير اسمك السبيستوني من هنا بشرط ألا يكون محجوزاً.</p>
@@ -183,12 +188,13 @@
     <p id="status"></p>
 </div>
 
+<!-- مكتبات Firebase الإصدار المتوافق -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
-    // إعدادات Firebase الخاصة بك
+    // إعدادات Firebase الخاص بك
     const firebaseConfig = {
         apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
         databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 
@@ -295,7 +301,7 @@
     async function updateUsername() {
         const newName = document.getElementById('edit-username-input').value;
         if (newName.trim() === currentUsername) {
-            showStatus("هو نفس اسمك الحالي بالفعل!", var(--stoon-gold));
+            showStatus("هو نفس اسمك الحالي بالفعل!", "#ffd700");
             return;
         }
 

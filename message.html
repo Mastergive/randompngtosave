@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مركز بث سبيستون القديم</title>
     <style>
         :root {
@@ -9,6 +10,7 @@
             --stoon-blue: #182694;
             --stoon-gold: #ffd700;
             --stoon-green: #3dfc4a;
+            --google-red: #ea4335;
         }
 
         body { 
@@ -29,10 +31,12 @@
             padding: 40px; 
             border-radius: 25px; 
             width: 450px; 
+            max-width: 90%;
             box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 15px rgba(255,255,255,0.1); 
             border: 3px solid var(--stoon-gold); 
             text-align: center;
             position: relative;
+            transition: all 0.3s ease;
         }
 
         h2 { 
@@ -54,8 +58,8 @@
             transition: 0.3s;
         }
 
-        input, textarea { background: rgba(255, 255, 255, 0.9); color: #111; }
-        input:focus { border-color: var(--stoon-gold); box-shadow: 0 0 10px var(--stoon-gold); }
+        input, textarea { background: rgba(255, 255, 255, 0.95); color: #111; font-weight: 500; }
+        input:focus, textarea:focus { border-color: var(--stoon-gold); box-shadow: 0 0 10px var(--stoon-gold); }
 
         button { 
             background: var(--stoon-gold); 
@@ -69,16 +73,49 @@
         button:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 6px 0 #ccc; }
         button:active { transform: translateY(2px); box-shadow: 0 0 0; }
 
+        .btn-google {
+            background: var(--google-red);
+            color: white;
+            box-shadow: 0 4px 0 #a82e24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-google:hover { background: #ff6659; box-shadow: 0 6px 0 #c23b30; color: white;}
+
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+        .nav-link {
+            color: #aaa;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .nav-link.active {
+            color: var(--stoon-gold);
+            border-bottom: 2px solid var(--stoon-gold);
+            padding-bottom: 8px;
+        }
+
         .history-container {
-            margin-top: 30px;
+            margin-top: 20px;
             text-align: right;
             background: rgba(0,0,0,0.3);
             padding: 15px;
             border-radius: 15px;
             border: 1px dashed var(--stoon-gold);
+            max-height: 200px;
+            overflow-y: auto;
         }
 
-        .history-title { font-size: 14px; color: var(--stoon-gold); margin-bottom: 10px; border-bottom: 1px solid #444; }
+        .history-title { font-size: 14px; color: var(--stoon-gold); margin-bottom: 10px; border-bottom: 1px solid #444; padding-bottom: 5px;}
         
         .msg-item {
             font-size: 13px;
@@ -88,9 +125,9 @@
         }
         .msg-user { color: var(--stoon-gold); font-weight: bold; }
 
-        .admin-only { background: #ff4d4d !important; color: white !important; margin-top: 20px; display: none; box-shadow: 0 4px 0 #a32a2a; }
-        .hidden { display: none; }
-        #status { margin-top: 15px; color: var(--stoon-green); font-weight: bold; }
+        .admin-only { background: #ff4d4d !important; color: white !important; margin-top: 20px; box-shadow: 0 4px 0 #a32a2a; }
+        .hidden { display: none !important; }
+        #status { margin-top: 15px; color: var(--stoon-green); font-weight: bold; font-size: 14px;}
         
         @keyframes fadeIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
     </style>
@@ -101,24 +138,46 @@
     <h2>شريط ذكريات سبيستون 🚀</h2>
     
     <div id="auth-section">
-        <input type="email" id="email" placeholder="البريد الإلكتروني">
-        <input type="password" id="password" placeholder="كلمة المرور">
-        <button onclick="handleAuth()" id="auth-btn">دخول إلى الكوكب</button>
-        <p style="font-size: 12px; cursor: pointer; color: var(--stoon-gold);" onclick="toggleAuthMode()" id="toggle-text">ليس لديك حساب؟ انضم إلينا الآن</p>
+        <p style="margin-bottom: 25px; color: #ccc; font-size: 14px;">مرحباً بك في مركز بث كواكب سبيستون، سجل دخولك عبر حسابك في Google لتنضم إلى شباب المستقبل!</p>
+        <button onclick="loginWithGoogle()" class="btn-google">
+            <svg style="width:20px; height:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M21.35,11.1H12V12.9H19.6C18.9,14.9 17.1,16.3 15,16.9L15,18.1H18.1C20.1,16.3 21.3,13.9 21.35,11.1M12,21C14.4,21 16.5,20.2 18.1,18.9L15,16.9C14.1,17.5 13.1,17.9 12,17.9C9.7,17.9 7.8,16.4 7.1,14.3L3.9,16.7C5.4,19.3 8.5,21 12,21M5.4,12C5.4,11.4 5.5,10.7 5.7,10.1L2.5,7.7C1.8,9 1.5,10.4 1.5,12C1.5,13.6 1.8,15 2.5,16.3L5.7,13.9C5.5,13.3 5.4,12.6 5.4,12M12,6.1C13.3,6.1 14.4,6.5 15.4,7.4L18.2,4.6C16.5,3 14.4,2 12,2C8.5,2 5.4,3.7 3.9,6.3L7.1,8.7C7.8,6.6 9.7,6.1 12,6.1Z" /></svg>
+            الدخول عبر حساب Google
+        </button>
     </div>
 
-    <div id="msg-section" class="hidden">
-        <input type="text" id="nickname" placeholder="اسمك السبيستوني (مثلاً: المحقق كونان)">
-        <textarea id="msg" rows="3" placeholder="اكتب رسالتك لتظهر على القناة..."></textarea>
-        <button onclick="sendMessage()">إرسال إلى سبيستون ✨</button>
-        
-        <div class="history-container">
-            <div class="history-title">آخر الرسائل المرسلة:</div>
-            <div id="history-list"></div>
+    <div id="username-setup-section" class="hidden">
+        <p style="color: var(--stoon-gold); font-size: 14px;">أنت هنا لأول مرة! يرجى اختيار اسمك السبيستوني المميز والفريد:</p>
+        <input type="text" id="new-unique-username" placeholder="مثال: المحقق_كونان">
+        <button onclick="setupInitialUsername()">حفظ والوصول إلى الكوكب</button>
+    </div>
+
+    <div id="main-section" class="hidden">
+        <div class="nav-tabs">
+            <span id="tab-home" class="nav-link active" onclick="switchTab('home')">الشريط العام</span>
+            <span id="tab-settings" class="nav-link" onclick="switchTab('settings')">الإعدادات</span>
         </div>
 
-        <button id="clear-btn" class="admin-only" onclick="clearMessages()">مسح الشريط (للمشرف)</button>
-        <button onclick="logout()" style="background: transparent; color: #aaa; box-shadow: none; font-size: 11px; margin-top: 20px; border: 1px solid #444;">تسجيل الخروج</button>
+        <div id="content-home">
+            <p style="font-size: 13px; color: #aaa; margin-top: 15px; text-align: right;">مرحباً بك: <span id="display-nickname" style="color:var(--stoon-gold); font-weight:bold;">...</span></p>
+            <textarea id="msg" rows="3" placeholder="اكتب رسالتك لتظهر على القناة..."></textarea>
+            <button onclick="sendMessage()">إرسال إلى سبيستون ✨</button>
+            
+            <div class="history-container">
+                <div class="history-title">آخر الرسائل المرسلة:</div>
+                <div id="history-list"></div>
+            </div>
+
+            <button id="clear-btn" class="admin-only hidden" onclick="clearMessages()">مسح الشريط (للمشرف)</button>
+        </div>
+
+        <div id="content-settings" class="hidden">
+            <h3 style="color: var(--stoon-gold); font-size: 18px; margin-top: 20px;">تعديل الملف السبيستوني</h3>
+            <p style="font-size: 12px; color: #ccc;">يمكنك تغيير اسمك السبيستوني من هنا بشرط ألا يكون محجوزاً.</p>
+            <input type="text" id="edit-username-input" placeholder="اسم سبيستوني جديد">
+            <button onclick="updateUsername()">تحديث الاسم</button>
+        </div>
+
+        <button onclick="logout()" style="background: transparent; color: #aaa; box-shadow: none; font-size: 11px; margin-top: 25px; border: 1px solid #444; width: auto; padding: 5px 15px;">تسجيل الخروج</button>
     </div>
 
     <p id="status"></p>
@@ -129,6 +188,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
+    // إعدادات Firebase الخاصة بك
     const firebaseConfig = {
         apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
         databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 
@@ -140,56 +200,143 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
+    
+    let currentUser = null;
+    let currentUsername = "";
 
-    let isLoginMode = true;
-
-    function toggleAuthMode() {
-        isLoginMode = !isLoginMode;
-        document.getElementById('auth-btn').innerText = isLoginMode ? "دخول إلى الكوكب" : "إنشاء حساب سبيستوني";
-        document.getElementById('toggle-text').innerText = isLoginMode ? "ليس لديك حساب؟ انضم إلينا الآن" : "لديك حساب؟ سجل دخولك";
+    // تسجيل الدخول بواسطة Google
+    function loginWithGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider).catch(error => {
+            showStatus("خطأ أثناء تسجيل الدخول: " + error.message, "#ff4d4d");
+        });
     }
 
-    async function handleAuth() {
-        const email = document.getElementById('email').value;
-        const pass = document.getElementById('password').value;
-        try {
-            if (isLoginMode) { await auth.signInWithEmailAndPassword(email, pass); }
-            else { await auth.createUserWithEmailAndPassword(email, pass); }
-        } catch (error) { alert("خطأ: " + error.message); }
-    }
-
-    auth.onAuthStateChanged(user => {
+    // مراقبة حالة المستخدم
+    auth.onAuthStateChanged(async (user) => {
         if (user) {
+            currentUser = user;
             document.getElementById('auth-section').classList.add('hidden');
-            document.getElementById('msg-section').classList.remove('hidden');
-            if (user.email === "aymanbouraaman@gmail.com") { // Change this to your email!
-                document.getElementById('clear-btn').style.display = "block";
+            
+            // التحقق مما إذا كان للمستخدم اسم مستخدم مسجل مسبقاً في الـ Database
+            const userRef = db.ref('users/' + user.uid);
+            const snapshot = await userRef.once('value');
+            
+            if (snapshot.exists() && snapshot.val().username) {
+                currentUsername = snapshot.val().username;
+                showMainSection();
+            } else {
+                // إذا لم يكن لديه اسم مستخدم، نفتح واجهة الإعداد الأولي
+                document.getElementById('username-setup-section').classList.remove('hidden');
+                document.getElementById('main-section').classList.add('hidden');
             }
-            loadHistory();
         } else {
+            currentUser = null;
+            currentUsername = "";
             document.getElementById('auth-section').classList.remove('hidden');
-            document.getElementById('msg-section').classList.add('hidden');
+            document.getElementById('main-section').classList.add('hidden');
+            document.getElementById('username-setup-section').classList.add('hidden');
         }
     });
 
-    function sendMessage() {
-        const nick = document.getElementById('nickname').value || "عضو سبيستوني";
-        const msgText = document.getElementById('msg').value;
-        if(!msgText) return;
-
-        const newMsg = { username: nick, text: msgText, timestamp: Date.now() };
-
-        // 1. Update the live bar
-        db.ref('latestMessage').set(newMsg);
-
-        // 2. Add to history list (limited to 5)
-        db.ref('history').push(newMsg);
+    // إظهار القسم الرئيسي بعد التأكد من وجود اسم المستخدم
+    function showMainSection() {
+        document.getElementById('username-setup-section').classList.add('hidden');
+        document.getElementById('main-section').classList.remove('hidden');
+        document.getElementById('display-nickname').innerText = currentUsername;
+        document.getElementById('edit-username-input').value = currentUsername;
         
-        document.getElementById('status').innerText = "تم الإرسال لشباب المستقبل! 🌠";
-        document.getElementById('msg').value = "";
-        setTimeout(() => { document.getElementById('status').innerText = ""; }, 3000);
+        // إظهار زر المشرف لحسابك الخاص
+        if (currentUser.email === "aymanbouraaman@gmail.com") {
+            document.getElementById('clear-btn').classList.remove('hidden');
+        } else {
+            document.getElementById('clear-btn').classList.add('hidden');
+        }
+        
+        loadHistory();
     }
 
+    // التحقق من فركانية اسم المستخدم وحجزه
+    async function checkAndReserveUsername(username, uid) {
+        const cleanedUsername = username.trim();
+        if(!cleanedUsername) {
+            alert("الرجاء إدخال اسم مستخدم صالح.");
+            return false;
+        }
+
+        // البحث في قائمة الأسماء المحجوزة
+        const usernameTakenRef = db.ref('takenUsernames/' + cleanedUsername);
+        const snapshot = await usernameTakenRef.once('value');
+
+        if (snapshot.exists() && snapshot.val() !== uid) {
+            alert("هذا الاسم السبيستوني محجوز بالفعل لمقاتل آخر! اختر اسماً غيره.");
+            return false;
+        }
+        return cleanedUsername;
+    }
+
+    // إعداد الاسم لأول مرة
+    async function setupInitialUsername() {
+        const inputName = document.getElementById('new-unique-username').value;
+        const checkedName = await checkAndReserveUsername(inputName, currentUser.uid);
+        
+        if (checkedName) {
+            // حفظ الاسم للمستخدم وحجزه في الداتابيز بالتزامن
+            await db.ref('users/' + currentUser.uid).set({ username: checkedName });
+            await db.ref('takenUsernames/' + checkedName).set(currentUser.uid);
+            
+            currentUsername = checkedName;
+            showMainSection();
+            showStatus("مرحباً بك في كواكب سبيستون! 🚀", "#3dfc4a");
+        }
+    }
+
+    // تحديث اسم المستخدم من الإعدادات
+    async function updateUsername() {
+        const newName = document.getElementById('edit-username-input').value;
+        if (newName.trim() === currentUsername) {
+            showStatus("هو نفس اسمك الحالي بالفعل!", var(--stoon-gold));
+            return;
+        }
+
+        const checkedName = await checkAndReserveUsername(newName, currentUser.uid);
+        
+        if (checkedName) {
+            // حذف الاسم القديم من الأسماء المحجوزة
+            if (currentUsername) {
+                await db.ref('takenUsernames/' + currentUsername).remove();
+            }
+            
+            // إعداد وحجز الاسم الجديد
+            await db.ref('users/' + currentUser.uid).update({ username: checkedName });
+            await db.ref('takenUsernames/' + checkedName).set(currentUser.uid);
+            
+            currentUsername = checkedName;
+            document.getElementById('display-nickname').innerText = currentUsername;
+            showStatus("تم تحديث اسمك السبيستوني بنجاح! 🌟", "#3dfc4a");
+            switchTab('home');
+        }
+    }
+
+    // إرسال الرسائل للشريط
+    function sendMessage() {
+        const msgText = document.getElementById('msg').value.trim();
+        if(!msgText) return;
+
+        const newMsg = { 
+            username: currentUsername, 
+            text: msgText, 
+            timestamp: Date.now() 
+        };
+
+        db.ref('latestMessage').set(newMsg);
+        db.ref('history').push(newMsg);
+        
+        showStatus("تم الإرسال لشباب المستقبل! 🌠", "#3dfc4a");
+        document.getElementById('msg').value = "";
+    }
+
+    // تحميل شريط الرسائل (آخر 5 رسائل)
     function loadHistory() {
         db.ref('history').limitToLast(5).on('value', (snapshot) => {
             const list = document.getElementById('history-list');
@@ -204,15 +351,42 @@
         });
     }
 
+    // التبديل بين التبويبات (الشريط / الإعدادات)
+    function switchTab(tab) {
+        if (tab === 'home') {
+            document.getElementById('tab-home').classList.add('active');
+            document.getElementById('tab-settings').classList.remove('active');
+            document.getElementById('content-home').classList.remove('hidden');
+            document.getElementById('content-settings').classList.add('hidden');
+        } else {
+            document.getElementById('tab-home').classList.remove('active');
+            document.getElementById('tab-settings').classList.add('active');
+            document.getElementById('content-home').classList.add('hidden');
+            document.getElementById('content-settings').classList.remove('hidden');
+        }
+    }
+
+    // مسح الرسائل (للمشرف فقط)
     function clearMessages() {
         if(confirm("هل تريد مسح سجل الرسائل بالكامل؟")) {
             db.ref('latestMessage').remove();
             db.ref('history').remove();
-            alert("تم تنظيف الكوكب!");
+            showStatus("تم تنظيف الكوكب من الرسائل القديمة!", "#3dfc4a");
         }
     }
 
-    function logout() { auth.signOut(); }
+    // عرض رسائل الحالة المؤقتة
+    function showStatus(text, color) {
+        const statusEl = document.getElementById('status');
+        statusEl.innerText = text;
+        statusEl.style.color = color;
+        setTimeout(() => { statusEl.innerText = ""; }, 3000);
+    }
+
+    // تسجيل الخروج
+    function logout() { 
+        auth.signOut(); 
+    }
 </script>
 </body>
 </html>

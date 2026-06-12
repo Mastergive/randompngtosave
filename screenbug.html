@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Horizon Premium Screenbug</title>
+    <title>Spacetoon Vintage Screenbug (Exact Broadcast Loop)</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,7 @@
             height: 100vh;
         }
 
-        /* Fixed Top-Right Broadcast Placement */
+        /* Standard Arabic broadcast positioning: Top-Right corner */
         #logo-container {
             position: absolute;
             top: 35px;
@@ -27,14 +27,14 @@
             height: auto;
             opacity: 0;
             transform-origin: center;
-            will-change: transform, opacity, filter;
         }
 
-        /* --- THE COSMIC ORBIT OVERDRIVE ENTRANCE --- */
+        /* --- FIXED: THE SCREENBUG JUST FADES IN SMOOTHLY --- */
         .animate-entrance {
-            animation: spacetoonCosmicIntro 1.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            animation: spacetoonFadeIntro 0.5s ease-out forwards;
         }
 
+        /* --- THE SHINE CONTAINER --- */
         .bug-wrapper {
             position: relative;
             width: 100%;
@@ -42,85 +42,77 @@
             display: inline-block;
         }
 
+        /* The transparent 3D logo asset layer */
         .bug-image {
             width: 100%;
             height: auto;
             display: block;
         }
 
-        /* --- THE METALLIC SHINE OVERLAY LAYER --- */
+        /* --- THE SHINE EFFECT LAYER --- */
         .shine-layer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            
+            /* --- TARGET IMAGE PLACEMENT --- */
+            /* This clips the shine gradient to the exact transparent pixels of your logo file */
             background-image: url('Stoon3D.png');
             background-size: contain;
             background-repeat: no-repeat;
+            
+            /* High-performance blend mode overlaying the bright sheen across the asset colors */
             background-blend-mode: source-over;
         }
 
-        /* Glowing sheen strip styling */
+        /* Creates the custom right-to-left sheen strip over the transparent mask base */
         .shine-layer::after {
             content: '';
             position: absolute;
             top: 0;
             right: -150%; 
-            width: 120%;
+            width: 100%;
             height: 100%;
             background: linear-gradient(
-                -110deg,
+                -90deg,
                 transparent 0%,
-                rgba(255, 255, 255, 0) 30%,
-                rgba(255, 255, 255, 0.9) 50%, /* Vivid, high-end reflection sheen */
-                rgba(255, 255, 255, 0) 70%,
-                transparent 100__%
+                rgba(255, 255, 255, 0) 25%,
+                rgba(255, 255, 255, 0.85) 50%, /* Bright vintage shine look */
+                rgba(255, 255, 255, 0) 75%,
+                transparent 100%
             );
-            transform: skewX(30deg); /* Aggressive, clean modern slope angle */
+            transform: skewX(25deg);
+            
+            /* Clips the sheen mask layer strictly inside the parent background boundaries */
             mix-blend-mode: overlay;
         }
 
-        /* --- LOCKED 1-SECOND SHINE LOOP --- */
+        /* --- CONTINUOUS SHINE LOOP (LOCKED TO EXACTLY 1.0 SECOND) --- */
         .shine-active::after {
-            animation: logoShinePremiumRTL 1.0s linear infinite;
+            animation: logoShineExactRTL 1.0s linear infinite;
         }
 
-        /* --- UNEXPECTED PEAK NOSTALGIA KEYFRAMES --- */
-        @keyframes spacetoonCosmicIntro {
+        /* --- KEYFRAMES --- */
+
+        /* Clean and classic fade-in opacity transition */
+        @keyframes spacetoonFadeIntro {
             0% {
                 opacity: 0;
-                /* Starts deeply shrunk, highly rotated, and heavily blurred like a distant nebula */
-                transform: scale(0) rotate(-180deg) translateZ(0);
-                filter: blur(20px) brightness(3);
-            }
-            40% {
-                opacity: 1;
-                filter: blur(4px) brightness(1.8);
-            }
-            70% {
-                /* Dramatic cosmic overshoot: expands past normal scale with an astronomical tilt */
-                transform: scale(1.12) rotate(10deg) translateZ(0);
-                filter: blur(0px) brightness(1.2);
-            }
-            85% {
-                /* Tiny sub-bounce settle mirroring gravity capture */
-                transform: scale(0.96) rotate(-2deg) translateZ(0);
             }
             100% {
-                opacity: 1;
-                transform: scale(1) rotate(0deg) translateZ(0);
-                filter: blur(0px) brightness(1);
+                opacity: 0.95; /* Clean, clear semi-translucent broadcast look */
             }
         }
 
-        /* Buttery smooth 1-second right-to-left sweep loop */
-        @keyframes logoShinePremiumRTL {
+        /* Clean right-to-left sweep loop running continuously over 1.0s */
+        @keyframes logoShineExactRTL {
             0% {
-                right: -150%;
+                right: -130%;
             }
             100% {
-                right: 150%;
+                right: 130%;
             }
         }
     </style>
@@ -139,31 +131,27 @@
         const container = document.getElementById('logo-container');
         const shineElement = document.getElementById('shine-element');
 
-        function cookPeakSequence() {
+        function triggerBroadcastSequence() {
             container.classList.remove('animate-entrance');
             shineElement.classList.remove('shine-active');
             
-            // Force hardware layout recalculation
             void container.offsetWidth;
             
-            // 1. Unleash the customized cosmic rotation entry
             container.classList.add('animate-entrance');
             
-            // 2. Safely lock the 1.0s shine loop right as the space bounce finishes settling
+            // Starts the shine loop quickly right as the fade completes (500ms)
             setTimeout(() => {
                 shineElement.classList.add('shine-active');
-            }, 1400);
+            }, 500);
         }
 
-        // Trigger on initial page render/refresh
         window.addEventListener('DOMContentLoaded', () => {
-            cookPeakSequence();
+            triggerBroadcastSequence();
         });
 
-        /* OBS Browser Link Visibility Management Hooks */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
-                cookPeakSequence();
+                triggerBroadcastSequence();
             } else {
                 container.classList.remove('animate-entrance');
                 shineElement.classList.remove('shine-active');

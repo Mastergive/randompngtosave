@@ -57,9 +57,7 @@
             width: 100%;
             height: 100%;
             
-            /* --- FIXED: FORCE SHINE ONLY ON EXISTENT PIXELS --- 
-               This cuts out the transparent areas completely so the shine never leaks into empty space
-            */
+            /* FORCE SHINE ONLY ON EXISTENT PIXELS */
             -webkit-mask-image: url('Stoon3D.png');
             mask-image: url('Stoon3D.png');
             -webkit-mask-size: contain;
@@ -74,18 +72,26 @@
             position: absolute;
             top: 0;
             right: -150%; 
-            width: 100%;
+            width: 130%;
             height: 100%;
+            
+            /* --- REWORKED VINTAGE BROADCAST GRADIENT ---
+               Uses warm tones and feathered edges to replicate old analog tape reflections
+            */
             background: linear-gradient(
                 -90deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0) 25%,
-                rgba(255, 255, 255, 0.85) 50%, /* Bright vintage shine look */
-                rgba(255, 255, 255, 0) 75%,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 30%,
+                rgba(255, 245, 200, 0.3) 45%,  /* Soft golden glow edge */
+                rgba(255, 255, 255, 0.75) 50%, #* Smooth, non-blinding center core */
+                rgba(255, 245, 200, 0.3) 55%,  /* Soft golden glow trailing edge */
+                rgba(255, 255, 255, 0) 70%,
                 transparent 100%
             );
-            transform: skewX(25deg);
-            mix-blend-mode: overlay;
+            transform: skewX(28deg);
+            
+            /* Color-dodge creates a vivid luminous reflection without flattening the 3D texture */
+            mix-blend-mode: color-dodge;
         }
 
         /* --- CONTINUOUS SHINE LOOP (LOCKED TO EXACTLY 1.0 SECOND) --- */
@@ -101,17 +107,17 @@
                 opacity: 0;
             }
             100% {
-                opacity: 0.95; /* Clean, clear semi-translucent broadcast look */
+                opacity: 0.95; 
             }
         }
 
         /* Clean right-to-left sweep loop running continuously over 1.0s */
         @keyframes logoShineExactRTL {
             0% {
-                right: -130%;
+                right: -140%;
             }
             100% {
-                right: 130%;
+                right: 140%;
             }
         }
     </style>

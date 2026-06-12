@@ -75,18 +75,16 @@
             width: 130%;
             height: 100%;
             
-            /* --- REWORKED VINTAGE BROADCAST GRADIENT ---
-               Uses warm tones and feathered edges to replicate old analog tape reflections
-            */
+            /* --- FIXED VINTAGE BROADCAST GRADIENT --- */
             background: linear-gradient(
                 -90deg,
                 rgba(255, 255, 255, 0) 0%,
                 rgba(255, 255, 255, 0) 30%,
                 rgba(255, 245, 200, 0.3) 45%,  /* Soft golden glow edge */
-                rgba(255, 255, 255, 0.75) 50%, #* Smooth, non-blinding center core */
+                rgba(255, 255, 255, 0.75) 50%, /* Smooth center core */
                 rgba(255, 245, 200, 0.3) 55%,  /* Soft golden glow trailing edge */
                 rgba(255, 255, 255, 0) 70%,
-                transparent 100%
+                rgba(255, 255, 255, 0) 100__%
             );
             transform: skewX(28deg);
             

@@ -28,9 +28,7 @@
             opacity: 0;
             transform-origin: center;
             
-            /* --- SIMULATED 576p CRT ANALOG LOW-QUALITY FEED --- 
-               Slightly softens razor-sharp digital edges to replicate older television displays
-            */
+            /* SIMULATED 576p CRT ANALOG LOW-QUALITY FEED */
             filter: blur(0.4px) contrast(1.05) saturate(1.1);
         }
 
@@ -80,34 +78,24 @@
             width: 100%;
             height: 100%;
             
-            /* --- CHANGED: SUBTLE DARK COSMIC BLUE SHINE --- 
-               Replaced bright white with deep broadcast sapphires and soft feathered edges
+            /* --- FIXED: SMALLER, NARROWER BLUE SHINE --- 
+               Tightened the gradient percentages so the blue reflection line is thinner
             */
             background: linear-gradient(
                 -90deg,
                 transparent 0%,
-                rgba(15, 35, 120, 0) 25%,
-                rgba(25, 60, 180, 0.45) 45%, /* Soft deep blue glow lead edge */
-                rgba(60, 110, 255, 0.65) 50%, /* Smooth metallic mid-blue core */
-                rgba(25, 60, 180, 0.45) 55%, /* Soft deep blue glow trailing edge */
-                rgba(15, 35, 120, 0) 75%,
-                transparent 100__% /* Using safe native bounds fallback */
-            );
-            background: linear-gradient(
-                -90deg,
-                transparent 0%,
-                rgba(15, 35, 120, 0) 25%,
-                rgba(25, 60, 180, 0.4) 45%,
-                rgba(70, 120, 255, 0.6) 50%, 
-                rgba(25, 60, 180, 0.4) 55%,
-                rgba(15, 35, 120, 0) 75%,
+                rgba(15, 35, 120, 0) 40%,
+                rgba(25, 60, 180, 0.4) 47%,
+                rgba(70, 120, 255, 0.6) 50%, /* Sharp center core */
+                rgba(25, 60, 180, 0.4) 53%,
+                rgba(15, 35, 120, 0) 60%,
                 transparent 100%
             );
             transform: skewX(25deg);
             
             /* color-dodge lights up base pixels dynamically without flattening dark image values */
             mix-blend-mode: color-dodge;
-            opacity: 0.85; /* Dimmed slightly to reduce digital sharpness */
+            opacity: 0.85; 
         }
 
         /* LOCKED TO EXACTLY 1.0 SECOND LOOP */

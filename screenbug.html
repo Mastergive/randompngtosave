@@ -29,7 +29,7 @@
             transform-origin: center;
         }
 
-        /* The screenbug just fades in smoothly */
+        /* --- CHANGED: SCREENBUG JUST FADES IN SMOOTHLY --- */
         .animate-entrance {
             animation: spacetoonFadeIntro 0.5s ease-out forwards;
         }
@@ -57,7 +57,7 @@
             width: 100%;
             height: 100%;
             
-            /* FORCE SHINE ONLY ON EXISTENT PIXELS */
+            /* --- FIXED: MASK KEEPS THE SHINE ONLY ON EXISTENT PIXELS --- */
             -webkit-mask-image: url('Stoon3D.png');
             mask-image: url('Stoon3D.png');
             -webkit-mask-size: contain;
@@ -66,35 +66,31 @@
             mask-repeat: no-repeat;
         }
 
-        /* Creates the custom right-to-left sheen strip over the clipped mask base */
+        /* Creates the custom right-to-left sheen strip over the transparent mask base */
         .shine-layer::after {
             content: '';
             position: absolute;
             top: 0;
             right: -150%; 
-            width: 130%;
+            width: 100%;
             height: 100%;
-            
-            /* --- FIXED VINTAGE BROADCAST GRADIENT --- */
             background: linear-gradient(
                 -90deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0) 30%,
-                rgba(255, 245, 200, 0.3) 45%,  /* Soft golden glow edge */
-                rgba(255, 255, 255, 0.75) 50%, /* Smooth center core */
-                rgba(255, 245, 200, 0.3) 55%,  /* Soft golden glow trailing edge */
-                rgba(255, 255, 255, 0) 70%,
-                rgba(255, 255, 255, 0) 100__%
+                transparent 0%,
+                rgba(255, 255, 255, 0) 25%,
+                rgba(255, 255, 255, 0.85) 50%, /* Bright vintage shine look */
+                rgba(255, 255, 255, 0) 75%,
+                transparent 100%
             );
-            transform: skewX(28deg);
+            transform: skewX(25deg);
             
-            /* Color-dodge creates a vivid luminous reflection without flattening the 3D texture */
-            mix-blend-mode: color-dodge;
+            /* Clips the sheen mask layer strictly inside the parent background boundaries */
+            mix-blend-mode: overlay;
         }
 
-        /* --- CONTINUOUS SHINE LOOP (LOCKED TO EXACTLY 1.0 SECOND) --- */
+        /* --- CHANGED: LOCKED TO EXACTLY 1.0 SECOND LOOP --- */
         .shine-active::after {
-            animation: logoShineExactRTL 1.0s linear infinite;
+            animation: logoShineFastRTL 1.0s linear infinite;
         }
 
         /* --- KEYFRAMES --- */
@@ -105,17 +101,17 @@
                 opacity: 0;
             }
             100% {
-                opacity: 0.95; 
+                opacity: 0.95; /* Clean, clear semi-translucent broadcast look */
             }
         }
 
-        /* Clean right-to-left sweep loop running continuously over 1.0s */
-        @keyframes logoShineExactRTL {
+        /* Right-to-left sweeping motion */
+        @keyframes logoShineFastRTL {
             0% {
-                right: -140%;
+                right: -120%;
             }
             100% {
-                right: 140%;
+                right: 120%;
             }
         }
     </style>
@@ -135,23 +131,28 @@
         const shineElement = document.getElementById('shine-element');
 
         function triggerBroadcastSequence() {
+            // Remove animation classes to reset tracking states completely
             container.classList.remove('animate-entrance');
             shineElement.classList.remove('shine-active');
             
+            // Force browser engine layout calculation reset before triggering intro
             void container.offsetWidth;
             
+            // 1. Kickoff the fade-in entrance sequence immediately
             container.classList.add('animate-entrance');
             
-            // Starts the shine loop quickly right as the fade completes (500ms)
+            // 2. Start the continuous rapid shine loop right after it finishes fading in
             setTimeout(() => {
                 shineElement.classList.add('shine-active');
             }, 500);
         }
 
+        // Run when page loads or gets refreshed
         window.addEventListener('DOMContentLoaded', () => {
             triggerBroadcastSequence();
         });
 
+        /* OBS Browser Source Live State Tracking Hooks */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 triggerBroadcastSequence();

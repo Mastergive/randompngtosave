@@ -29,7 +29,7 @@
             transform-origin: center;
         }
 
-        /* --- FIXED: THE SCREENBUG JUST FADES IN SMOOTHLY --- */
+        /* The screenbug just fades in smoothly */
         .animate-entrance {
             animation: spacetoonFadeIntro 0.5s ease-out forwards;
         }
@@ -57,17 +57,18 @@
             width: 100%;
             height: 100%;
             
-            /* --- TARGET IMAGE PLACEMENT --- */
-            /* This clips the shine gradient to the exact transparent pixels of your logo file */
-            background-image: url('Stoon3D.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            
-            /* High-performance blend mode overlaying the bright sheen across the asset colors */
-            background-blend-mode: source-over;
+            /* --- FIXED: FORCE SHINE ONLY ON EXISTENT PIXELS --- 
+               This cuts out the transparent areas completely so the shine never leaks into empty space
+            */
+            -webkit-mask-image: url('Stoon3D.png');
+            mask-image: url('Stoon3D.png');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
         }
 
-        /* Creates the custom right-to-left sheen strip over the transparent mask base */
+        /* Creates the custom right-to-left sheen strip over the clipped mask base */
         .shine-layer::after {
             content: '';
             position: absolute;
@@ -84,8 +85,6 @@
                 transparent 100%
             );
             transform: skewX(25deg);
-            
-            /* Clips the sheen mask layer strictly inside the parent background boundaries */
             mix-blend-mode: overlay;
         }
 

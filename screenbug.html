@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Vintage Screenbug (Exact Broadcast Loop)</title>
+    <title>Spacetoon Horizon Premium Screenbug</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,7 @@
             height: 100vh;
         }
 
-        /* Standard Arabic broadcast positioning: Top-Right corner */
+        /* Fixed Top-Right Broadcast Placement */
         #logo-container {
             position: absolute;
             top: 35px;
@@ -27,16 +27,14 @@
             height: auto;
             opacity: 0;
             transform-origin: center;
+            will-change: transform, opacity, filter;
         }
 
-        /* --- THE EXACT ENTRANCE ANIMATION --- 
-           Simulates the individual letter impact and expansion using a multi-stage spring timeline
-        */
+        /* --- THE COSMIC ORBIT OVERDRIVE ENTRANCE --- */
         .animate-entrance {
-            animation: spacetoonBroadcastExactIntro 1.1s cubic-bezier(0.25, 1.1, 0.42, 1.4) forwards;
+            animation: spacetoonCosmicIntro 1.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
-        /* --- THE SHINE CONTAINER --- */
         .bug-wrapper {
             position: relative;
             width: 100%;
@@ -44,95 +42,85 @@
             display: inline-block;
         }
 
-        /* The transparent 3D logo asset layer */
         .bug-image {
             width: 100%;
             height: auto;
             display: block;
         }
 
-        /* --- THE SHINE EFFECT LAYER --- */
+        /* --- THE METALLIC SHINE OVERLAY LAYER --- */
         .shine-layer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            
-            /* --- TARGET IMAGE PLACEMENT --- */
-            /* This clips the shine gradient to the exact transparent pixels of your logo file */
             background-image: url('Stoon3D.png');
             background-size: contain;
             background-repeat: no-repeat;
-            
-            /* High-performance blend mode overlaying the bright sheen across the asset colors */
             background-blend-mode: source-over;
         }
 
-        /* Creates the custom right-to-left sheen strip over the transparent mask base */
+        /* Glowing sheen strip styling */
         .shine-layer::after {
             content: '';
             position: absolute;
             top: 0;
             right: -150%; 
-            width: 100%;
+            width: 120%;
             height: 100%;
             background: linear-gradient(
-                -90deg,
+                -110deg,
                 transparent 0%,
-                rgba(255, 255, 255, 0) 25%,
-                rgba(255, 255, 255, 0.85) 50%, /* Bright vintage shine look */
-                rgba(255, 255, 255, 0) 75%,
-                transparent 100%
+                rgba(255, 255, 255, 0) 30%,
+                rgba(255, 255, 255, 0.9) 50%, /* Vivid, high-end reflection sheen */
+                rgba(255, 255, 255, 0) 70%,
+                transparent 100__%
             );
-            transform: skewX(25deg);
-            
-            /* Clips the sheen mask layer strictly inside the parent background boundaries */
+            transform: skewX(30deg); /* Aggressive, clean modern slope angle */
             mix-blend-mode: overlay;
         }
 
-        /* --- FIXED: CONTINUOUS SHINE LOOP (LOCKED TO EXACTLY 1.0 SECOND) --- */
+        /* --- LOCKED 1-SECOND SHINE LOOP --- */
         .shine-active::after {
-            animation: logoShineExactRTL 1.0s linear infinite;
+            animation: logoShinePremiumRTL 1.0s linear infinite;
         }
 
-        /* --- KEYFRAMES --- */
-
-        /* Clones the distinct 3D entry from the video reference:
-           1. Logo enters rotated and heavily compressed (simulating just the 'S' landing)
-           2. Rapidly bursts wide and over-scales (simulating the 'toon' letters popping out)
-           3. Recoils back and snaps into a perfectly crisp layout position
-        */
-        @keyframes spacetoonBroadcastExactIntro {
+        /* --- UNEXPECTED PEAK NOSTALGIA KEYFRAMES --- */
+        @keyframes spacetoonCosmicIntro {
             0% {
                 opacity: 0;
-                transform: scale(0.1, 0.1) rotate(25deg) translateX(300px);
+                /* Starts deeply shrunk, highly rotated, and heavily blurred like a distant nebula */
+                transform: scale(0) rotate(-180deg) translateZ(0);
+                filter: blur(20px) brightness(3);
             }
-            35% {
+            40% {
                 opacity: 1;
-                /* Compressed profile mimicking the initial impact */
-                transform: scale(0.6, 1.2) rotate(-12deg) translateX(-40px);
+                filter: blur(4px) brightness(1.8);
             }
-            60% {
-                /* Elastic burst stage matching the orbital ring expansion */
-                transform: scale(1.18, 0.85) rotate(6deg) translateX(15px);
+            70% {
+                /* Dramatic cosmic overshoot: expands past normal scale with an astronomical tilt */
+                transform: scale(1.12) rotate(10deg) translateZ(0);
+                filter: blur(0px) brightness(1.2);
             }
-            80% {
-                transform: scale(0.93, 1.05) rotate(-2deg) translateX(-5px);
+            85% {
+                /* Tiny sub-bounce settle mirroring gravity capture */
+                transform: scale(0.96) rotate(-2deg) translateZ(0);
             }
             100% {
-                opacity: 0.95;
-                transform: scale(1, 1) rotate(0deg) translateX(0);
+                opacity: 1;
+                transform: scale(1) rotate(0deg) translateZ(0);
+                filter: blur(0px) brightness(1);
             }
         }
 
-        /* Clean right-to-left sweep loop running continuously over 1.0s */
-        @keyframes logoShineExactRTL {
+        /* Buttery smooth 1-second right-to-left sweep loop */
+        @keyframes logoShinePremiumRTL {
             0% {
-                right: -130%;
+                right: -150%;
             }
             100% {
-                right: 130%;
+                right: 150%;
             }
         }
     </style>
@@ -151,27 +139,31 @@
         const container = document.getElementById('logo-container');
         const shineElement = document.getElementById('shine-element');
 
-        function triggerBroadcastSequence() {
+        function cookPeakSequence() {
             container.classList.remove('animate-entrance');
             shineElement.classList.remove('shine-active');
             
+            // Force hardware layout recalculation
             void container.offsetWidth;
             
+            // 1. Unleash the customized cosmic rotation entry
             container.classList.add('animate-entrance');
             
-            // Delays the 1-second shine loop until the spring entry completely settles
+            // 2. Safely lock the 1.0s shine loop right as the space bounce finishes settling
             setTimeout(() => {
                 shineElement.classList.add('shine-active');
-            }, 1100);
+            }, 1400);
         }
 
+        // Trigger on initial page render/refresh
         window.addEventListener('DOMContentLoaded', () => {
-            triggerBroadcastSequence();
+            cookPeakSequence();
         });
 
+        /* OBS Browser Link Visibility Management Hooks */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
-                triggerBroadcastSequence();
+                cookPeakSequence();
             } else {
                 container.classList.remove('animate-entrance');
                 shineElement.classList.remove('shine-active');

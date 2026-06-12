@@ -27,9 +27,14 @@
             height: auto;
             opacity: 0;
             transform-origin: center;
+            
+            /* --- SIMULATED 576p CRT ANALOG LOW-QUALITY FEED --- 
+               Slightly softens razor-sharp digital edges to replicate older television displays
+            */
+            filter: blur(0.4px) contrast(1.05) saturate(1.1);
         }
 
-        /* --- CHANGED: SCREENBUG JUST FADES IN SMOOTHLY --- */
+        /* Screenbug just fades in smoothly */
         .animate-entrance {
             animation: spacetoonFadeIntro 0.5s ease-out forwards;
         }
@@ -57,7 +62,7 @@
             width: 100%;
             height: 100%;
             
-            /* --- FIXED: MASK KEEPS THE SHINE ONLY ON EXISTENT PIXELS --- */
+            /* MASK KEEPS THE SHINE ONLY ON EXISTENT PIXELS */
             -webkit-mask-image: url('Stoon3D.png');
             mask-image: url('Stoon3D.png');
             -webkit-mask-size: contain;
@@ -74,21 +79,38 @@
             right: -150%; 
             width: 100%;
             height: 100%;
+            
+            /* --- CHANGED: SUBTLE DARK COSMIC BLUE SHINE --- 
+               Replaced bright white with deep broadcast sapphires and soft feathered edges
+            */
             background: linear-gradient(
                 -90deg,
                 transparent 0%,
-                rgba(255, 255, 255, 0) 25%,
-                rgba(255, 255, 255, 0.85) 50%, /* Bright vintage shine look */
-                rgba(255, 255, 255, 0) 75%,
+                rgba(15, 35, 120, 0) 25%,
+                rgba(25, 60, 180, 0.45) 45%, /* Soft deep blue glow lead edge */
+                rgba(60, 110, 255, 0.65) 50%, /* Smooth metallic mid-blue core */
+                rgba(25, 60, 180, 0.45) 55%, /* Soft deep blue glow trailing edge */
+                rgba(15, 35, 120, 0) 75%,
+                transparent 100__% /* Using safe native bounds fallback */
+            );
+            background: linear-gradient(
+                -90deg,
+                transparent 0%,
+                rgba(15, 35, 120, 0) 25%,
+                rgba(25, 60, 180, 0.4) 45%,
+                rgba(70, 120, 255, 0.6) 50%, 
+                rgba(25, 60, 180, 0.4) 55%,
+                rgba(15, 35, 120, 0) 75%,
                 transparent 100%
             );
             transform: skewX(25deg);
             
-            /* Clips the sheen mask layer strictly inside the parent background boundaries */
-            mix-blend-mode: overlay;
+            /* color-dodge lights up base pixels dynamically without flattening dark image values */
+            mix-blend-mode: color-dodge;
+            opacity: 0.85; /* Dimmed slightly to reduce digital sharpness */
         }
 
-        /* --- CHANGED: LOCKED TO EXACTLY 1.0 SECOND LOOP --- */
+        /* LOCKED TO EXACTLY 1.0 SECOND LOOP */
         .shine-active::after {
             animation: logoShineFastRTL 1.0s linear infinite;
         }
@@ -101,7 +123,7 @@
                 opacity: 0;
             }
             100% {
-                opacity: 0.95; /* Clean, clear semi-translucent broadcast look */
+                opacity: 0.95; 
             }
         }
 
@@ -131,23 +153,18 @@
         const shineElement = document.getElementById('shine-element');
 
         function triggerBroadcastSequence() {
-            // Remove animation classes to reset tracking states completely
             container.classList.remove('animate-entrance');
             shineElement.classList.remove('shine-active');
             
-            // Force browser engine layout calculation reset before triggering intro
             void container.offsetWidth;
             
-            // 1. Kickoff the fade-in entrance sequence immediately
             container.classList.add('animate-entrance');
             
-            // 2. Start the continuous rapid shine loop right after it finishes fading in
             setTimeout(() => {
                 shineElement.classList.add('shine-active');
             }, 500);
         }
 
-        // Run when page loads or gets refreshed
         window.addEventListener('DOMContentLoaded', () => {
             triggerBroadcastSequence();
         });

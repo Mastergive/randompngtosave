@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Vintage Screenbug (Exact Video Clone)</title>
+    <title>Spacetoon Vintage Screenbug (Exact Broadcast Loop)</title>
     <style>
         * {
             margin: 0;
@@ -18,23 +18,25 @@
             height: 100vh;
         }
 
-        /* Top-Right broadcast position */
+        /* Standard Arabic broadcast positioning: Top-Right corner */
         #logo-container {
             position: absolute;
             top: 35px;
             right: 45px; 
             width: 220px;
             height: auto;
+            opacity: 0;
             transform-origin: center;
         }
 
         /* --- THE EXACT ENTRANCE ANIMATION --- 
-           Clones the dynamic pop, rotation twist, and elastic settle from the video
+           Simulates the individual letter impact and expansion using a multi-stage spring timeline
         */
         .animate-entrance {
-            animation: spacetoonBroadcastPop 0.9s cubic-bezier(0.25, 1.3, 0.4, 1) forwards;
+            animation: spacetoonBroadcastExactIntro 1.1s cubic-bezier(0.25, 1.1, 0.42, 1.4) forwards;
         }
 
+        /* --- THE SHINE CONTAINER --- */
         .bug-wrapper {
             position: relative;
             width: 100%;
@@ -42,14 +44,33 @@
             display: inline-block;
         }
 
+        /* The transparent 3D logo asset layer */
         .bug-image {
             width: 100%;
             height: auto;
             display: block;
         }
 
-        /* --- THE PERFECT SHINE OVERLAY --- */
-        .bug-wrapper::after {
+        /* --- THE SHINE EFFECT LAYER --- */
+        .shine-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            /* --- TARGET IMAGE PLACEMENT --- */
+            /* This clips the shine gradient to the exact transparent pixels of your logo file */
+            background-image: url('Stoon3D.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            
+            /* High-performance blend mode overlaying the bright sheen across the asset colors */
+            background-blend-mode: source-over;
+        }
+
+        /* Creates the custom right-to-left sheen strip over the transparent mask base */
+        .shine-layer::after {
             content: '';
             position: absolute;
             top: 0;
@@ -60,54 +81,58 @@
                 -90deg,
                 transparent 0%,
                 rgba(255, 255, 255, 0) 25%,
-                rgba(255, 255, 255, 0.8) 50%, 
+                rgba(255, 255, 255, 0.85) 50%, /* Bright vintage shine look */
                 rgba(255, 255, 255, 0) 75%,
                 transparent 100%
             );
             transform: skewX(25deg);
             
-            /* Clips the shine so it only shows inside the logo boundaries */
-            -webkit-mask-image: url('Stoon3D.png');
-            mask-image: url('Stoon3D.png');
-            -webkit-mask-size: contain;
-            mask-size: contain;
-            -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
+            /* Clips the sheen mask layer strictly inside the parent background boundaries */
+            mix-blend-mode: overlay;
         }
 
-        /* --- 1-SECOND SHINE LOOP --- */
+        /* --- FIXED: CONTINUOUS SHINE LOOP (LOCKED TO EXACTLY 1.0 SECOND) --- */
         .shine-active::after {
             animation: logoShineExactRTL 1.0s linear infinite;
         }
 
         /* --- KEYFRAMES --- */
 
-        /* Replicating the distinct fast scale up and bounce back from the clip */
-        @keyframes spacetoonBroadcastPop {
+        /* Clones the distinct 3D entry from the video reference:
+           1. Logo enters rotated and heavily compressed (simulating just the 'S' landing)
+           2. Rapidly bursts wide and over-scales (simulating the 'toon' letters popping out)
+           3. Recoils back and snaps into a perfectly crisp layout position
+        */
+        @keyframes spacetoonBroadcastExactIntro {
             0% {
                 opacity: 0;
-                transform: scale(0.1) rotate(20deg);
+                transform: scale(0.1, 0.1) rotate(25deg) translateX(300px);
             }
-            50% {
+            35% {
                 opacity: 1;
-                transform: scale(1.15) rotate(-5deg); /* Bouncy over-scale */
+                /* Compressed profile mimicking the initial impact */
+                transform: scale(0.6, 1.2) rotate(-12deg) translateX(-40px);
             }
-            75% {
-                transform: scale(0.95) rotate(2deg);
+            60% {
+                /* Elastic burst stage matching the orbital ring expansion */
+                transform: scale(1.18, 0.85) rotate(6deg) translateX(15px);
+            }
+            80% {
+                transform: scale(0.93, 1.05) rotate(-2deg) translateX(-5px);
             }
             100% {
-                opacity: 1;
-                transform: scale(1) rotate(0deg); /* Settles perfectly straight */
+                opacity: 0.95;
+                transform: scale(1, 1) rotate(0deg) translateX(0);
             }
         }
 
-        /* Sweeps across the logo right-to-left over 1 full second */
+        /* Clean right-to-left sweep loop running continuously over 1.0s */
         @keyframes logoShineExactRTL {
             0% {
-                right: -150%;
+                right: -130%;
             }
             100% {
-                right: 150%;
+                right: 130%;
             }
         }
     </style>
@@ -115,44 +140,41 @@
 <body>
 
     <div id="logo-container">
-        <div class="bug-wrapper" id="bug-element">
+        <div class="bug-wrapper">
             <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
+            
+            <div class="shine-layer" id="shine-element"></div>
         </div>
     </div>
 
     <script>
         const container = document.getElementById('logo-container');
-        const bugElement = document.getElementById('bug-element');
+        const shineElement = document.getElementById('shine-element');
 
-        function startSequence() {
-            // Clear any lingering animation states
+        function triggerBroadcastSequence() {
             container.classList.remove('animate-entrance');
-            bugElement.classList.remove('shine-active');
+            shineElement.classList.remove('shine-active');
             
-            // Force dynamic layout re-flow calculation
             void container.offsetWidth;
             
-            // 1. Fire entrance animation instantly on load or source toggle
             container.classList.add('animate-entrance');
             
-            // 2. Start the steady 1-second right-to-left shine right as the logo settles
+            // Delays the 1-second shine loop until the spring entry completely settles
             setTimeout(() => {
-                bugElement.classList.add('shine-active');
-            }, 900);
+                shineElement.classList.add('shine-active');
+            }, 1100);
         }
 
-        // Initialize when page mounts or refreshes
         window.addEventListener('DOMContentLoaded', () => {
-            startSequence();
+            triggerBroadcastSequence();
         });
 
-        /* OBS Toggle Hooks */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
-                startSequence();
+                triggerBroadcastSequence();
             } else {
                 container.classList.remove('animate-entrance');
-                bugElement.classList.remove('shine-active');
+                shineElement.classList.remove('shine-active');
             }
         });
     </script>

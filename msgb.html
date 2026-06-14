@@ -3,237 +3,164 @@
 
 <head>
 <meta charset="UTF-8">
+
 <style>
-:root {
-    /* 2010 Era: Highly saturated, flat-cut glossy crimson style */
-    --primary-bg: #cc0004;
-    --gloss-top: #ff4d51;
-    --dark-bottom: #730002;
-    --border-color: #ffffff;
-    --accent-yellow: #ffff00;
+body{
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    background:transparent;
+    font-family:Tahoma, Arial, sans-serif;
+    width:100vw;
+    image-rendering:auto;
+    filter: contrast(1.08) saturate(0.92) blur(0.1px);
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background: transparent;
-    /* Using classic chunky system fonts for that old broadcast look */
-    font-family: 'Arial Black', Tahoma, Arial, sans-serif;
-    width: 100vw;
+/* ================= OLD TV NOISE ================= */
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:0.04;
+    background-image: repeating-linear-gradient(to bottom, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 3px);
+    z-index:9999;
 }
 
-/* Obvious analog TV scanlines + composite color blur effect */
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.12;
-    background-image: repeating-linear-gradient(to bottom, #000 0px, #000 1px, transparent 1px, transparent 2px);
-    z-index: 9999;
+.wrapper{
+    margin-top:58px;
+    position:relative;
+    width:100%;
+    height:130px;
+    display:flex;
+    align-items:center;
 }
 
-/* Main Wrapper */
-.wrapper {
-    margin-top: 40px;
-    position: relative;
-    width: 100%;
-    height: 160px; 
-    display: flex;
-    align-items: center;
-    opacity: 0;
-    animation: fadeInWrapper 0.2s ease forwards;
+/* ================= MAIN BAR ================= */
+.scroll-container{
+    display:flex;
+    align-items:center;
+    height:44px;
+    width:92%;
+    margin:0 auto;
+    position:relative;
+    overflow:hidden;
+    z-index:10;
+    background: linear-gradient(to bottom, #4e86c2 0%, #2c65a3 10%, #1c4d84 11%, #1b4375 49%, #11345c 50%, #0a2342 100%);
+    border-top:3px solid #d8e9ff;
+    border-bottom:3px solid #d8e9ff;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.3), 0 0 8px rgba(0,0,0,0.8);
 }
 
-@keyframes fadeInWrapper {
-    to { opacity: 1; }
+.left-badge{
+    position:absolute;
+    left:1.5%;
+    width:82px;
+    height:58px;
+    background: linear-gradient(to bottom, #3d73ad, #13345c);
+    border:3px solid #dbeaff;
+    clip-path:polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.7);
 }
 
-/* ================= 2010 HIGH-SATURATION TICKER BAR ================= */
-.scroll-container {
-    display: flex;
-    align-items: center;
-    height: 52px; 
-    width: 96%;
-    margin: 0 auto;
-    position: relative;
-    overflow: hidden;
-    z-index: 10;
-    
-    /* 2010 sharp glossy split effect instead of modern smooth gradients */
-    background: linear-gradient(to bottom, var(--gloss-top) 0%, var(--primary-bg) 45%, var(--dark-bottom) 50%, var(--primary-bg) 100%);
-    
-    /* Chunky borders with slight glow mimicking analog signal bleed */
-    border-top: 4px solid var(--border-color); 
-    border-bottom: 5px solid var(--accent-yellow);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.7), inset 0 3px 2px rgba(255,255,255,0.6);
-    
-    transform: scaleX(0);
-    transform-origin: center;
-    animation: expandBar 0.5s ease-out 0.2s forwards;
+.flipper-content{
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:opacity 0.5s ease-in-out;
 }
 
-@keyframes expandBar {
-    to { transform: scaleX(1); }
+#qrImg{ width:38px; height:38px; background:white; padding:2px; filter:blur(0.2px); }
+#logoImg{ width:58px; filter: blur(0.4px) brightness(0.95); }
+.hidden{ opacity:0; visibility:hidden; }
+
+/* ================= RIGHT BOX (Fixed Spacing) ================= */
+.emoji-area{
+    position:absolute;
+    right:1.5%;
+    width:84px;
+    height:58px;
+    background: linear-gradient(to bottom, #3d73ad, #13345c);
+    border:3px solid #dbeaff;
+    clip-path:polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+    z-index:100;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content: space-evenly; /* Keeps them separated vertically */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+    padding: 2px 0;
 }
 
-/* ================= LOW-RES CIRCULAR LEFT BADGE ================= */
-.left-badge {
-    position: absolute;
-    left: 2%;
-    width: 86px;
-    height: 86px;
-    
-    background: linear-gradient(135deg, var(--gloss-top) 0%, var(--dark-bottom) 100%);
-    
-    /* Thick, heavy analog style borders */
-    border: 4px solid var(--border-color);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.8), inset 0 0 8px rgba(0,0,0,0.6);
-    border-radius: 50%;
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    
-    transform: scale(0);
-    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.6s forwards;
+#emojiVal{
+    font-size: 27px;
+    text-shadow: 2px 2px 0 #00152f;
+    transition: opacity 0.5s;
+    height: 30px;
+    line-height: 30px;
 }
 
-/* ================= RIGHT SIDE EMOJI BOX ================= */
-.emoji-area {
-    position: absolute;
-    right: 2%;
-    width: 76px; 
-    height: 76px; 
-    background: linear-gradient(to bottom, var(--primary-bg) 0%, var(--dark-bottom) 100%);
-    border: 4px solid var(--border-color);
-    border-radius: 12px; 
-    
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    z-index: 100;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.8);
-    
-    transform: scale(0);
-    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.7s forwards;
-}
-
-@keyframes popIn {
-    to { transform: scale(1); }
-}
-
-/* Flipper Content (QR / Static Logo) */
-.flipper-content {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-#qrImg { 
-    width: 50px; 
-    height: 50px; 
-    background: white; 
-    padding: 2px; 
-    border-radius: 4px;
-}
-
-#logoImg { 
-    width: 60px; 
-    object-fit: contain;
-}
-
-.hidden { 
-    opacity: 0; 
-    visibility: hidden; 
-    transform: rotateY(90deg); 
-}
-
-/* Old school pixelated/aliased text-shadows for emojis and text */
-#emojiVal {
-    font-size: 30px; 
-    filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.7));
-    transition: opacity 0.3s, transform 0.3s;
-    height: 34px;
-    line-height: 34px;
-}
-
-#emojiNum {
-    font-size: 14px; 
-    color: #ffffff;
+#emojiNum{
+    font-size: 13px;
+    color: white;
+    text-shadow: 2px 2px 0 #00152f;
     font-weight: bold;
-    text-shadow: 2px 2px 0px #000;
-    transition: opacity 0.3s;
+    transition: opacity 0.5s;
 }
 
-/* ================= TICKER TEXT & CHROMATIC BLEED EFFECT ================= */
-.scroll-wrapper {
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    opacity: 0;
-    animation: fadeInText 0.3s ease 0.8s forwards; 
+/* ================= TICKER LOOP FIX ================= */
+.scroll-wrapper{
+    width:100%;
+    overflow:hidden;
+    display:flex;
 }
 
-@keyframes fadeInText {
-    to { opacity: 1; }
-}
-
-.scroll-content {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    height: 100%;
-    animation: scroll-loop 25s linear infinite;
+.scroll-content{
+    display:flex;
+    align-items:center;
+    white-space:nowrap;
+    animation: scroll-loop 32s linear infinite;
 }
 
 @keyframes scroll-loop {
     0% { transform: translateX(0); }
-    100% { transform: translateX(100%); }
+    100% { transform: translateX(100%); } /* RTL Direction */
 }
 
-.item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%; 
-    padding-left: 130px; 
+.item{
+    display:flex;
+    align-items:center;
+    padding-left:130px;
 }
 
-/* text shadows mimic analog video color bleeding (red/black artifacting) */
-.text {
-    font-size: 25px; 
-    color: #ffffff; 
-    font-weight: bold;
-    text-shadow: 2px 2px 0px #000, -1px -1px 1px rgba(255,0,0,0.5);
-    display: inline-block;
-    letter-spacing: -0.5px;
+.text{
+    font-size:24px;
+    color:#ffe600;
+    font-weight:bold;
+    letter-spacing:-1px;
+    text-shadow: 2px 2px 0 #00152f;
 }
 
-.username {
-    color: var(--accent-yellow); 
-    font-weight: 900;
-    font-size: 26px; 
-    margin-left: 10px;
-    text-shadow: 2px 2px 0px #000, -1px -1px 1px rgba(255,0,0,0.5);
-    display: inline-block;
-    letter-spacing: -0.5px;
+.username{
+    color:#ffffff;
+    font-weight:900;
+    font-size:25px;
+    margin-left:10px;
+    text-shadow: 2px 2px 0 #00152f;
 }
 
-/* 2010 Scaled Inline Logo with standard drop shadow */
-.scroll-logo {
-    height: 24px; /* Scaled perfectly to match the 25px text height */
-    width: auto;
-    margin: 0 20px; 
-    filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.6));
-    align-self: center; 
+.scroll-logo{
+    height:31px;
+    margin:0 15px;
+    opacity:0.88;
+    filter: blur(0.5px) brightness(0.95);
 }
 </style>
 </head>
@@ -277,12 +204,12 @@ const copy = document.getElementById('copy');
 
 function updateTickerSpeed(){
     const width = content.offsetWidth;
-    const duration = width / 85;  
+    const duration = width / 65; 
     content.style.animationDuration = duration + "s";
     copy.style.animationDuration = duration + "s";
 }
 
-/* ================= Emoji Loop System ================= */
+/* ================= UNICODE EMOJI CYCLE ================= */
 const eNum = document.getElementById('emojiNum');
 const eVal = document.getElementById('emojiVal');
 
@@ -291,16 +218,16 @@ let code = 128512;
 
 async function runEmojiCycle(){
     while(true){
-        eVal.style.opacity = "0.4";
-        eVal.style.transform = "scale(0.9)";
+        // Phase 1: Focus on Number
+        eVal.style.opacity = "0.2"; // Dim emoji
         eNum.innerText = `(${count})`;
         eNum.style.opacity = "1";
         await new Promise(r => setTimeout(r, 1200));
 
-        eNum.style.opacity = "0.6";
+        // Phase 2: Focus on Emoji
+        eNum.style.opacity = "0.4"; // Dim number
         eVal.innerText = String.fromCodePoint(code);
         eVal.style.opacity = "1";
-        eVal.style.transform = "scale(1)";
         await new Promise(r => setTimeout(r, 2500));
 
         count++;
@@ -311,17 +238,17 @@ async function runEmojiCycle(){
         }
     }
 }
-setTimeout(runEmojiCycle, 1500);
+runEmojiCycle();
 
-/* ================= Left Badge Toggle (QR / Logo) ================= */
+/* ================= LEFT BOX FLIP ================= */
 const qrC = document.getElementById('qrContainer');
 const logoC = document.getElementById('logoContainer');
 setInterval(() => {
     qrC.classList.toggle('hidden');
     logoC.classList.toggle('hidden');
-}, 6000);
+}, 5000);
 
-/* ================= Firebase Dynamic Message Integration ================= */
+/* ================= FIREBASE ================= */
 const firebaseConfig = {
     apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
     databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com",

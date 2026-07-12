@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Vintage Screenbug (2nd Anniversary Loop)</title>
+    <title>Spacetoon Vintage Screenbug (Exact Broadcast Loop)</title>
     <style>
         * {
             margin: 0;
@@ -27,7 +27,6 @@
             height: auto;
             opacity: 0;
             transform-origin: center;
-            perspective: 1000px; /* Crucial for clean 3D rotation */
             
             /* SIMULATED 576p CRT ANALOG LOW-QUALITY FEED */
             filter: blur(0.4px) contrast(1.05) saturate(1.1);
@@ -38,20 +37,12 @@
             animation: spacetoonFadeIntro 0.5s ease-out forwards;
         }
 
-        /* --- THE SHINE CONTAINER & 3D FLIP SYSTEM --- */
+        /* --- THE SHINE CONTAINER --- */
         .bug-wrapper {
             position: relative;
             width: 100%;
             height: 100%;
             display: inline-block;
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), filter 0.6s ease;
-            transform-style: preserve-3d;
-        }
-
-        /* The transition flash/flip triggers */
-        .bug-wrapper.flip-transition {
-            transform: rotateY(90deg);
-            filter: brightness(2.5) contrast(1.2); /* Retro broadcast flash effect */
         }
 
         /* The transparent 3D logo asset layer */
@@ -69,7 +60,7 @@
             width: 100%;
             height: 100%;
             
-            /* INITIAL MASK FOR DEFAULT LOGO */
+            /* MASK KEEPS THE SHINE ONLY ON EXISTENT PIXELS */
             -webkit-mask-image: url('Stoon3D.png');
             mask-image: url('Stoon3D.png');
             -webkit-mask-size: contain;
@@ -87,7 +78,9 @@
             width: 100%;
             height: 100%;
             
-            /* --- FIXED: SMALLER, NARROWER BLUE SHINE --- */
+            /* --- FIXED: SMALLER, NARROWER BLUE SHINE --- 
+               Tightened the gradient percentages so the blue reflection line is thinner
+            */
             background: linear-gradient(
                 -90deg,
                 transparent 0%,
@@ -136,75 +129,28 @@
 <body>
 
     <div id="logo-container">
-        <div class="bug-wrapper" id="bug-wrapper">
-            <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image" id="logo-img">
+        <div class="bug-wrapper">
+            <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
+            
             <div class="shine-layer" id="shine-element"></div>
         </div>
     </div>
 
     <script>
         const container = document.getElementById('logo-container');
-        const wrapper = document.getElementById('bug-wrapper');
-        const logoImg = document.getElementById('logo-img');
         const shineElement = document.getElementById('shine-element');
 
-        let loopTimer = null;
-
         function triggerBroadcastSequence() {
-            // Reset everything completely
-            clearTimeout(loopTimer);
             container.classList.remove('animate-entrance');
             shineElement.classList.remove('shine-active');
-            wrapper.classList.remove('flip-transition');
             
-            // Reset to default configuration
-            logoImg.src = "Stoon3D.png";
-            shineElement.style.maskImage = "url('Stoon3D.png')";
-            shineElement.style.webkitMaskImage = "url('Stoon3D.png')";
+            void container.offsetWidth;
             
-            void container.offsetWidth; // Force DOM reflow
-            
-            // Introduce bug
             container.classList.add('animate-entrance');
             
-            // Start the shine trail shortly after entering
             setTimeout(() => {
                 shineElement.classList.add('shine-active');
-                // Initiate the persistent loop pattern (10s Default -> 5s Anniversary)
-                startLogoAlternationLoop();
             }, 500);
-        }
-
-        function startLogoAlternationLoop() {
-            // Step 1: Wait 10 seconds on the standard logo, then transition to anniversary
-            loopTimer = setTimeout(() => {
-                switchLogoAsset("Stoon3DA.png", () => {
-                    // Step 2: Once anniversary is live, wait 5 seconds, then transition back
-                    loopTimer = setTimeout(() => {
-                        switchLogoAsset("Stoon3D.png", () => {
-                            // Step 3: Recurse back into the state machine
-                            startLogoAlternationLoop();
-                        });
-                    }, 5000);
-                });
-            }, 10000);
-        }
-
-        function switchLogoAsset(targetSrc, callback) {
-            // Trigger 3D rotation out & flash
-            wrapper.classList.add('flip-transition');
-            
-            // Swap asset parameters dead-center inside the 90-degree twist
-            setTimeout(() => {
-                logoImg.src = targetSrc;
-                shineElement.style.maskImage = `url('${targetSrc}')`;
-                shineElement.style.webkitMaskImage = `url('${targetSrc}')`;
-                
-                // Return to normal rotation angles
-                wrapper.classList.remove('flip-transition');
-                
-                if(callback) callback();
-            }, 300); // Perfectly mid-way through the 0.6s CSS transition curve
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -216,10 +162,8 @@
             if (event.detail.visible) {
                 triggerBroadcastSequence();
             } else {
-                clearTimeout(loopTimer);
                 container.classList.remove('animate-entrance');
                 shineElement.classList.remove('shine-active');
-                wrapper.classList.remove('flip-transition');
             }
         });
     </script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Vintage Screenbug - Back to School Edition</title>
+    <title>Spacetoon Vintage Screenbug - Back to School Broadcast Loop</title>
     <style>
         * {
             margin: 0;
@@ -16,6 +16,7 @@
             overflow: hidden;
             width: 100vw;
             height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         /* Standard Arabic broadcast positioning: Top-Right corner */
@@ -24,37 +25,40 @@
             top: 35px;
             right: 45px; 
             width: 230px;
-            height: auto;
+            height: 90px;
             opacity: 0;
-            transform-origin: center;
+            transform-origin: center right;
             
             /* SIMULATED 576p CRT ANALOG LOW-QUALITY FEED */
             filter: blur(0.4px) contrast(1.05) saturate(1.1);
         }
 
-        /* Screenbug fade in */
-        .animate-entrance {
-            animation: spacetoonFadeIntro 0.5s ease-out forwards;
-        }
-
-        /* --- THE SHINE CONTAINER --- */
         .bug-wrapper {
             position: relative;
             width: 100%;
             height: 100%;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
         }
 
-        /* The transparent 3D logo asset layer */
+        /* --- STAGE 1: LOGO LAYER --- */
+        .logo-stage {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+        }
+
         .bug-image {
             width: 100%;
             height: auto;
             display: block;
         }
 
-        /* --- BACK TO SCHOOL ACCENTS --- */
-        
-        /* Mini School Pencil attached to the side of logo */
+        /* --- SCHOOL DECORATIONS --- */
         .school-pencil-badge {
             position: absolute;
             bottom: -5px;
@@ -68,7 +72,6 @@
             z-index: 5;
             box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        /* Eraser */
         .school-pencil-badge::before {
             content: '';
             position: absolute;
@@ -79,7 +82,6 @@
             border-bottom: 2px solid #8d99ae;
             border-radius: 3px 3px 0 0;
         }
-        /* Pencil Lead Tip */
         .school-pencil-badge::after {
             content: '';
             position: absolute;
@@ -90,7 +92,6 @@
             border-top: 12px solid #d4a373;
         }
 
-        /* Small yellow sparkle/star near top right of bug */
         .school-star {
             position: absolute;
             top: -8px;
@@ -106,7 +107,7 @@
             100% { transform: scale(1.2) rotate(15deg); opacity: 1; }
         }
 
-        /* --- THE SHINE EFFECT LAYER --- */
+        /* --- SHINE EFFECT --- */
         .shine-layer {
             position: absolute;
             top: 0;
@@ -145,12 +146,68 @@
             opacity: 0.85; 
         }
 
-        /* LOCKED TO 1.0 SECOND LOOP */
         .shine-active::after {
             animation: logoShineFastRTL 1.0s linear infinite;
         }
 
-        /* --- KEYFRAMES --- */
+        /* --- STAGE 2: BACK-TO-SCHOOL TEXT BANNER --- */
+        .school-banner-stage {
+            position: absolute;
+            top: 10px;
+            right: 0;
+            display: flex;
+            align-items: center;
+            background: #1d3557;
+            border: 3px solid #ffd500;
+            border-radius: 8px;
+            padding: 8px 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            opacity: 0;
+            transform: scale(0.8) translateY(-10px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        .school-banner-stage.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .hashtag-text {
+            color: #ffd500;
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            direction: ltr;
+            white-space: nowrap;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background: #ffd500;
+            margin-left: 4px;
+            animation: blinkCursor 0.6s infinite;
+        }
+
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* --- TRANSITION STATES --- */
+        .logo-stage.hide-movement {
+            opacity: 0;
+            transform: scale(0.7) rotate(-10deg) translateX(30px);
+        }
+
+        .logo-stage.show-movement {
+            opacity: 1;
+            transform: scale(1) rotate(0deg) translateX(0);
+        }
+
         @keyframes spacetoonFadeIntro {
             0% { opacity: 0; }
             100% { opacity: 0.95; }
@@ -166,44 +223,87 @@
 
     <div id="logo-container">
         <div class="bug-wrapper">
-            <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
-            
-            <!-- School Pencil & Accent Badge -->
-            <div class="school-pencil-badge"></div>
-            <div class="school-star">✏️</div>
+            <!-- LOGO STAGE -->
+            <div class="logo-stage show-movement" id="logoStage">
+                <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
+                <div class="school-pencil-badge"></div>
+                <div class="school-star">✏️</div>
+                <div class="shine-layer" id="shineElement"></div>
+            </div>
 
-            <div class="shine-layer" id="shine-element"></div>
+            <!-- BACK TO SCHOOL TEXT STAGE -->
+            <div class="school-banner-stage" id="textStage">
+                <span id="typewriterText" class="hashtag-text"></span>
+                <span class="typing-cursor" id="cursor"></span>
+            </div>
         </div>
     </div>
 
     <script>
         const container = document.getElementById('logo-container');
-        const shineElement = document.getElementById('shine-element');
+        const logoStage = document.getElementById('logoStage');
+        const textStage = document.getElementById('textStage');
+        const shineElement = document.getElementById('shineElement');
+        const typewriterText = document.getElementById('typewriterText');
+        
+        const textToType = "#BACK-TO-SCHOOL";
+        let loopTimer = null;
+
+        function typeWriter(text, i, cb) {
+            if (i < text.length) {
+                typewriterText.innerHTML = text.substring(0, i + 1);
+                setTimeout(() => typeWriter(text, i + 1, cb), 70);
+            } else if (cb) {
+                setTimeout(cb, 2500); // Hold text on screen for 2.5s
+            }
+        }
+
+        function runBroadcastLoop() {
+            // Step 1: Display Logo with Shine
+            logoStage.className = "logo-stage show-movement";
+            textStage.classList.remove("active");
+            shineElement.classList.add("shine-active");
+            typewriterText.innerHTML = "";
+
+            // Step 2: After 6s, move and hide Spacetoon Logo
+            setTimeout(() => {
+                logoStage.className = "logo-stage hide-movement";
+                shineElement.classList.remove("shine-active");
+
+                // Step 3: Show School Banner and start typing text
+                setTimeout(() => {
+                    textStage.classList.add("active");
+                    typeWriter(textToType, 0, () => {
+                        // Step 4: Hide Banner and bring Spacetoon Logo back
+                        textStage.classList.remove("active");
+                        setTimeout(() => {
+                            runBroadcastLoop(); // Repeat infinite cycle
+                        }, 600);
+                    });
+                }, 500);
+
+            }, 6000);
+        }
 
         function triggerBroadcastSequence() {
-            container.classList.remove('animate-entrance');
-            shineElement.classList.remove('shine-active');
-            
+            clearTimeout(loopTimer);
+            container.style.animation = 'none';
             void container.offsetWidth;
-            
-            container.classList.add('animate-entrance');
-            
-            setTimeout(() => {
-                shineElement.classList.add('shine-active');
-            }, 500);
+            container.style.animation = 'spacetoonFadeIntro 0.5s ease-out forwards';
+            runBroadcastLoop();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             triggerBroadcastSequence();
         });
 
-        /* OBS Browser Source Live State Tracking Hooks */
+        /* OBS Browser Source Live Hooks */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 triggerBroadcastSequence();
             } else {
-                container.classList.remove('animate-entrance');
-                shineElement.classList.remove('shine-active');
+                clearTimeout(loopTimer);
+                container.style.opacity = '0';
             }
         });
     </script>

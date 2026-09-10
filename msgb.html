@@ -23,24 +23,41 @@
             justify-content: center;
         }
 
-        /* --- أنيميشن ظهور حاوية الشريط السفلية --- */
+        /* --- أنيميشن ظهور حاوية الشريط السفلية (نمط مسطرة مدرسية) --- */
         .scroll-container {
             display: flex;
             align-items: center;
             height: 60px; 
             width: 92%;
             margin: 0 auto;
-            background: #ffdae9; 
-            border-top: 6px dashed #ef4a81;
-            border-bottom: 6px dashed #ef4a81;
+            background: #fff3b0; /* أصفر مدرسي دافئ */
+            border-top: 6px dashed #1d3557; /* كحلي مدرسي */
+            border-bottom: 6px dashed #1d3557;
             position: relative;
             z-index: 10;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             
-            /* أنيميشن الدخول: يتوسع الشريط من المنتصف سلاسة */
+            /* أنيميشن الدخول */
             animation: container-entrance 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             transform: scaleX(0);
             opacity: 0;
+        }
+
+        /* خطوط تدريج المسطرة أعلى الشريط */
+        .scroll-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                #1d3557,
+                #1d3557 2px,
+                transparent 2px,
+                transparent 12px
+            );
+            opacity: 0.4;
         }
 
         @keyframes container-entrance {
@@ -50,14 +67,14 @@
             }
         }
 
-        /* --- LEFT BADGE (أنيميشن انبثاق مع فليب الدخول) --- */
+        /* --- LEFT BADGE --- */
         .left-badge {
             position: absolute;
             left: 2%;
             width: 110px;
             height: 110px;
-            background: radial-gradient(circle, #ffdae9 60%, #ef4a81 100%);
-            border: 4px solid #fff;
+            background: radial-gradient(circle, #fff3b0 60%, #e63946 100%);
+            border: 4px solid #1d3557;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -66,7 +83,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             perspective: 1000px;
 
-            /* أنيميشن الدخول: يطير البادج من اليسار مع دوران هيدروليكي */
             animation: left-badge-entrance 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards;
             transform: translateX(-200px) rotate(-360deg);
             opacity: 0;
@@ -90,20 +106,20 @@
             backface-visibility: hidden;
         }
         
-        #qrImg { width: 70px; height: 70px; background: white; padding: 4px; border-radius: 5px; }
+        #qrImg { width: 70px; height: 70px; background: white; padding: 4px; border-radius: 5px; border: 2px solid #1d3557; }
         #logoImg { width: 85px; height: auto; object-fit: contain; }
         
         .hidden { opacity: 0; visibility: hidden; transform: rotateY(180deg); }
         .visible { opacity: 1; visibility: visible; transform: rotateY(0deg); }
 
-        /* --- RIGHT BADGE (أنيميشن الطيران والارتداد من اليمين) --- */
+        /* --- RIGHT BADGE --- */
         .emoji-area {
             position: absolute;
             right: 2%;
             width: 105px;
             height: 105px;
-            background: #ef4a81;
-            border: 4px solid #fff;
+            background: #1d3557;
+            border: 4px solid #ffd500;
             border-radius: 50%;
             z-index: 100;
             display: flex;
@@ -111,10 +127,9 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            color: white;
+            color: #fff3b0;
             font-weight: bold;
 
-            /* أنيميشن الدخول: يندفع البادج من اليمين الخارجي بقوة ويرتد */
             animation: right-badge-entrance 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards;
             transform: translateX(200px) scale(0.5);
             opacity: 0;
@@ -131,7 +146,7 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         #emojiVal { font-size: 45px; }
-        #emojiNum { font-size: 18px; margin-bottom: -5px; }
+        #emojiNum { font-size: 18px; margin-bottom: -5px; color: #ffd500; }
 
         /* --- TICKER --- */
         .scroll-wrapper {
@@ -147,8 +162,6 @@
             align-items: center;
             white-space: nowrap;
             animation: scroll-rtl 25s linear infinite; 
-            
-            /* تأخير ظهور النصوص قليلاً لحين تمدد حاوية الشريط المتنقل */
             animation-delay: 0.5s;
         }
 
@@ -162,40 +175,89 @@
             align-items: center; 
             padding-left: 100px; 
         }
-        .text { font-size: 26px; color: #ef4a81; font-weight: bold; } 
-        .username { color: #8e24aa; font-weight: 900; font-size: 26px; margin-left: 10px; }
+        .text { font-size: 26px; color: #1d3557; font-weight: bold; } 
+        .username { color: #e63946; font-weight: 900; font-size: 26px; margin-left: 10px; }
         .scroll-logo { height: 35px; margin: 0 20px; }
 
-        /* --- CSS CANDY ANIMATION (أنيميشن قطع حلوى الزينة المرتدة) --- */
-        .css-candy {
-            position: absolute; z-index: 110; width: 45px; height: 45px; border-radius: 50%;
-            background: repeating-conic-gradient(#fff 0deg 30deg, #ef4a81 30deg 60deg);
-            border: 3px solid #fff; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            
-            /* حركة دخول عامة بالقفز */
-            animation: candy-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.5) forwards;
-            opacity: 0;
-            transform: translateY(50px) scale(0);
-        }
-        .css-candy::after { content: ''; position: absolute; bottom: -25px; left: 50%; width: 6px; height: 30px; background: #eee; transform: translateX(-50%); z-index: -1; border-radius: 3px; }
+        /* --- SCHOOL DECORATIONS (قلم ورقية ودفتر) --- */
         
-        /* تفاوت في أوقات ظهور الحبات لإعطاء تأثير عشوائي رائع */
-        .pop-left { left: 10%; bottom: -10px; animation-delay: 0.8s; }
-        .pop-mid { left: 50%; bottom: -25px; animation-delay: 0.6s; }
-        .pop-right { right: 12%; top: -15px; animation-delay: 1s; }
+        /* 1. تصميم القلم الرصاص (Pencil) */
+        .school-pencil {
+            position: absolute;
+            z-index: 110;
+            width: 18px;
+            height: 70px;
+            background: #ffd500;
+            border: 2px solid #1d3557;
+            border-radius: 2px;
+            animation: school-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.5) forwards;
+            opacity: 0;
+        }
+        /* ممحاة القلم من الأعلى */
+        .school-pencil::before {
+            content: '';
+            position: absolute;
+            top: -12px; left: -2px;
+            width: 18px; height: 10px;
+            background: #ffb703;
+            border: 2px solid #1d3557;
+            border-bottom: 2px solid #8d99ae;
+            border-radius: 4px 4px 0 0;
+        }
+        /* سن القلم من الأسفل */
+        .school-pencil::after {
+            content: '';
+            position: absolute;
+            bottom: -15px; left: -2px;
+            width: 0; height: 0;
+            border-left: 11px solid transparent;
+            border-right: 11px solid transparent;
+            border-top: 15px solid #d4a373;
+        }
 
-        @keyframes candy-pop {
+        /* 2. تصميم كتاب/دفتر مدرسي (Book) */
+        .school-book {
+            position: absolute;
+            z-index: 110;
+            width: 45px;
+            height: 35px;
+            background: #e63946;
+            border: 3px solid #1d3557;
+            border-radius: 4px;
+            box-shadow: 2px 2px 0px #1d3557;
+            animation: school-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.5) forwards;
+            opacity: 0;
+        }
+        /* صفحات الكتاب */
+        .school-book::before {
+            content: '';
+            position: absolute;
+            right: 3px; top: 3px; bottom: 3px;
+            width: 8px;
+            background: #fff;
+            border-left: 2px solid #1d3557;
+        }
+        /* شريط علامة الصفحة */
+        .school-book::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 10px;
+            width: 6px; height: 18px;
+            background: #ffd500;
+            border: 1px solid #1d3557;
+        }
+
+        @keyframes school-pop {
             100% {
                 opacity: 1;
-                /* يعود كل كاندي لدرجة الالتفاف المحددة له */
-                transform: translateY(0) scale(1);
             }
         }
-        
-        /* الحفاظ على زوايا الميلان الخاصة بكل حلوى بعد انتهاء أنيميشن الدخول */
-        .pop-left { transform: rotate(-15deg); }
-        .pop-mid { transform: translateX(-50%) scale(0.8); }
-        .pop-right { transform: rotate(15deg); }
+
+        /* تموضعات عناصر الزينة المدرسة */
+        .pop-left { left: 11%; bottom: -10px; animation-delay: 0.8s; transform: rotate(-25deg); }
+        .pop-mid { left: 50%; top: -20px; animation-delay: 0.6s; transform: translateX(-50%) rotate(10deg); }
+        .pop-right { right: 12%; bottom: -12px; animation-delay: 1s; transform: rotate(20deg); }
+
     </style>
 </head>
 <body>
@@ -211,11 +273,13 @@
     </div>
 
     <div class="scroll-container">
-        <div class="css-candy pop-mid" style="transform: translateX(-50%) scale(0.8);"></div>
+        <!-- زينة الكتاب في منتصف الشريط من الأعلى -->
+        <div class="school-book pop-mid"></div>
+
         <div class="scroll-wrapper">
             <div class="scroll-content" id="content">
                 <div class="item">
-                    <span class="text">أرسل رسالتك الآن لتظهر على الشاشة</span>
+                    <span class="text">أهلاً بكم في الموسم الدراسي الجديد! أرسل رسالتك الآن</span>
                     <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/StoonNo3D.png">
                 </div>
             </div>
@@ -225,11 +289,12 @@
 
     <div class="emoji-area">
         <div id="emojiNum">(1)</div>
-        <div id="emojiVal">😀</div>
+        <div id="emojiVal">✏️</div>
     </div>
 
-    <div class="css-candy pop-left" style="transform: rotate(-15deg);"></div>
-    <div class="css-candy pop-right" style="background: repeating-conic-gradient(#fff 0deg 30deg, #ff9800 30deg 60deg); transform: rotate(15deg);"></div>
+    <!-- زينة قلم رصاص وكتاب على الجانبين -->
+    <div class="school-pencil pop-left"></div>
+    <div class="school-book pop-right" style="background: #457b9d;"></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -252,7 +317,7 @@
     const eNum = document.getElementById('emojiNum');
     const eVal = document.getElementById('emojiVal');
     let count = 1;
-    let code = 128512;
+    let code = 128218; // يبدأ بإيموجي الكتب والمدرسة (📚)
 
     async function runEmojiCycle() {
         while(true) {
@@ -274,10 +339,9 @@
             
             count++;
             code++;
-            if (code > 128800) { code = 128512; count = 1; }
+            if (code > 128221) { code = 128218; count = 1; }
         }
     }
-    // تأخير تشغيل عداد الإيموجي قليلاً حتى تنتهي الحركة الافتتاحية للموقع
     setTimeout(runEmojiCycle, 1200);
 
     // --- أنيميشن البادج الأيسر ---

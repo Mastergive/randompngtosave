@@ -125,8 +125,13 @@
   </div>
 
   <script>
-    // FastCast4u HTML5 direct audio mount endpoint (appending /stream forces raw audio parsing)
-    const STREAM_URL = 'https://eu8.fastcast4u.com/stream/radiospacetoon/stream';
+    // FastCast4u HTTPS Audio Mount Candidates
+    const STREAM_SOURCES = [
+      'https://eu8.fastcast4u.com/proxy/radiospacetoon?mp=/stream',
+      'https://eu8.fastcast4u.com/proxy/radiospacetoon?mp=/1',
+      'https://eu8.fastcast4u.com/radiospacetoon/;stream.mp3',
+      'https://eu8.fastcast4u.com:8000/stream'
+    ];
 
     const audio = new Audio();
     const playBtn = document.getElementById('playBtn');
@@ -135,49 +140,51 @@
     const volumeSlider = document.getElementById('volumeSlider');
 
     let isPlaying = false;
+    let currentSourceIndex = 0;
 
-    // Set initial volume
     audio.volume = volumeSlider.value;
 
-    // Toggle Play/Pause
+    function playStream(index) {
+      if (index >= STREAM_SOURCES.length) {
+        trackTitle.textContent = "Unable to connect to stream. Check encoder status.";
+        statusBadge.textContent = 'OFFLINE';
+        statusBadge.classList.remove('live');
+        isPlaying = false;
+        playBtn.textContent = '▶';
+        return;
+      }
+
+      const streamUrl = STREAM_SOURCES[index] + (STREAM_SOURCES[index].includes('?') ? '&' : '?') + 'nocache=' + Date.now();
+      audio.src = streamUrl;
+
+      audio.play().then(() => {
+        isPlaying = true;
+        playBtn.textContent = '❚❚';
+        statusBadge.textContent = 'ON AIR';
+        statusBadge.classList.add('live');
+        trackTitle.textContent = "Radio Spacetoon - Live Stream";
+      }).catch(err => {
+        console.warn(`Source ${index} failed (${STREAM_SOURCES[index]}), trying next...`, err);
+        playStream(index + 1);
+      });
+    }
+
     playBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        // Appending timestamp to force fresh live connection
-        audio.src = STREAM_URL + '?nocache=' + Date.now();
-        
-        audio.play().then(() => {
-          isPlaying = true;
-          playBtn.textContent = '❚❚';
-          statusBadge.textContent = 'ON AIR';
-          statusBadge.classList.add('live');
-          trackTitle.textContent = "Radio Spacetoon - Live Stream";
-        }).catch(err => {
-          console.error("Playback error:", err);
-          
-          // Fallback shoutcast endpoint syntax if the primary direct mount fails
-          audio.src = 'https://eu8.fastcast4u.com/radiospacetoon/;stream.mp3';
-          audio.play().then(() => {
-            isPlaying = true;
-            playBtn.textContent = '❚❚';
-            statusBadge.textContent = 'ON AIR';
-            statusBadge.classList.add('live');
-            trackTitle.textContent = "Radio Spacetoon - Live Stream";
-          }).catch(fallbackErr => {
-            console.error("Fallback error:", fallbackErr);
-            trackTitle.textContent = "Unable to connect to stream.";
-          });
-        });
+        currentSourceIndex = 0;
+        trackTitle.textContent = "Connecting to stream...";
+        playStream(currentSourceIndex);
       } else {
         audio.pause();
-        audio.src = ''; // Clear source to stop buffering
+        audio.src = '';
         isPlaying = false;
         playBtn.textContent = '▶';
         statusBadge.textContent = 'OFFLINE';
         statusBadge.classList.remove('live');
+        trackTitle.textContent = "Radio Spacetoon - 24/7 Live Stream";
       }
     });
 
-    // Volume Slider
     volumeSlider.addEventListener('input', (e) => {
       audio.volume = e.target.value;
     });

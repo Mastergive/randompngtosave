@@ -203,17 +203,13 @@
   </div>
 
   <script>
-    // Direct raw MP3 endpoints on FastCast4u proxy array
-    const STREAM_SOURCES = [
-      'https://eu8.fastcast4u.com:8010/stream',
-      'https://eu8.fastcast4u.com/radiospacetoon/stream',
-      'https://eu8.fastcast4u.com/radiospacetoon/;'
-    ];
-
+    // Direct FastCast4u Mount & API endpoints
+    const RAW_STREAM_URL = 'https://eu8.fastcast4u.com/radiospacetoon';
     const API_URL = 'https://eu8.fastcast4u.com/external/rpc.php?m=streaminfo.get&username=radiospacetoon&charset=utf-8';
 
     const audio = new Audio();
-    audio.crossOrigin = "anonymous";
+    // Setting crossOrigin to null bypasses strict CORS header checks for live streams
+    audio.crossOrigin = null;
 
     const playBtn = document.getElementById('playBtn');
     const statusBadge = document.getElementById('statusBadge');
@@ -290,35 +286,22 @@
     updateNowPlaying();
     setInterval(updateNowPlaying, 5000);
 
-    // Dynamic failover attempt loop
-    function attemptPlay(index = 0) {
-      if (index >= STREAM_SOURCES.length) {
-        songTitle.textContent = "Stream Offline";
-        songArtist.textContent = "Could not load raw audio";
-        playBtn.textContent = '▶';
-        statusBadge.textContent = 'OFFLINE';
-        statusBadge.classList.remove('live');
-        isPlaying = false;
-        return;
-      }
-
-      audio.src = STREAM_SOURCES[index];
-      
-      audio.play().then(() => {
-        isPlaying = true;
-        playBtn.textContent = '❚❚';
-        statusBadge.textContent = 'ON AIR';
-        statusBadge.classList.add('live');
-        drawVisualizer();
-      }).catch(err => {
-        console.warn(`Source ${STREAM_SOURCES[index]} failed parsing. Trying next...`, err);
-        attemptPlay(index + 1);
-      });
-    }
-
     playBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        attemptPlay(0);
+        // Appending /; forces Shoutcast audio decoder without triggered CORS preflights
+        audio.src = RAW_STREAM_URL + '/;';
+
+        audio.play().then(() => {
+          isPlaying = true;
+          playBtn.textContent = '❚❚';
+          statusBadge.textContent = 'ON AIR';
+          statusBadge.classList.add('live');
+          drawVisualizer();
+        }).catch(err => {
+          console.error("Playback Error:", err);
+          songTitle.textContent = "Unable to connect";
+          songArtist.textContent = "Check network status";
+        });
       } else {
         audio.pause();
         audio.removeAttribute('src');

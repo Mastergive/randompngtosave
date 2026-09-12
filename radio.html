@@ -203,13 +203,10 @@
   </div>
 
   <script>
-    // Direct FastCast4u Mount & API endpoints
-    const RAW_STREAM_URL = 'https://eu8.fastcast4u.com/radiospacetoon';
     const API_URL = 'https://eu8.fastcast4u.com/external/rpc.php?m=streaminfo.get&username=radiospacetoon&charset=utf-8';
 
+    // Standard Audio instance without setting crossOrigin attributes
     const audio = new Audio();
-    // Setting crossOrigin to null bypasses strict CORS header checks for live streams
-    audio.crossOrigin = null;
 
     const playBtn = document.getElementById('playBtn');
     const statusBadge = document.getElementById('statusBadge');
@@ -288,8 +285,8 @@
 
     playBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        // Appending /; forces Shoutcast audio decoder without triggered CORS preflights
-        audio.src = RAW_STREAM_URL + '/;';
+        // Appending parameters forces Centova/Icecast to output raw audio stream chunks
+        audio.src = 'https://eu8.fastcast4u.com/radiospacetoon?type=http&nocache=' + Date.now();
 
         audio.play().then(() => {
           isPlaying = true;
@@ -300,7 +297,7 @@
         }).catch(err => {
           console.error("Playback Error:", err);
           songTitle.textContent = "Unable to connect";
-          songArtist.textContent = "Check network status";
+          songArtist.textContent = "Check network connection";
         });
       } else {
         audio.pause();

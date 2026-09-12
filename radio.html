@@ -47,7 +47,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
     }
 
     .album-art {
@@ -65,9 +64,6 @@
       margin-bottom: 1.2rem;
       border: 1px solid rgba(255, 255, 255, 0.1);
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     canvas {
@@ -85,7 +81,7 @@
       border-radius: 12px;
       margin-bottom: 1rem;
       background-color: #444;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      transition: background-color 0.3s ease;
     }
 
     .status-badge.live {
@@ -143,13 +139,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, background-color 0.2s;
     }
 
     .play-btn:hover {
       transform: scale(1.05);
       background-color: #ffaa22;
-      box-shadow: 0 0 15px rgba(255, 153, 0, 0.4);
     }
 
     .volume-container {
@@ -185,7 +180,6 @@
       <img id="albumArt" class="album-art" src="https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/88/9d/ff/889dff3f-1cf7-8f1e-80f2-2ab7c874905e/859765481186_cover.jpg/100x100bb.jpg" alt="Album Cover">
     </div>
 
-    <!-- Winamp Equalizer Visualizer Canvas -->
     <div class="visualizer-container">
       <canvas id="visualizer" width="300" height="60"></canvas>
     </div>
@@ -208,17 +202,13 @@
     </div>
   </div>
 
-  <script>
-    // Stream options array to handle failovers
-    const STREAM_SOURCES = [
-      'http://eu8.fastcast4u.com/radiospacetoon',
-      'http://eu8.fastcast4u.com/stream/radiospacetoon',
-      'http://eu8.fastcast4u.com/radiospacetoon/'
-    ];
+  <!-- HTML5 Audio element pre-configured -->
+  <audio id="radioAudio" preload="none" src="https://eu8.fastcast4u.com/radiospacetoon"></audio>
 
+  <script>
     const API_URL = 'https://eu8.fastcast4u.com/external/rpc.php?m=streaminfo.get&username=radiospacetoon&charset=utf-8';
 
-    const audio = new Audio();
+    const audio = document.getElementById('radioAudio');
     const playBtn = document.getElementById('playBtn');
     const statusBadge = document.getElementById('statusBadge');
     const trackInfo = document.getElementById('trackInfo');
@@ -232,7 +222,6 @@
     let animationId;
     let isPlaying = false;
     let currentTrackName = "";
-    let currentSourceIndex = 0;
 
     const numBars = 24;
     const barHeights = new Array(numBars).fill(0);
@@ -295,38 +284,31 @@
     updateNowPlaying();
     setInterval(updateNowPlaying, 5000);
 
-    function tryPlaySource(index) {
-      if (index >= STREAM_SOURCES.length) {
-        songTitle.textContent = "Unable to connect";
-        songArtist.textContent = "Check network status";
-        isPlaying = false;
-        playBtn.textContent = '▶';
-        statusBadge.textContent = 'OFFLINE';
-        statusBadge.classList.remove('live');
-        return;
-      }
-
-      audio.src = STREAM_SOURCES[index] + '?nocache=' + Date.now();
-      
-      audio.play().then(() => {
-        isPlaying = true;
-        playBtn.textContent = '❚❚';
-        statusBadge.textContent = 'ON AIR';
-        statusBadge.classList.add('live');
-        drawVisualizer();
-      }).catch(err => {
-        console.warn(`Source ${STREAM_SOURCES[index]} failed, trying next source...`);
-        tryPlaySource(index + 1);
-      });
-    }
-
     playBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        currentSourceIndex = 0;
-        tryPlaySource(currentSourceIndex);
+        // Set live source right before trigger
+        audio.src = 'https://eu8.fastcast4u.com/radiospacetoon?cb=' + Date.now();
+        audio.load();
+
+        const playPromise = audio.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            isPlaying = true;
+            playBtn.textContent = '❚❚';
+            statusBadge.textContent = 'ON AIR';
+            statusBadge.classList.add('live');
+            drawVisualizer();
+          }).catch(err => {
+            console.error("Playback error:", err);
+            songTitle.textContent = "Click Play Again";
+            songArtist.textContent = "Stream reconnecting...";
+          });
+        }
       } else {
         audio.pause();
-        audio.src = '';
+        audio.removeAttribute('src');
+        audio.load();
         isPlaying = false;
         playBtn.textContent = '▶';
         statusBadge.textContent = 'OFFLINE';

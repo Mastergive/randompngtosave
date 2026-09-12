@@ -203,9 +203,13 @@
   </div>
 
   <script>
+    // The exact Centova Cast API and Proxy URLs
     const API_URL = 'https://eu8.fastcast4u.com/external/rpc.php?m=streaminfo.get&username=radiospacetoon&charset=utf-8';
+    
+    // Using the /proxy/ system bypasses the HTML wrapper entirely
+    const STREAM_URL = 'https://eu8.fastcast4u.com/proxy/radiospacetoon?mp=/stream';
 
-    // Standard Audio instance without setting crossOrigin attributes
+    // Standard Audio instance - NO crossOrigin attribute set so the browser doesn't send strict preflight requests
     const audio = new Audio();
 
     const playBtn = document.getElementById('playBtn');
@@ -285,8 +289,8 @@
 
     playBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        // Appending parameters forces Centova/Icecast to output raw audio stream chunks
-        audio.src = 'https://eu8.fastcast4u.com/radiospacetoon?type=http&nocache=' + Date.now();
+        // Appending a timestamp forces the browser to pull a fresh audio stream instead of a cached error state
+        audio.src = STREAM_URL + '&nocache=' + Date.now();
 
         audio.play().then(() => {
           isPlaying = true;
@@ -296,8 +300,8 @@
           drawVisualizer();
         }).catch(err => {
           console.error("Playback Error:", err);
-          songTitle.textContent = "Unable to connect";
-          songArtist.textContent = "Check network connection";
+          songTitle.textContent = "Stream Offline";
+          songArtist.textContent = "Please try again";
         });
       } else {
         audio.pause();

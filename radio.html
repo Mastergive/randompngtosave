@@ -203,12 +203,18 @@
   </div>
 
   <script>
-    // Updated Stream Endpoints for FastCast4u HTTPS Proxy
-    const STREAM_URL = 'https://eu8.fastcast4u.com/radiospacetoon';
-    const FALLBACK_URL = 'https://eu8.fastcast4u.com/stream/radiospacetoon';
+    // Direct raw MP3 endpoints on FastCast4u proxy array
+    const STREAM_SOURCES = [
+      'https://eu8.fastcast4u.com:8010/stream',
+      'https://eu8.fastcast4u.com/radiospacetoon/stream',
+      'https://eu8.fastcast4u.com/radiospacetoon/;'
+    ];
+
     const API_URL = 'https://eu8.fastcast4u.com/external/rpc.php?m=streaminfo.get&username=radiospacetoon&charset=utf-8';
 
     const audio = new Audio();
+    audio.crossOrigin = "anonymous";
+
     const playBtn = document.getElementById('playBtn');
     const statusBadge = document.getElementById('statusBadge');
     const trackInfo = document.getElementById('trackInfo');
@@ -277,39 +283,42 @@
           }
         }
       } catch (err) {
-        console.error("Error fetching live metadata:", err);
+        console.error("Metadata error:", err);
       }
     }
 
     updateNowPlaying();
     setInterval(updateNowPlaying, 5000);
 
+    // Dynamic failover attempt loop
+    function attemptPlay(index = 0) {
+      if (index >= STREAM_SOURCES.length) {
+        songTitle.textContent = "Stream Offline";
+        songArtist.textContent = "Could not load raw audio";
+        playBtn.textContent = '▶';
+        statusBadge.textContent = 'OFFLINE';
+        statusBadge.classList.remove('live');
+        isPlaying = false;
+        return;
+      }
+
+      audio.src = STREAM_SOURCES[index];
+      
+      audio.play().then(() => {
+        isPlaying = true;
+        playBtn.textContent = '❚❚';
+        statusBadge.textContent = 'ON AIR';
+        statusBadge.classList.add('live');
+        drawVisualizer();
+      }).catch(err => {
+        console.warn(`Source ${STREAM_SOURCES[index]} failed parsing. Trying next...`, err);
+        attemptPlay(index + 1);
+      });
+    }
+
     playBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        audio.src = STREAM_URL + '?nocache=' + Date.now();
-        
-        audio.play().then(() => {
-          isPlaying = true;
-          playBtn.textContent = '❚❚';
-          statusBadge.textContent = 'ON AIR';
-          statusBadge.classList.add('live');
-          drawVisualizer();
-        }).catch(err => {
-          console.warn("Primary stream failed, attempting fallback endpoint...", err);
-          
-          audio.src = FALLBACK_URL + '?nocache=' + Date.now();
-          audio.play().then(() => {
-            isPlaying = true;
-            playBtn.textContent = '❚❚';
-            statusBadge.textContent = 'ON AIR';
-            statusBadge.classList.add('live');
-            drawVisualizer();
-          }).catch(fallbackErr => {
-            console.error("Fallback error:", fallbackErr);
-            songTitle.textContent = "Unable to connect";
-            songArtist.textContent = "Check network status";
-          });
-        });
+        attemptPlay(0);
       } else {
         audio.pause();
         audio.removeAttribute('src');

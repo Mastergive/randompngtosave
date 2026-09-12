@@ -209,7 +209,13 @@
   </div>
 
   <script>
-    const STREAM_URL = 'https://eu8.fastcast4u.com/radiospacetoon/;stream.mp3';
+    // Stream options array to handle failovers
+    const STREAM_SOURCES = [
+      'https://eu8.fastcast4u.com/radiospacetoon',
+      'https://eu8.fastcast4u.com/stream/radiospacetoon',
+      'https://eu8.fastcast4u.com/radiospacetoon/'
+    ];
+
     const API_URL = 'https://eu8.fastcast4u.com/external/rpc.php?m=streaminfo.get&username=radiospacetoon&charset=utf-8';
 
     const audio = new Audio();
@@ -226,13 +232,13 @@
     let animationId;
     let isPlaying = false;
     let currentTrackName = "";
+    let currentSourceIndex = 0;
 
     const numBars = 24;
     const barHeights = new Array(numBars).fill(0);
 
     audio.volume = volumeSlider.value;
 
-    // Simulated Winamp Audio Graphic Animation (Bypasses CORS restrictions)
     function drawVisualizer() {
       animationId = requestAnimationFrame(drawVisualizer);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -240,7 +246,6 @@
       const barWidth = canvas.width / numBars;
 
       for (let i = 0; i < numBars; i++) {
-        // Generate smooth procedural movements when playing
         const targetHeight = Math.random() * canvas.height * 0.85;
         barHeights[i] += (targetHeight - barHeights[i]) * 0.25;
 
@@ -254,7 +259,6 @@
       }
     }
 
-    // Centova API Metadata Fetching
     async function updateNowPlaying() {
       try {
         const response = await fetch(API_URL);
@@ -291,22 +295,35 @@
     updateNowPlaying();
     setInterval(updateNowPlaying, 5000);
 
-    // Playback Controller
+    function tryPlaySource(index) {
+      if (index >= STREAM_SOURCES.length) {
+        songTitle.textContent = "Unable to connect";
+        songArtist.textContent = "Check network status";
+        isPlaying = false;
+        playBtn.textContent = '▶';
+        statusBadge.textContent = 'OFFLINE';
+        statusBadge.classList.remove('live');
+        return;
+      }
+
+      audio.src = STREAM_SOURCES[index] + '?nocache=' + Date.now();
+      
+      audio.play().then(() => {
+        isPlaying = true;
+        playBtn.textContent = '❚❚';
+        statusBadge.textContent = 'ON AIR';
+        statusBadge.classList.add('live');
+        drawVisualizer();
+      }).catch(err => {
+        console.warn(`Source ${STREAM_SOURCES[index]} failed, trying next source...`);
+        tryPlaySource(index + 1);
+      });
+    }
+
     playBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        audio.src = STREAM_URL + '?nocache=' + Date.now();
-        
-        audio.play().then(() => {
-          isPlaying = true;
-          playBtn.textContent = '❚❚';
-          statusBadge.textContent = 'ON AIR';
-          statusBadge.classList.add('live');
-          drawVisualizer();
-        }).catch(err => {
-          console.error("Playback error:", err);
-          songTitle.textContent = "Unable to connect";
-          songArtist.textContent = "Check network status";
-        });
+        currentSourceIndex = 0;
+        tryPlaySource(currentSourceIndex);
       } else {
         audio.pause();
         audio.src = '';

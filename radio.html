@@ -111,7 +111,7 @@
   <div class="player-card">
     <div id="statusBadge" class="status-badge">Offline</div>
     <h2 class="station-title">Radio Spacetoon</h2>
-    <div id="trackTitle" class="track-info">Loading stream info...</div>
+    <div id="trackTitle" class="track-info">Radio Spacetoon - 24/7 Live Stream</div>
 
     <div class="controls">
       <button id="playBtn" class="play-btn" aria-label="Play Stream">▶</button>
@@ -125,11 +125,8 @@
   </div>
 
   <script>
-    // Replace with your active Cloudflare HTTPS Tunnel URL and mount point
-    const STREAM_BASE_URL = 'https://built-technical-ruby-van.trycloudflare.com';
-    const MOUNT_POINT = '/spacetoon_live';
-    const STREAM_URL = STREAM_BASE_URL + MOUNT_POINT;
-    const STATS_URL = STREAM_BASE_URL + '/status-json.xsl';
+    // Direct FastCast4u Audio Stream URL
+    const STREAM_URL = 'https://eu8.fastcast4u.com/stream/radiospacetoon';
 
     const audio = new Audio();
     const playBtn = document.getElementById('playBtn');
@@ -142,10 +139,10 @@
     // Set initial volume
     audio.volume = volumeSlider.value;
 
-    // Toggle Play/Pause (Handles live stream buffer clearance)
+    // Toggle Play/Pause
     playBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        // Append timestamp to bypass browser cache and force direct live stream connection
+        // Appending timestamp to bypass browser caching and force the live edge
         audio.src = STREAM_URL + '?nocache=' + Date.now();
         audio.play().then(() => {
           isPlaying = true;
@@ -158,7 +155,7 @@
         });
       } else {
         audio.pause();
-        audio.src = ''; // Detach stream to save user bandwidth
+        audio.src = ''; // Clear source to detach and save bandwidth
         isPlaying = false;
         playBtn.textContent = '▶';
         statusBadge.textContent = 'OFFLINE';
@@ -170,39 +167,6 @@
     volumeSlider.addEventListener('input', (e) => {
       audio.volume = e.target.value;
     });
-
-    // Fetch Icecast Now-Playing Metadata
-    async function updateMetadata() {
-      try {
-        const response = await fetch(STATS_URL);
-        if (!response.ok) throw new Error("Stats unreachable");
-        
-        const data = await response.json();
-        let sources = data.icestats.source;
-        
-        // Handle single source vs array of sources
-        if (!Array.isArray(sources)) {
-          sources = [sources];
-        }
-
-        const currentSource = sources.find(s => s.listenurl && s.listenurl.includes(MOUNT_POINT));
-
-        if (currentSource && currentSource.title) {
-          trackTitle.textContent = currentSource.title;
-        } else {
-          trackTitle.textContent = "Radio Spacetoon - Live Stream";
-        }
-      } catch (err) {
-        // Fallback title if status-json isn't reachable
-        if (trackTitle.textContent === "Loading stream info...") {
-          trackTitle.textContent = "Radio Spacetoon - 24/7 Channel";
-        }
-      }
-    }
-
-    // Poll metadata every 10 seconds
-    updateMetadata();
-    setInterval(updateMetadata, 10000);
   </script>
 
 </body>

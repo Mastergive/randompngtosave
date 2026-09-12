@@ -32,6 +32,50 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       text-align: center;
       border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Album Cover Artwork Container */
+    .album-art-container {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 1rem auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      background-color: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .album-art {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    /* Winamp/WMP Style Visualizer Canvas */
+    .visualizer-container {
+      width: 100%;
+      height: 60px;
+      background-color: #080c14;
+      border-radius: 8px;
+      margin-bottom: 1.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     .status-badge {
@@ -43,11 +87,13 @@
       border-radius: 12px;
       margin-bottom: 1rem;
       background-color: #444;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .status-badge.live {
       background-color: #e50914;
       box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+      animation: pulse 2s infinite;
     }
 
     .station-title {
@@ -58,11 +104,26 @@
     .track-info {
       font-size: 0.95rem;
       color: #b3b3b3;
-      margin-bottom: 1.5rem;
-      min-height: 2.5em;
+      margin-bottom: 1.2rem;
+      min-height: 2.8em;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      line-height: 1.3;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    .track-title-text {
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+
+    .track-artist-text {
+      color: var(--accent-color);
+      font-size: 0.85rem;
     }
 
     .controls {
@@ -84,12 +145,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.2s, background-color 0.2s;
+      transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
     }
 
     .play-btn:hover {
       transform: scale(1.05);
       background-color: #ffaa22;
+      box-shadow: 0 0 15px rgba(255, 153, 0, 0.4);
     }
 
     .volume-container {
@@ -104,14 +166,38 @@
       accent-color: var(--accent-color);
       cursor: pointer;
     }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(229, 9, 20, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(229, 9, 20, 0); }
+    }
+
+    .fade-out {
+      opacity: 0;
+    }
   </style>
 </head>
 <body>
 
   <div class="player-card">
     <div id="statusBadge" class="status-badge">Offline</div>
+    
+    <div class="album-art-container">
+      <img id="albumArt" class="album-art" src="https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/88/9d/ff/889dff3f-1cf7-8f1e-80f2-2ab7c874905e/859765481186_cover.jpg/100x100bb.jpg" alt="Album Cover">
+    </div>
+
+    <!-- Winamp/WMP Equalizer Visualizer Canvas -->
+    <div class="visualizer-container">
+      <canvas id="visualizer"></canvas>
+    </div>
+
     <h2 class="station-title">Radio Spacetoon</h2>
-    <div id="trackTitle" class="track-info">Radio Spacetoon - 24/7 Live Stream</div>
+    
+    <div id="trackInfo" class="track-info">
+      <div id="songTitle" class="track-title-text">Radio Spacetoon</div>
+      <div id="songArtist" class="track-artist-text">24/7 Live Stream</div>
+    </div>
 
     <div class="controls">
       <button id="playBtn" class="play-btn" aria-label="Play Stream">▶</button>
@@ -125,55 +211,136 @@
   </div>
 
   <script>
-    // FastCast4u HTTPS Audio Mount Candidates
-    const STREAM_SOURCES = [
-      'https://eu8.fastcast4u.com/proxy/radiospacetoon?mp=/stream',
-      'https://eu8.fastcast4u.com/proxy/radiospacetoon?mp=/1',
-      'https://eu8.fastcast4u.com/radiospacetoon/;stream.mp3',
-      'https://eu8.fastcast4u.com:8000/stream'
-    ];
+    const STREAM_URL = 'https://eu8.fastcast4u.com/stream/radiospacetoon/stream';
+    const API_URL = 'https://eu8.fastcast4u.com/external/rpc.php?m=streaminfo.get&username=radiospacetoon&charset=utf-8';
 
     const audio = new Audio();
+    audio.crossOrigin = "anonymous"; // Required for Web Audio API context canvas rendering
+
     const playBtn = document.getElementById('playBtn');
     const statusBadge = document.getElementById('statusBadge');
-    const trackTitle = document.getElementById('trackTitle');
+    const trackInfo = document.getElementById('trackInfo');
+    const songTitle = document.getElementById('songTitle');
+    const songArtist = document.getElementById('songArtist');
+    const albumArt = document.getElementById('albumArt');
     const volumeSlider = document.getElementById('volumeSlider');
+    
+    // Canvas & Web Audio API setups
+    const canvas = document.getElementById('visualizer');
+    const ctx = canvas.getContext('2d');
+    let audioCtx, analyser, source, dataArray, animationId;
 
     let isPlaying = false;
-    let currentSourceIndex = 0;
+    let currentTrackName = "";
 
     audio.volume = volumeSlider.value;
 
-    function playStream(index) {
-      if (index >= STREAM_SOURCES.length) {
-        trackTitle.textContent = "Unable to connect to stream. Check encoder status.";
-        statusBadge.textContent = 'OFFLINE';
-        statusBadge.classList.remove('live');
-        isPlaying = false;
-        playBtn.textContent = '▶';
-        return;
+    function initVisualizer() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 64; // Creates classic retro Winamp bar frequency count
+        source = audioCtx.createMediaElementSource(audio);
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
       }
-
-      const streamUrl = STREAM_SOURCES[index] + (STREAM_SOURCES[index].includes('?') ? '&' : '?') + 'nocache=' + Date.now();
-      audio.src = streamUrl;
-
-      audio.play().then(() => {
-        isPlaying = true;
-        playBtn.textContent = '❚❚';
-        statusBadge.textContent = 'ON AIR';
-        statusBadge.classList.add('live');
-        trackTitle.textContent = "Radio Spacetoon - Live Stream";
-      }).catch(err => {
-        console.warn(`Source ${index} failed (${STREAM_SOURCES[index]}), trying next...`, err);
-        playStream(index + 1);
-      });
     }
 
+    function drawVisualizer() {
+      animationId = requestAnimationFrame(drawVisualizer);
+      analyser.getByteFrequencyData(dataArray);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const barWidth = (canvas.width / dataArray.length) * 1.5;
+      let x = 0;
+
+      for (let i = 0; i < dataArray.length; i++) {
+        const barHeight = (dataArray[i] / 255) * canvas.height;
+
+        // Retro Winamp spectrum gradient (Green -> Yellow -> Red peaks)
+        const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
+        gradient.addColorStop(0, '#00ffcc');
+        gradient.addColorStop(0.6, '#ffcc00');
+        gradient.addColorStop(1, '#ff0055');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
+
+        x += barWidth;
+      }
+    }
+
+    // Centova API Metadata Fetching
+    async function updateNowPlaying() {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+
+        if (data && data.data && data.data[0] && data.data[0].track) {
+          const track = data.data[0].track;
+          const fullTrackName = `${track.artist} - ${track.title}`;
+
+          if (fullTrackName !== currentTrackName) {
+            currentTrackName = fullTrackName;
+
+            trackInfo.classList.add('fade-out');
+            albumArt.classList.add('fade-out');
+
+            setTimeout(() => {
+              songTitle.textContent = track.title || "Radio Spacetoon";
+              songArtist.textContent = track.artist || "Live Stream";
+
+              if (track.imageurl) {
+                albumArt.src = track.imageurl;
+              }
+
+              trackInfo.classList.remove('fade-out');
+              albumArt.classList.remove('fade-out');
+            }, 400);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching live metadata:", err);
+      }
+    }
+
+    updateNowPlaying();
+    setInterval(updateNowPlaying, 5000);
+
+    // Playback Toggle
     playBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        currentSourceIndex = 0;
-        trackTitle.textContent = "Connecting to stream...";
-        playStream(currentSourceIndex);
+        initVisualizer();
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        audio.src = STREAM_URL + '?nocache=' + Date.now();
+        
+        audio.play().then(() => {
+          isPlaying = true;
+          playBtn.textContent = '❚❚';
+          statusBadge.textContent = 'ON AIR';
+          statusBadge.classList.add('live');
+          drawVisualizer();
+        }).catch(err => {
+          console.error("Playback error:", err);
+          
+          audio.src = 'https://eu8.fastcast4u.com/radiospacetoon/;stream.mp3';
+          audio.play().then(() => {
+            isPlaying = true;
+            playBtn.textContent = '❚❚';
+            statusBadge.textContent = 'ON AIR';
+            statusBadge.classList.add('live');
+            drawVisualizer();
+          }).catch(fallbackErr => {
+            console.error("Fallback error:", fallbackErr);
+            songTitle.textContent = "Unable to connect";
+            songArtist.textContent = "Check network status";
+          });
+        });
       } else {
         audio.pause();
         audio.src = '';
@@ -181,7 +348,8 @@
         playBtn.textContent = '▶';
         statusBadge.textContent = 'OFFLINE';
         statusBadge.classList.remove('live');
-        trackTitle.textContent = "Radio Spacetoon - 24/7 Live Stream";
+        cancelAnimationFrame(animationId);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
     });
 

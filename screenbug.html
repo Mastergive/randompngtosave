@@ -66,6 +66,46 @@
             filter: drop-shadow(2px 3px 5px rgba(0,0,0,0.4));
         }
 
+        /* --- SUBTLE INNER BLUE GLOW LAYER --- */
+        .inner-blue-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+
+            /* Masking strictly restricts glow inside the logo silhouette */
+            -webkit-mask-image: url('Stoon3D.png');
+            mask-image: url('Stoon3D.png');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+
+            /* Soft radial blue core */
+            background: radial-gradient(
+                circle at 50% 50%,
+                rgba(56, 189, 248, 0.35) 0%,
+                rgba(14, 165, 233, 0.2) 40%,
+                rgba(3, 105, 161, 0) 75%
+            );
+            mix-blend-mode: color-dodge;
+            opacity: 0.45; /* Kept very soft and understated */
+            animation: subtleBluePulse 3.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes subtleBluePulse {
+            0% {
+                opacity: 0.25;
+                transform: scale(0.96);
+            }
+            100% {
+                opacity: 0.55;
+                transform: scale(1.04);
+            }
+        }
+
         /* --- SCHOOL DECORATIONS --- */
         .school-pencil-badge {
             position: absolute;
@@ -230,15 +270,14 @@
 
     <div id="logo-container">
         <div class="bug-wrapper">
-            <!-- LOGO STAGE -->
             <div class="logo-stage show-movement" id="logoStage">
                 <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
+                <div class="inner-blue-glow"></div>
                 <div class="school-pencil-badge"></div>
                 <div class="school-star">✏️</div>
                 <div class="shine-layer" id="shineElement"></div>
             </div>
 
-            <!-- BACK TO SCHOOL TEXT STAGE -->
             <div class="school-banner-stage" id="textStage">
                 <span id="typewriterText" class="hashtag-text"></span>
                 <span class="typing-cursor" id="cursor"></span>
@@ -261,44 +300,39 @@
                 typewriterText.innerHTML = text.substring(0, i + 1);
                 setTimeout(() => typeWriter(text, i + 1, cb), 80);
             } else if (cb) {
-                setTimeout(cb, 3200); // Hold banner on screen long enough to be read comfortably
+                setTimeout(cb, 3200);
             }
         }
 
         function triggerShinePass() {
             shineElement.classList.remove("shine-active");
-            void shineElement.offsetWidth; // Trigger reflow
+            void shineElement.offsetWidth;
             shineElement.classList.add("shine-active");
         }
 
         function runBroadcastLoop() {
-            // Step 1: Display Logo and trigger primary shine sweep
             logoStage.className = "logo-stage show-movement";
             textStage.classList.remove("active");
             typewriterText.innerHTML = "";
             
             triggerShinePass();
 
-            // Trigger a secondary subtle shine mid-way during logo hold time
             setTimeout(() => {
                 if (logoStage.classList.contains("show-movement")) {
                     triggerShinePass();
                 }
             }, 4000);
 
-            // Step 2: Hold logo on screen for 10 seconds to give screen space breathing room
             loopTimer = setTimeout(() => {
                 logoStage.className = "logo-stage hide-movement";
                 shineElement.classList.remove("shine-active");
 
-                // Step 3: Transition to Back-to-School Banner
                 setTimeout(() => {
                     textStage.classList.add("active");
                     typeWriter(textToType, 0, () => {
-                        // Step 4: Hide Banner and return to primary Spacetoon Logo
                         textStage.classList.remove("active");
                         setTimeout(() => {
-                            runBroadcastLoop(); // Repeat continuous broadcast loop
+                            runBroadcastLoop();
                         }, 800);
                     });
                 }, 600);

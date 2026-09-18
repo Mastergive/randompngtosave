@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Vintage Screenbug - Back to School Broadcast Loop</title>
+    <title>Spacetoon Vintage Screenbug (Exact Broadcast Loop)</title>
     <style>
         * {
             margin: 0;
@@ -16,257 +16,113 @@
             overflow: hidden;
             width: 100vw;
             height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        /* Standard Arabic broadcast positioning: Top-Right corner */
         #logo-container {
             position: absolute;
-            top: 40px;
-            right: 50px; 
-            width: 210px;
-            height: 85px;
+            top: 35px;
+            right: 45px; 
+            width: 220px;
+            height: auto;
             opacity: 0;
-            transform-origin: top right;
-            filter: drop-shadow(0px 0px 6px rgba(255, 213, 0, 0.25)) blur(0.2px) contrast(1.08) saturate(1.15);
-            animation: crtJitter 4s infinite alternate ease-in-out;
+            transform-origin: center;
+            
+            /* SIMULATED 576p CRT ANALOG LOW-QUALITY FEED */
+            filter: blur(0.4px) contrast(1.05) saturate(1.1);
         }
 
-        @keyframes crtJitter {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-0.5px) rotate(0.1deg); }
-            100% { transform: translateY(0.5px) rotate(-0.1deg); }
+        /* Screenbug just fades in smoothly */
+        .animate-entrance {
+            animation: spacetoonFadeIntro 0.5s ease-out forwards;
         }
 
+        /* --- THE SHINE CONTAINER --- */
         .bug-wrapper {
             position: relative;
             width: 100%;
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
+            display: inline-block;
         }
 
-        /* --- LOGO LAYER --- */
-        .logo-stage {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease-in-out;
-        }
-
+        /* The transparent 3D logo asset layer */
         .bug-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Prevents aspect ratio distortion */
-    display: block;
-    filter: drop-shadow(2px 3px 5px rgba(0,0,0,0.4));
-}
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
-        /* --- SUBTLE INNER BLUE GLOW --- */
-        .inner-blue-glow {
+        /* --- THE SHINE EFFECT LAYER --- */
+        .shine-layer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            
+            /* MASK KEEPS THE SHINE ONLY ON EXISTENT PIXELS */
             -webkit-mask-image: url('Stoon3D.png');
             mask-image: url('Stoon3D.png');
             -webkit-mask-size: contain;
             mask-size: contain;
             -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
-            background: radial-gradient(
-                circle at 50% 50%,
-                rgba(56, 189, 248, 0.45) 0%,
-                rgba(14, 165, 233, 0.2) 45%,
-                rgba(3, 105, 161, 0) 75%
-            );
-            mix-blend-mode: color-dodge;
-            opacity: 0.5;
-            animation: subtleBluePulse 3.5s ease-in-out infinite alternate;
         }
 
-        @keyframes subtleBluePulse {
-            0% { opacity: 0.3; transform: scale(0.97); }
-            100% { opacity: 0.6; transform: scale(1.03); }
-        }
-
-        /* --- SCHOOL DECORATIONS --- */
-        .school-pencil-badge {
-            position: absolute;
-            bottom: -2px;
-            left: -8px;
-            width: 12px;
-            height: 42px;
-            background: linear-gradient(90deg, #ffe066, #f59e0b);
-            border: 1.5px solid #0f172a;
-            border-radius: 2px;
-            transform: rotate(-28deg);
-            z-index: 5;
-            box-shadow: -2px 2px 4px rgba(0,0,0,0.3);
-        }
-        .school-pencil-badge::before {
-            content: '';
-            position: absolute;
-            top: -8px; left: -1.5px;
-            width: 12px; height: 7px;
-            background: #f43f5e;
-            border: 1.5px solid #0f172a;
-            border-bottom: 1.5px solid #94a3b8;
-            border-radius: 2px 2px 0 0;
-        }
-        .school-pencil-badge::after {
-            content: '';
-            position: absolute;
-            bottom: -11px; left: -1.5px;
-            width: 0; height: 0;
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-top: 11px solid #d4a373;
-        }
-
-        .school-star {
-            position: absolute;
-            top: -6px;
-            right: 12px;
-            font-size: 14px;
-            color: #fbbf24;
-            text-shadow: 0 0 6px rgba(245, 158, 11, 0.8), 0 0 2px #000;
-            animation: starPulse 2.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes starPulse {
-            0% { transform: scale(0.85) rotate(-5deg); opacity: 0.75; }
-            100% { transform: scale(1.15) rotate(12deg); opacity: 1; }
-        }
-
-        /* --- CLASSIC BROADCAST LIGHT SWEEP (PREMIERE / AE STYLE) --- */
-        .shine-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    -webkit-mask-image: url('Stoon3D.png');
-    mask-image: url('Stoon3D.png');
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-position: center;
-    overflow: hidden;
-}
-
+        /* Creates the custom right-to-left sheen strip over the transparent mask base */
         .shine-layer::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: 140%;
-    width: 60%;
-    height: 200%;
-    background: linear-gradient(
-        105deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.15) 25%,
-        rgba(255, 255, 255, 0.85) 48%,
-        rgba(255, 255, 255, 1) 50%,
-        rgba(255, 255, 255, 0.85) 52%,
-        rgba(255, 255, 255, 0.15) 75%,
-        rgba(255, 255, 255, 0) 100%
-    );
-    transform: skewX(-25deg);
-    mix-blend-mode: color-dodge;
-    opacity: 0;
-    filter: blur(1px);
-}
-
-        .shine-active::after {
-            animation: classicBroadcastSweep 2.2s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -150%; 
+            width: 100%;
+            height: 100%;
+            
+            /* --- FIXED: SMALLER, NARROWER BLUE SHINE --- 
+               Tightened the gradient percentages so the blue reflection line is thinner
+            */
+            background: linear-gradient(
+                -90deg,
+                transparent 0%,
+                rgba(15, 35, 120, 0) 40%,
+                rgba(25, 60, 180, 0.4) 47%,
+                rgba(70, 120, 255, 0.6) 50%, /* Sharp center core */
+                rgba(25, 60, 180, 0.4) 53%,
+                rgba(15, 35, 120, 0) 60%,
+                transparent 100%
+            );
+            transform: skewX(25deg);
+            
+            /* color-dodge lights up base pixels dynamically without flattening dark image values */
+            mix-blend-mode: color-dodge;
+            opacity: 0.85; 
         }
 
-        @keyframes classicBroadcastSweep {
+        /* LOCKED TO EXACTLY 1.0 SECOND LOOP */
+        .shine-active::after {
+            animation: logoShineFastRTL 1.0s linear infinite;
+        }
+
+        /* --- KEYFRAMES --- */
+
+        /* Clean and classic fade-in opacity transition */
+        @keyframes spacetoonFadeIntro {
             0% {
-                left: 140%;
                 opacity: 0;
-            }
-            10% {
-                opacity: 0.9;
-            }
-            90% {
-                opacity: 0.9;
             }
             100% {
-                left: -60%;
-                opacity: 0;
+                opacity: 0.95; 
             }
         }
 
-        /* --- TEXT BANNER STAGE --- */
-        .school-banner-stage {
-            position: absolute;
-            top: 22px;
-            right: 0;
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 2px solid #f59e0b;
-            border-radius: 6px;
-            padding: 6px 14px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 0 8px rgba(245, 158, 11, 0.15);
-            opacity: 0;
-            transform: scale(0.85) translateY(-6px);
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            pointer-events: none;
-        }
-
-        .school-banner-stage.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
-
-        .hashtag-text {
-            color: #fbbf24;
-            font-size: 17px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            direction: ltr;
-            white-space: nowrap;
-            font-family: 'Courier New', Courier, monospace;
-            text-shadow: 0 0 4px rgba(251, 191, 36, 0.4);
-        }
-
-        .typing-cursor {
-            display: inline-block;
-            width: 8px;
-            height: 16px;
-            background: #fbbf24;
-            margin-left: 5px;
-            animation: blinkCursor 0.5s infinite alternate;
-        }
-
-        @keyframes blinkCursor {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        .logo-stage.hide-movement {
-            opacity: 0;
-            transform: scale(0.82) rotate(-4deg) translateX(20px);
-        }
-
-        .logo-stage.show-movement {
-            opacity: 0.96;
-            transform: scale(1) rotate(0deg) translateX(0);
-        }
-
-        @keyframes spacetoonFadeIntro {
-            0% { opacity: 0; transform: translateY(-10px); }
-            100% { opacity: 0.96; transform: translateY(0); }
+        /* Right-to-left sweeping motion */
+        @keyframes logoShineFastRTL {
+            0% {
+                right: -120%;
+            }
+            100% {
+                right: 120%;
+            }
         }
     </style>
 </head>
@@ -274,94 +130,40 @@
 
     <div id="logo-container">
         <div class="bug-wrapper">
-            <div class="logo-stage show-movement" id="logoStage">
-                <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
-                <div class="inner-blue-glow"></div>
-                <div class="school-pencil-badge"></div>
-                <div class="school-star">✏️</div>
-                <div class="shine-layer" id="shineElement"></div>
-            </div>
-
-            <div class="school-banner-stage" id="textStage">
-                <span id="typewriterText" class="hashtag-text"></span>
-                <span class="typing-cursor" id="cursor"></span>
-            </div>
+            <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
+            
+            <div class="shine-layer" id="shine-element"></div>
         </div>
     </div>
 
     <script>
         const container = document.getElementById('logo-container');
-        const logoStage = document.getElementById('logoStage');
-        const textStage = document.getElementById('textStage');
-        const shineElement = document.getElementById('shineElement');
-        const typewriterText = document.getElementById('typewriterText');
-        
-        const textToType = "#BACK-TO-SCHOOL";
-        let loopTimer = null;
-
-        function typeWriter(text, i, cb) {
-            if (i < text.length) {
-                typewriterText.innerHTML = text.substring(0, i + 1);
-                setTimeout(() => typeWriter(text, i + 1, cb), 80);
-            } else if (cb) {
-                setTimeout(cb, 3200);
-            }
-        }
-
-        function triggerShinePass() {
-            shineElement.classList.remove("shine-active");
-            void shineElement.offsetWidth;
-            shineElement.classList.add("shine-active");
-        }
-
-        function runBroadcastLoop() {
-            logoStage.className = "logo-stage show-movement";
-            textStage.classList.remove("active");
-            typewriterText.innerHTML = "";
-            
-            triggerShinePass();
-
-            setTimeout(() => {
-                if (logoStage.classList.contains("show-movement")) {
-                    triggerShinePass();
-                }
-            }, 5000);
-
-            loopTimer = setTimeout(() => {
-                logoStage.className = "logo-stage hide-movement";
-                shineElement.classList.remove("shine-active");
-
-                setTimeout(() => {
-                    textStage.classList.add("active");
-                    typeWriter(textToType, 0, () => {
-                        textStage.classList.remove("active");
-                        setTimeout(() => {
-                            runBroadcastLoop();
-                        }, 800);
-                    });
-                }, 600);
-
-            }, 10000);
-        }
+        const shineElement = document.getElementById('shine-element');
 
         function triggerBroadcastSequence() {
-            clearTimeout(loopTimer);
-            container.style.animation = 'none';
+            container.classList.remove('animate-entrance');
+            shineElement.classList.remove('shine-active');
+            
             void container.offsetWidth;
-            container.style.animation = 'spacetoonFadeIntro 0.8s ease-out forwards';
-            runBroadcastLoop();
+            
+            container.classList.add('animate-entrance');
+            
+            setTimeout(() => {
+                shineElement.classList.add('shine-active');
+            }, 500);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             triggerBroadcastSequence();
         });
 
+        /* OBS Browser Source Live State Tracking Hooks */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 triggerBroadcastSequence();
             } else {
-                clearTimeout(loopTimer);
-                container.style.opacity = '0';
+                container.classList.remove('animate-entrance');
+                shineElement.classList.remove('shine-active');
             }
         });
     </script>

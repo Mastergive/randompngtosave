@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Vintage Screenbug (60 FPS Smooth Loop)</title>
+    <title>Spacetoon Vintage Screenbug (60 FPS Exact Loop)</title>
     <style>
         * {
             margin: 0;
@@ -27,15 +27,15 @@
             height: auto;
             opacity: 0;
             transform-origin: center;
-            /* تفعيل تسريع كرت الشاشة للشعار بالكامل */
+            /* تفعيل تسريع كرت الشاشة للشعار بالكامل لمنع الـ Lag */
             transform: translate3d(0, 0, 0);
             will-change: opacity;
-            filter: blur(0.35px) contrast(1.08) saturate(1.15) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            filter: blur(0.4px) contrast(1.05) saturate(1.1);
         }
 
         /* حركة ظهور الشعار بسلاسة */
         .animate-entrance {
-            animation: spacetoonFadeIntro 0.8s ease-out forwards;
+            animation: spacetoonFadeIntro 0.5s ease-out forwards;
         }
 
         /* غلاف الشعار */
@@ -67,60 +67,53 @@
             mask-size: contain;
             -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
-            overflow: hidden;
         }
 
-        /* شريط اللمعان المائل - تم تعديله ليعتمد على التموضع المطلق المريح للـ GPU */
+        /* شريط اللمعان المائل من اليمين إلى اليسار */
         .shine-layer::after {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            /* تثبيت العنصر في أقصى اليمين والتحريك يعتمد كلياً على الـ transform المسرع بالـ GPU */
+            right: 0; 
             width: 100%;
             height: 100%;
-            /* لمعان أزرق نحيف وحاد في المنتصف لمحاكاة الانعكاس الكريستالي */
+            /* لمعان أزرق نحيف وحاد في المنتصف لمحاكاة الانعكاس الكريستالي الأصلي */
             background: linear-gradient(
                 -90deg,
                 transparent 0%,
                 rgba(15, 35, 120, 0) 40%,
-                rgba(25, 60, 180, 0.5) 46%,
-                rgba(100, 160, 255, 0.85) 50%, /* النواة المضيئة */
-                rgba(25, 60, 180, 0.5) 54%,
+                rgba(25, 60, 180, 0.4) 47%,
+                rgba(70, 120, 255, 0.6) 50%, /* النواة المضيئة */
+                rgba(25, 60, 180, 0.4) 53%,
                 rgba(15, 35, 120, 0) 60%,
                 transparent 100%
             );
-            transform: skewX(25deg) translate3d(-150%, 0, 0);
+            /* البداية من خارج حدود الشعار يميناً */
+            transform: skewX(25deg) translate3d(-120%, 0, 0);
             mix-blend-mode: color-dodge;
-            opacity: 0;
-            /* إخبار المتصفح مسبقاً بالخاصية التي ستتغير لتهيئتها في كرت الشاشة */
-            will-change: transform, opacity;
+            opacity: 0.85;
+            will-change: transform;
         }
 
-        /* تفعيل الحركة لدورة واحدة فقط عند إضافة الكلاس */
+        /* تكرار اللمعان اللانهائي كل 1.0 ثانية تماماً مثل كودك القديم */
         .shine-active::after {
-            animation: logoShineOnceRTL 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: logoShineFastRTL 1.0s linear infinite;
         }
 
         /* --- الإطارات المفتاحية المحسنة للـ 60 إطار (Keyframes) --- */
         @keyframes spacetoonFadeIntro {
             0% { opacity: 0; }
-            100% { opacity: 0.92; }
+            100% { opacity: 0.95; }
         }
 
-        @keyframes logoShineOnceRTL {
+        /* التحريك باستخدام translate3d يضمن معالجة الأنميشن بواسطة الـ GPU بـ 60 إطاراً ناعماً */
+        @keyframes logoShineFastRTL {
             0% { 
-                transform: skewX(25deg) translate3d(150%, 0, 0); 
-                opacity: 0;
-            }
-            15% {
-                opacity: 0.9;
-            }
-            85% {
-                opacity: 0.9;
+                transform: skewX(25deg) translate3d(-120%, 0, 0); 
             }
             100% { 
-                transform: skewX(25deg) translate3d(-150%, 0, 0); 
-                opacity: 0;
+                transform: skewX(25deg) translate3d(120%, 0, 0); 
             }
         }
     </style>
@@ -137,32 +130,18 @@
     <script>
         const container = document.getElementById('logo-container');
         const shineElement = document.getElementById('shine-element');
-        let shineInterval = null;
-
-        function triggerShine() {
-            shineElement.classList.remove('shine-active');
-            void shineElement.offsetWidth; // Force Reflow لإعادة تشغيل الأنميشن
-            shineElement.classList.add('shine-active');
-        }
 
         function triggerBroadcastSequence() {
-            clearInterval(shineInterval);
-
             container.classList.remove('animate-entrance');
             shineElement.classList.remove('shine-active');
-            void container.offsetWidth;
-
+            void container.offsetWidth; // Force Reflow لإعادة تشغيل الأنميشن من البداية
+            
             container.classList.add('animate-entrance');
-
-            // اللمعة الأولى تظهر بعد نصف ثانية من ظهور الشعار
+            
+            // يبدأ اللمعان المستمر فوراً بعد نصف ثانية من ظهور الشعار
             setTimeout(() => {
-                triggerShine();
+                shineElement.classList.add('shine-active');
             }, 500);
-
-            // تكرار اللمعة بانتظام كل 15 ثانية (تستطيع تغييرها لـ 1000 إذا أردتها كل ثانية)
-            shineInterval = setInterval(() => {
-                triggerShine();
-            }, 15000);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -176,7 +155,6 @@
             } else {
                 container.classList.remove('animate-entrance');
                 shineElement.classList.remove('shine-active');
-                clearInterval(shineInterval);
             }
         });
     </script>

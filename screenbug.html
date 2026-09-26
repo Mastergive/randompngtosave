@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Vintage Screenbug (Exact Broadcast Loop)</title>
+    <title>Spacetoon Vintage Screenbug (60 FPS Smooth Loop)</title>
     <style>
         * {
             margin: 0;
@@ -18,26 +18,27 @@
             height: 100vh;
         }
 
-        /* Standard Arabic broadcast positioning: Top-Right corner */
+        /* تموضع البث العربي القياسي: الزاوية العليا اليمنى */
         #logo-container {
             position: absolute;
             top: 35px;
-            right: 45px; 
+            right: 45px;
             width: 220px;
             height: auto;
             opacity: 0;
             transform-origin: center;
-            
-            /* SIMULATED 576p CRT ANALOG LOW-QUALITY FEED */
-            filter: blur(0.4px) contrast(1.05) saturate(1.1);
+            /* تفعيل تسريع كرت الشاشة للشعار بالكامل */
+            transform: translate3d(0, 0, 0);
+            will-change: opacity;
+            filter: blur(0.35px) contrast(1.08) saturate(1.15) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
-        /* Screenbug just fades in smoothly */
+        /* حركة ظهور الشعار بسلاسة */
         .animate-entrance {
-            animation: spacetoonFadeIntro 0.5s ease-out forwards;
+            animation: spacetoonFadeIntro 0.8s ease-out forwards;
         }
 
-        /* --- THE SHINE CONTAINER --- */
+        /* غلاف الشعار */
         .bug-wrapper {
             position: relative;
             width: 100%;
@@ -45,83 +46,81 @@
             display: inline-block;
         }
 
-        /* The transparent 3D logo asset layer */
+        /* صورة الشعار ثلاثي الأبعاد */
         .bug-image {
             width: 100%;
             height: auto;
             display: block;
         }
 
-        /* --- THE SHINE EFFECT LAYER --- */
+        /* طبقة تأثير اللمعان (Shine) */
         .shine-layer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            
-            /* MASK KEEPS THE SHINE ONLY ON EXISTENT PIXELS */
+            /* قناع لحصر اللمعان داخل حدود الشعار فقط */
             -webkit-mask-image: url('Stoon3D.png');
             mask-image: url('Stoon3D.png');
             -webkit-mask-size: contain;
             mask-size: contain;
             -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
+            overflow: hidden;
         }
 
-        /* Creates the custom right-to-left sheen strip over the transparent mask base */
+        /* شريط اللمعان المائل - تم تعديله ليعتمد على التموضع المطلق المريح للـ GPU */
         .shine-layer::after {
             content: '';
             position: absolute;
             top: 0;
-            right: -150%; 
+            left: 0;
             width: 100%;
             height: 100%;
-            
-            /* --- FIXED: SMALLER, NARROWER BLUE SHINE --- 
-               Tightened the gradient percentages so the blue reflection line is thinner
-            */
+            /* لمعان أزرق نحيف وحاد في المنتصف لمحاكاة الانعكاس الكريستالي */
             background: linear-gradient(
                 -90deg,
                 transparent 0%,
                 rgba(15, 35, 120, 0) 40%,
-                rgba(25, 60, 180, 0.4) 47%,
-                rgba(70, 120, 255, 0.6) 50%, /* Sharp center core */
-                rgba(25, 60, 180, 0.4) 53%,
+                rgba(25, 60, 180, 0.5) 46%,
+                rgba(100, 160, 255, 0.85) 50%, /* النواة المضيئة */
+                rgba(25, 60, 180, 0.5) 54%,
                 rgba(15, 35, 120, 0) 60%,
                 transparent 100%
             );
-            transform: skewX(25deg);
-            
-            /* color-dodge lights up base pixels dynamically without flattening dark image values */
+            transform: skewX(25deg) translate3d(-150%, 0, 0);
             mix-blend-mode: color-dodge;
-            opacity: 0.85; 
+            opacity: 0;
+            /* إخبار المتصفح مسبقاً بالخاصية التي ستتغير لتهيئتها في كرت الشاشة */
+            will-change: transform, opacity;
         }
 
-        /* LOCKED TO EXACTLY 1.0 SECOND LOOP */
+        /* تفعيل الحركة لدورة واحدة فقط عند إضافة الكلاس */
         .shine-active::after {
-            animation: logoShineFastRTL 1.0s linear infinite;
+            animation: logoShineOnceRTL 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* --- KEYFRAMES --- */
-
-        /* Clean and classic fade-in opacity transition */
+        /* --- الإطارات المفتاحية المحسنة للـ 60 إطار (Keyframes) --- */
         @keyframes spacetoonFadeIntro {
-            0% {
+            0% { opacity: 0; }
+            100% { opacity: 0.92; }
+        }
+
+        @keyframes logoShineOnceRTL {
+            0% { 
+                transform: skewX(25deg) translate3d(150%, 0, 0); 
                 opacity: 0;
             }
-            100% {
-                opacity: 0.95; 
+            15% {
+                opacity: 0.9;
             }
-        }
-
-        /* Right-to-left sweeping motion */
-        @keyframes logoShineFastRTL {
-            0% {
-                right: -120%;
+            85% {
+                opacity: 0.9;
             }
-            100% {
-                right: 120%;
+            100% { 
+                transform: skewX(25deg) translate3d(-150%, 0, 0); 
+                opacity: 0;
             }
         }
     </style>
@@ -131,7 +130,6 @@
     <div id="logo-container">
         <div class="bug-wrapper">
             <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
-            
             <div class="shine-layer" id="shine-element"></div>
         </div>
     </div>
@@ -139,31 +137,46 @@
     <script>
         const container = document.getElementById('logo-container');
         const shineElement = document.getElementById('shine-element');
+        let shineInterval = null;
+
+        function triggerShine() {
+            shineElement.classList.remove('shine-active');
+            void shineElement.offsetWidth; // Force Reflow لإعادة تشغيل الأنميشن
+            shineElement.classList.add('shine-active');
+        }
 
         function triggerBroadcastSequence() {
+            clearInterval(shineInterval);
+
             container.classList.remove('animate-entrance');
             shineElement.classList.remove('shine-active');
-            
             void container.offsetWidth;
-            
+
             container.classList.add('animate-entrance');
-            
+
+            // اللمعة الأولى تظهر بعد نصف ثانية من ظهور الشعار
             setTimeout(() => {
-                shineElement.classList.add('shine-active');
+                triggerShine();
             }, 500);
+
+            // تكرار اللمعة بانتظام كل 15 ثانية (تستطيع تغييرها لـ 1000 إذا أردتها كل ثانية)
+            shineInterval = setInterval(() => {
+                triggerShine();
+            }, 15000);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             triggerBroadcastSequence();
         });
 
-        /* OBS Browser Source Live State Tracking Hooks */
+        /* التوافق مع برمجيات OBS لضمان إعادة تشغيل التأثير عند إظهار المصدر */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 triggerBroadcastSequence();
             } else {
                 container.classList.remove('animate-entrance');
                 shineElement.classList.remove('shine-active');
+                clearInterval(shineInterval);
             }
         });
     </script>

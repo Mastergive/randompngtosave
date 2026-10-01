@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Vintage Screenbug - Fall 2026</title>
+    <title>Spacetoon Screenbug - Full Envelope Fall 2026</title>
     <style>
         * {
             margin: 0;
@@ -18,22 +18,25 @@
             height: 100vh;
         }
 
-        /* تموضع البث العربي القياسي: الزاوية العليا اليمنى */
+        /* تموضع البث القياسي: أعلى اليمين */
         #screenbug-wrapper {
             position: absolute;
             top: 35px;
             right: 45px;
-            width: 220px;
-            height: auto;
-            filter: blur(0.3px) contrast(1.05) saturate(1.1) drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
+            width: 240px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: blur(0.2px) contrast(1.08) saturate(1.15) drop-shadow(0 4px 12px rgba(0,0,0,0.35));
         }
 
-        /* غلاف الشعار الأصلي */
+        /* غلاف الشعار الرئيسي */
         #logo-container {
             position: relative;
-            width: 100%;
+            width: 220px;
             height: auto;
-            z-index: 2;
+            z-index: 3;
             transform: translate3d(0, 0, 0);
             will-change: transform, opacity;
         }
@@ -44,7 +47,7 @@
             display: block;
         }
 
-        /* طبقة تأثير اللمعان الأصلي دون تغيير */
+        /* اللمعان الأصلي بدون أي تعديل */
         .shine-layer {
             position: absolute;
             top: 0;
@@ -83,90 +86,129 @@
             animation: logoShineFastRTL 1.0s linear infinite;
         }
 
-        /* عنصر أشجار الخريف المصمم للالتصاق بالجانب الأيسر للشعار */
-        .fall-tree-badge {
+        /* توهج خريفي خلف الشعار بالكامل */
+        .fall-aura-glow {
             position: absolute;
-            left: -48px;
-            bottom: 4px;
-            width: 95px;
-            height: 80px;
+            width: 260px;
+            height: 120px;
+            background: radial-gradient(ellipse at center, rgba(255, 109, 0, 0.45) 0%, rgba(221, 44, 0, 0.2) 50%, rgba(0, 0, 0, 0) 75%);
             z-index: 1;
             opacity: 0;
             pointer-events: none;
-            transform-origin: bottom right;
-            transform: translate3d(40px, 0, 0) scale(0.4);
-            will-change: transform, opacity;
-            filter: drop-shadow(-2px 2px 4px rgba(0,0,0,0.35));
+            will-change: opacity;
         }
 
-        /* حركات الرياح والأوراق المتساقطة */
-        .tree-sway {
+        /* إطار كامل من الأشجار والنباتات المحيطة بالشعار */
+        .full-fall-envelope {
+            position: absolute;
+            width: 270px;
+            height: 130px;
+            z-index: 2;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.85);
+            will-change: transform, opacity;
+        }
+
+        /* طبقة الأوراق والجسيمات المتطايرة أمام الشعار */
+        .front-leaf-storm {
+            position: absolute;
+            width: 280px;
+            height: 130px;
+            z-index: 4;
+            opacity: 0;
+            pointer-events: none;
+            will-change: opacity;
+        }
+
+        /* تحريك الرياح على الشجر والأغصان */
+        .forest-sway {
             transform-origin: bottom center;
-            animation: fallWindSway 2.0s ease-in-out infinite alternate;
+            animation: fallForestWind 2.2s ease-in-out infinite alternate;
         }
 
-        .blowing-leaf {
+        /* تحريك الجسيمات والأوراق المتطايرة */
+        .particle-leaf {
             will-change: transform, opacity;
-            animation: leafFly 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+            animation: leafStormDrift 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
         }
-        .blowing-leaf-2 {
-            animation-delay: 0.8s;
-            animation-duration: 1.9s;
+        .particle-leaf-2 {
+            animation-delay: 0.6s;
+            animation-duration: 2.1s;
+        }
+        .particle-leaf-3 {
+            animation-delay: 1.2s;
+            animation-duration: 2.8s;
+        }
+        .particle-leaf-4 {
+            animation-delay: 1.8s;
+            animation-duration: 2.4s;
         }
 
-        /* --- Master Timeline (8.5s Cycle) --- */
+        /* --- Master Timeline (8.5s Loop) --- */
         .active-sequence #screenbug-wrapper {
             animation: masterBugFade 8.5s ease-in-out infinite;
         }
 
-        .active-sequence .fall-tree-badge {
-            animation: fallTreeSlideOut 8.5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+        .active-sequence .full-fall-envelope {
+            animation: envelopeExpand 8.5s cubic-bezier(0.175, 0.885, 0.32, 1.2) infinite;
+        }
+
+        .active-sequence .fall-aura-glow,
+        .active-sequence .front-leaf-storm {
+            animation: glowAndStormTrigger 8.5s ease-in-out infinite;
         }
 
         /* ظهور الشعار والدورة الكاملة */
         @keyframes masterBugFade {
-            0% { opacity: 0; }
-            5% { opacity: 0.98; }
-            94% { opacity: 0.98; }
+            0% { opacity: 0; transform: translate3d(0, -3px, 0); }
+            5% { opacity: 0.98; transform: translate3d(0, 0, 0); }
+            94% { opacity: 0.98; transform: translate3d(0, 0, 0); }
+            100% { opacity: 0; transform: translate3d(0, 3px, 0); }
+        }
+
+        /* انشباك وإحاطة الغابة بالشعار بعد 5 ثوانٍ */
+        @keyframes envelopeExpand {
+            0%, 58.8% { /* 0s - 5.0s (مختفي خلف الشعار) */
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            64.7% { /* 5.5s (توسع كامل وإحاطة بالشعار) */
+                opacity: 1;
+                transform: scale(1);
+            }
+            94.1% { /* 8.0s (بقاء الإحاطة طوال الـ 3 ثواني) */
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% { /* 8.5s (انكماش واختفاء) */
+                opacity: 0;
+                transform: scale(0.85);
+            }
+        }
+
+        @keyframes glowAndStormTrigger {
+            0%, 58.8% { opacity: 0; }
+            64.7%, 94.1% { opacity: 1; }
             100% { opacity: 0; }
         }
 
-        /* خروج الأشجار من خلف الشعار بعد 5 ثوانٍ، والبقاء لمدة 3 ثوانٍ */
-        @keyframes fallTreeSlideOut {
-            0%, 58.8% { /* 0s - 5.0s (مختفي خلف الشعار) */
-                opacity: 0;
-                transform: translate3d(40px, 0, 0) scale(0.4);
-            }
-            64.7% { /* 5.5s (ظهور وانزلاق سلس للخارج) */
-                opacity: 1;
-                transform: translate3d(0, 0, 0) scale(1);
-            }
-            94.1% { /* 8.0s (بقاء طوال الـ 3 ثواني) */
-                opacity: 1;
-                transform: translate3d(0, 0, 0) scale(1);
-            }
-            100% { /* 8.5s (اختفاء واسترجاع للشعار) */
-                opacity: 0;
-                transform: translate3d(30px, 0, 0) scale(0.5);
-            }
+        /* حركة اهتزاز الرياح للأشجار المحيطة */
+        @keyframes fallForestWind {
+            0% { transform: rotate(0deg) skewX(0deg); }
+            100% { transform: rotate(-3deg) skewX(-1.5deg); }
         }
 
-        /* اهتزاز الأشجار مع حركة الهواء */
-        @keyframes fallWindSway {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(-4deg) translateY(-1px); }
-        }
-
-        /* تطاير الأوراق الخريفية فوق الشعار */
-        @keyframes leafFly {
+        /* تطاير الأوراق عبر مساحة الشعار بالكامل */
+        @keyframes leafStormDrift {
             0% {
-                transform: translate3d(20px, 0, 0) rotate(0deg) scale(0.8);
+                transform: translate3d(140px, -20px, 0) rotate(0deg) scale(0.9);
                 opacity: 0;
             }
-            20% { opacity: 1; }
-            80% { opacity: 0.8; }
+            15% { opacity: 1; }
+            85% { opacity: 0.8; }
             100% {
-                transform: translate3d(-45px, -25px, 0) rotate(-180deg) scale(0.4);
+                transform: translate3d(-120px, 60px, 0) rotate(-280deg) scale(0.4);
                 opacity: 0;
             }
         }
@@ -185,54 +227,87 @@
 <body>
 
     <div id="screenbug-wrapper">
-        <!-- الأشجار الخريفية المصغرة المثبتة خلف الجانب الأيسر للشعار -->
-        <svg class="fall-tree-badge" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- التوهج الدافئ الخريفي -->
+        <div class="fall-aura-glow"></div>
+
+        <!-- غابة الخريف المحيطة بالشعار بالكامل (Envelope SVG) -->
+        <svg class="full-fall-envelope" viewBox="0 0 270 130" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-                <linearGradient id="trunkGrad" x1="0" y1="0" x2="0" y2="100%">
-                    <stop offset="0%" stop-color="#4A2511"/>
-                    <stop offset="100%" stop-color="#261106"/>
+                <linearGradient id="barkGrad" x1="0" y1="0" x2="0" y2="100%">
+                    <stop offset="0%" stop-color="#3E2723"/>
+                    <stop offset="100%" stop-color="#1B0000"/>
                 </linearGradient>
-                <radialGradient id="leafRed" cx="30%" cy="30%" r="70%">
-                    <stop offset="0%" stop-color="#FF4500"/>
-                    <stop offset="70%" stop-color="#C71585"/>
-                    <stop offset="100%" stop-color="#4A0010"/>
+
+                <radialGradient id="redFoliage" cx="40%" cy="40%" r="60%">
+                    <stop offset="0%" stop-color="#FF3D00"/>
+                    <stop offset="70%" stop-color="#C2185B"/>
+                    <stop offset="100%" stop-color="#4A000B"/>
                 </radialGradient>
-                <radialGradient id="leafOrange" cx="30%" cy="30%" r="70%">
-                    <stop offset="0%" stop-color="#FF8C00"/>
-                    <stop offset="80%" stop-color="#D2691E"/>
-                    <stop offset="100%" stop-color="#8B0000"/>
+
+                <radialGradient id="orangeFoliage" cx="40%" cy="40%" r="60%">
+                    <stop offset="0%" stop-color="#FF9100"/>
+                    <stop offset="70%" stop-color="#E65100"/>
+                    <stop offset="100%" stop-color="#8D0000"/>
                 </radialGradient>
-                <radialGradient id="leafGold" cx="30%" cy="30%" r="70%">
-                    <stop offset="0%" stop-color="#FFD700"/>
-                    <stop offset="80%" stop-color="#FF8C00"/>
+
+                <radialGradient id="goldFoliage" cx="40%" cy="40%" r="60%">
+                    <stop offset="0%" stop-color="#FFD600"/>
+                    <stop offset="70%" stop-color="#FFAB00"/>
+                    <stop offset="100%" stop-color="#E65100"/>
                 </radialGradient>
+
+                <filter id="softDropShadow" x="-10%" y="-10%" width="120%" height="120%">
+                    <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.4"/>
+                </filter>
             </defs>
 
-            <!-- التلة والأرضية الخريفية -->
-            <ellipse cx="50" cy="82" rx="42" ry="7" fill="#8B2500" opacity="0.85"/>
-            <path d="M15 82C30 78 70 78 85 82Z" fill="#D2691E"/>
+            <!-- الأرضية والتلة الخريفية السفلية الممتدة تحت الشعار -->
+            <ellipse cx="135" cy="118" rx="120" ry="10" fill="#3E1C00" opacity="0.8"/>
+            <path d="M15 118C50 110 220 110 255 118Z" fill="#BF360C"/>
 
-            <!-- مجسم الأشجار -->
-            <g class="tree-sway">
-                <!-- الشجرة الخلفية الصغيرة -->
-                <path d="M30 82L30 55 M30 65L22 58" stroke="url(#trunkGrad)" stroke-width="2.5" stroke-linecap="round"/>
-                <circle cx="28" cy="48" r="14" fill="url(#leafGold)"/>
-                <circle cx="20" cy="52" r="10" fill="url(#leafOrange)"/>
+            <!-- الأشجار والنباتات الملتفة حول كل الزوايا (Forest Sway) -->
+            <g class="forest-sway" filter="url(#softDropShadow)">
+                
+                <!-- 1. شجرة يسار الشعار (الكبيرة) -->
+                <path d="M40 120C40 95 38 75 30 50 M30 75L18 62 M30 65L42 55" stroke="url(#barkGrad)" stroke-width="4.5" stroke-linecap="round"/>
+                <circle cx="30" cy="40" r="22" fill="url(#redFoliage)"/>
+                <circle cx="15" cy="48" r="16" fill="url(#orangeFoliage)"/>
+                <circle cx="45" cy="45" r="15" fill="url(#goldFoliage)"/>
 
-                <!-- الشجرة الرئيسية الملتصقة بالشعار -->
-                <path d="M62 83C62 68 64 60 62 44 M62 62L50 52 M62 55L72 46" stroke="url(#trunkGrad)" stroke-width="4" stroke-linecap="round"/>
-                <circle cx="62" cy="38" r="20" fill="url(#leafRed)"/>
-                <circle cx="48" cy="44" r="15" fill="url(#leafOrange)"/>
-                <circle cx="74" cy="46" r="13" fill="url(#leafGold)"/>
-                <circle cx="62" cy="26" r="13" fill="url(#leafGold)"/>
+                <!-- 2. أشجار أعلى الشعار (الأغصان المظلة) -->
+                <path d="M100 35C130 18 170 18 200 32" stroke="url(#barkGrad)" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="90" cy="22" r="14" fill="url(#goldFoliage)"/>
+                <circle cx="120" cy="16" r="16" fill="url(#orangeFoliage)"/>
+                <circle cx="155" cy="14" r="18" fill="url(#redFoliage)"/>
+                <circle cx="190" cy="20" r="15" fill="url(#goldFoliage)"/>
+
+                <!-- 3. شجرة يمين الشعار (الجهة الأخرى) -->
+                <path d="M235 120C235 95 238 80 245 55 M245 80L232 68 M245 70L255 60" stroke="url(#barkGrad)" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="245" cy="46" r="20" fill="url(#orangeFoliage)"/>
+                <circle cx="230" cy="52" r="15" fill="url(#redFoliage)"/>
+                <circle cx="258" cy="50" r="13" fill="url(#goldFoliage)"/>
+
+                <!-- 4. شجيرات وأغصان سفلية تحت الشعار -->
+                <circle cx="75" cy="112" r="12" fill="url(#orangeFoliage)"/>
+                <circle cx="105" cy="114" r="10" fill="url(#goldFoliage)"/>
+                <circle cx="165" cy="114" r="11" fill="url(#redFoliage)"/>
+                <circle cx="195" cy="112" r="13" fill="url(#orangeFoliage)"/>
             </g>
+        </svg>
 
-            <!-- أوراق متطايرة مع الريح -->
-            <g class="blowing-leaf">
-                <path d="M60 30C56 26 50 28 48 22 C54 24 56 18 60 20Z" fill="#FF4500" transform="scale(0.5)"/>
+        <!-- طبقة الأوراق المتطايرة أمام الشعار بالكامل -->
+        <svg class="front-leaf-storm" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="particle-leaf">
+                <path d="M140 30C135 25 125 27 123 20 C131 22 133 15 140 18Z" fill="#FF3D00" transform="scale(0.6)"/>
             </g>
-            <g class="blowing-leaf blowing-leaf-2">
-                <path d="M72 40C68 36 62 38 60 32 C66 34 68 28 72 30Z" fill="#FFD700" transform="scale(0.4)"/>
+            <g class="particle-leaf particle-leaf-2">
+                <path d="M180 50C175 45 165 47 163 40 C171 42 173 35 180 38Z" fill="#FFEA00" transform="scale(0.45)"/>
+            </g>
+            <g class="particle-leaf particle-leaf-3">
+                <path d="M220 25C215 20 205 22 203 15 C211 17 213 10 220 13Z" fill="#FF6D00" transform="scale(0.55)"/>
+            </g>
+            <g class="particle-leaf particle-leaf-4">
+                <path d="M100 60C95 55 85 57 83 50 C91 52 93 45 100 48Z" fill="#FF1744" transform="scale(0.5)"/>
             </g>
         </svg>
 
@@ -248,7 +323,7 @@
 
         function triggerBroadcastSequence() {
             document.body.classList.remove('active-sequence');
-            void wrapper.offsetWidth; // Force Reflow لإعادة الأنميشن
+            void wrapper.offsetWidth; // Force Reflow لتطبيق الإعادات المزامنة
             document.body.classList.add('active-sequence');
         }
 
@@ -256,7 +331,7 @@
             triggerBroadcastSequence();
         });
 
-        /* توافق كامل مع مصادر OBS Studio */
+        /* التوافق التام مع مصادر OBS Studio */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 triggerBroadcastSequence();

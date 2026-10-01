@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Vintage Screenbug - Fall 2026 Update</title>
+    <title>Spacetoon Vintage Screenbug - Fall 2026 Peak Update</title>
     <style>
         * {
             margin: 0;
@@ -18,36 +18,36 @@
             height: 100vh;
         }
 
-        /* تموضع البث العربي القياسي: الزاوية العليا اليمنى */
-        #logo-container {
+        /* Screenbug Position */
+        #screenbug-wrapper {
             position: absolute;
             top: 35px;
             right: 45px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            opacity: 0;
-            transform: translate3d(0, 0, 0);
-            will-change: opacity;
-            filter: blur(0.4px) contrast(1.05) saturate(1.1);
+            justify-content: flex-end;
+            width: 320px;
+            height: 120px;
+            filter: blur(0.3px) contrast(1.08) saturate(1.15) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
         }
 
-        /* غلاف الشعار الرئيسي */
-        .bug-wrapper {
+        /* Core Logo Styling */
+        #logo-container {
             position: relative;
             width: 220px;
             height: auto;
-            flex-shrink: 0;
+            z-index: 2;
+            transform: translate3d(0, 0, 0);
+            will-change: transform, opacity;
         }
 
-        /* صورة الشعار ثلاثي الأبعاد */
         .bug-image {
             width: 100%;
             height: auto;
             display: block;
         }
 
-        /* طبقة تأثير اللمعان (Shine) الأصلي */
+        /* Original Crystal Shine Layer */
         .shine-layer {
             position: absolute;
             top: 0;
@@ -86,54 +86,124 @@
             animation: logoShineFastRTL 1.0s linear infinite;
         }
 
-        /* أشجار الخريف 2026 - Fall Vibes SVG Element */
-        .fall-trees {
-            width: 65px;
-            height: 65px;
+        /* Ambient Autumn Glow Behind Logo */
+        .fall-glow {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 200px;
+            height: 90px;
+            background: radial-gradient(ellipse at center, rgba(235, 94, 40, 0.35) 0%, rgba(217, 119, 6, 0) 70%);
+            z-index: 1;
             opacity: 0;
-            transform: translate3d(15px, 0, 0) scale(0.9);
+            pointer-events: none;
+            will-change: opacity;
+        }
+
+        /* Detailed Autumn Foliage Container */
+        .fall-nature-container {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) translate3d(20px, 0, 0) scale(0.85);
+            width: 110px;
+            height: 100px;
+            z-index: 3;
+            opacity: 0;
+            pointer-events: none;
             will-change: transform, opacity;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
-        /* --- الأنميشن والتسلسل الزمني الكامل (8.5 ثانية للدورة) --- */
-        .active-sequence #logo-container {
-            animation: spacetoonFadeSequence 8.5s ease-in-out infinite;
+        /* Individual Wind Sway Animation for Branches */
+        .sway-branch {
+            transform-origin: bottom right;
+            animation: autumnWindSway 2.5s ease-in-out infinite alternate;
         }
 
-        .active-sequence .fall-trees {
-            animation: fallTreesSequence 8.5s ease-in-out infinite;
+        /* Falling Leaf Particles */
+        .drifting-leaf {
+            will-change: transform, opacity;
+            animation: leafDrift 3.0s linear infinite;
+        }
+        .drifting-leaf-2 {
+            animation-delay: 0.8s;
+            animation-duration: 2.6s;
+        }
+        .drifting-leaf-3 {
+            animation-delay: 1.5s;
+            animation-duration: 3.2s;
         }
 
-        /* ظهور الشعار واختفاؤه في أواخر الدورة */
-        @keyframes spacetoonFadeSequence {
-            0% { opacity: 0; }
-            6% { opacity: 0.95; }
-            94% { opacity: 0.95; }
+        /* --- Master Animation Timeline (8.5s Loop) --- */
+        .active-sequence #screenbug-wrapper {
+            animation: masterBugFade 8.5s ease-in-out infinite;
+        }
+
+        .active-sequence .fall-nature-container {
+            animation: autumnFoliageEnter 8.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+        }
+
+        .active-sequence .fall-glow {
+            animation: autumnGlowPulse 8.5s ease-in-out infinite;
+        }
+
+        /* Overall Screenbug Loop Transition */
+        @keyframes masterBugFade {
+            0% { opacity: 0; transform: translate3d(0, -5px, 0); }
+            5% { opacity: 0.98; transform: translate3d(0, 0, 0); }
+            94% { opacity: 0.98; transform: translate3d(0, 0, 0); }
+            100% { opacity: 0; transform: translate3d(0, 5px, 0); }
+        }
+
+        /* Foliage Slide-In (Appears at 5s, stays until 8s) */
+        @keyframes autumnFoliageEnter {
+            0%, 58.8% { /* 0s - 5.0s */
+                opacity: 0;
+                transform: translateY(-50%) translate3d(25px, 0, 0) scale(0.8);
+            }
+            64.7% { /* 5.5s (Smooth Entrance) */
+                opacity: 1;
+                transform: translateY(-50%) translate3d(0, 0, 0) scale(1);
+            }
+            94.1% { /* 8.0s (Exit Phase) */
+                opacity: 1;
+                transform: translateY(-50%) translate3d(0, 0, 0) scale(1);
+            }
+            100% { /* 8.5s (Reset) */
+                opacity: 0;
+                transform: translateY(-50%) translate3d(-15px, 0, 0) scale(0.85);
+            }
+        }
+
+        /* Ambient Glow Trigger */
+        @keyframes autumnGlowPulse {
+            0%, 58.8% { opacity: 0; }
+            64.7%, 94.1% { opacity: 1; }
             100% { opacity: 0; }
         }
 
-        /* تحريك الأشجار: ظهور بعد 5 ثوانٍ، بقاء لمدة 3 ثوانٍ، ثم الاختفاء مع إعادة الشعار */
-        @keyframes fallTreesSequence {
-            0%, 58.8% { /* 0s - 5s */
+        /* Natural Breeze Sway for Branches */
+        @keyframes autumnWindSway {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-4deg) translateY(-2px); }
+        }
+
+        /* Wind-blown Leaves Trajectory */
+        @keyframes leafDrift {
+            0% {
+                transform: translate3d(0, 0, 0) rotate(0deg);
                 opacity: 0;
-                transform: translate3d(15px, 0, 0) scale(0.9);
             }
-            64.7% { /* 5.5s (دخول سلس للأشجار) */
-                opacity: 1;
-                transform: translate3d(0, 0, 0) scale(1);
-            }
-            94.1% { /* 8.0s (خروج الأشجار) */
-                opacity: 1;
-                transform: translate3d(0, 0, 0) scale(1);
-            }
-            100% { /* 8.5s (إعادة ضبط للوظيفة التالية) */
+            20% { opacity: 0.9; }
+            80% { opacity: 0.8; }
+            100% {
+                transform: translate3d(-50px, 35px, 0) rotate(-180deg);
                 opacity: 0;
-                transform: translate3d(-10px, 0, 0) scale(0.9);
             }
         }
 
-        /* تحريك اللمعان الأصلي بدون أي تعديل */
+        /* Original RTL Shine Animation */
         @keyframes logoShineFastRTL {
             0% { 
                 transform: skewX(25deg) translate3d(-120%, 0, 0); 
@@ -146,51 +216,101 @@
 </head>
 <body>
 
-    <div id="logo-container">
-        <!-- عناصر الأشجار بلمسة خريفية (SVG عالي الدقة وناعم) -->
-        <svg class="fall-trees" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- الشجرة الصغيرة الخلفية (لون برتقالي خريفي) -->
-            <path d="M30 85L30 65" stroke="#5C2C16" stroke-width="4" stroke-linecap="round"/>
-            <path d="M30 25C15 25 10 40 10 52C10 65 20 68 30 68C40 68 50 65 50 52C50 40 45 25 30 25Z" fill="#D95D39"/>
-            <path d="M30 32C22 32 18 42 18 50C22 48 35 48 42 50C42 42 38 32 30 32Z" fill="#E07A5F" opacity="0.6"/>
-            
-            <!-- الشجرة الرئيسية (أحمر خريفي داكن دافئ) -->
-            <path d="M68 88L68 58" stroke="#4A1E0D" stroke-width="5" stroke-linecap="round"/>
-            <circle cx="68" cy="45" r="24" fill="#B83A1B"/>
-            <circle cx="60" cy="38" r="16" fill="#E05A10" opacity="0.7"/>
-            
-            <!-- أوراق خريف متساقطة لطيفة -->
-            <circle cx="38" cy="72" r="2.5" fill="#E07A5F"/>
-            <circle cx="44" cy="78" r="2" fill="#D95D39"/>
-            <circle cx="22" cy="75" r="2" fill="#F2A65A"/>
-        </svg>
+    <div id="screenbug-wrapper">
+        <!-- Ambient Warm Fall Backlight -->
+        <div class="fall-glow"></div>
 
-        <!-- غلاف الشعار واللمعان -->
-        <div class="bug-wrapper">
+        <!-- Detailed Vector Autumn Foliage + Falling Leaves -->
+        <div class="fall-nature-container">
+            <svg viewBox="0 0 120 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="leafGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#FF5400"/>
+                        <stop offset="100%" stop-color="#9E0059"/>
+                    </linearGradient>
+                    <linearGradient id="leafGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#FFBD00"/>
+                        <stop offset="100%" stop-color="#FF5400"/>
+                    </linearGradient>
+                    <linearGradient id="woodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#542310"/>
+                        <stop offset="100%" stop-color="#2B0E04"/>
+                    </linearGradient>
+                    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                    </filter>
+                </defs>
+
+                <!-- Natural Wood Branch Wrap -->
+                <g class="sway-branch">
+                    <path d="M110 85C90 82 75 70 60 55C52 47 42 30 25 22" stroke="url(#woodGrad)" stroke-width="4.5" stroke-linecap="round"/>
+                    <path d="M68 62C55 58 48 50 40 42" stroke="url(#woodGrad)" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M42 32C35 28 28 22 20 18" stroke="url(#woodGrad)" stroke-width="2" stroke-linecap="round"/>
+
+                    <!-- Background Dark Maple Cluster -->
+                    <g opacity="0.85" filter="url(#softGlow)">
+                        <path d="M38 48C28 44 20 48 18 36C26 36 30 28 36 30C40 22 48 24 48 34C52 42 46 48 38 48Z" fill="#7209B7"/>
+                        <path d="M62 68C52 64 44 68 42 56C50 56 54 48 60 50C64 42 72 44 72 54C76 62 70 68 62 68Z" fill="#900C3F"/>
+                    </g>
+
+                    <!-- Main Vibrant Maple Leaves (Hand-Drawn Crisp Geometry) -->
+                    <!-- Leaf 1 (Top Left) -->
+                    <path d="M22 20C18 12 12 10 10 4C18 6 22 14 26 8C28 16 36 14 38 22C32 22 30 30 24 28C22 32 20 24 22 20Z" fill="url(#leafGrad2)"/>
+                    <path d="M22 20L20 4" stroke="#8D0801" stroke-width="0.8" opacity="0.6"/>
+
+                    <!-- Leaf 2 (Center Hero Maple) -->
+                    <path d="M50 42C44 30 34 28 30 18C42 22 48 32 54 24C58 34 70 30 72 44C64 44 60 56 52 52C48 58 44 48 50 42Z" fill="url(#leafGrad1)"/>
+                    <path d="M50 42L30 18" stroke="#FFCCD5" stroke-width="0.8" opacity="0.5"/>
+
+                    <!-- Leaf 3 (Bottom Rich Orange) -->
+                    <path d="M75 66C68 56 58 55 54 46C65 48 70 58 76 50C80 58 90 56 91 68C83 67 80 78 72 73C70 78 66 70 75 66Z" fill="url(#leafGrad2)"/>
+                    
+                    <!-- Small Accent Golden Leaves -->
+                    <circle cx="28" cy="38" r="4" fill="#FFBD00"/>
+                    <circle cx="58" cy="62" r="3" fill="#FF5400"/>
+                    <circle cx="42" cy="24" r="2.5" fill="#FF0054"/>
+                </g>
+
+                <!-- Wind Particles / Falling Autumn Leaves -->
+                <g class="drifting-leaf">
+                    <path d="M70 40C66 36 60 38 58 32C64 33 66 28 70 30C72 26 78 28 76 34C80 37 76 42 70 40Z" fill="#FF5400" transform="scale(0.55)"/>
+                </g>
+                <g class="drifting-leaf drifting-leaf-2">
+                    <path d="M85 55C81 51 75 53 73 47C79 48 81 43 85 45C87 41 93 43 91 49C95 52 91 57 85 55Z" fill="#FFBD00" transform="scale(0.4)"/>
+                </g>
+                <g class="drifting-leaf drifting-leaf-3">
+                    <circle cx="75" cy="45" r="2" fill="#FF0054"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- 3D Logo Screenbug Layer -->
+        <div id="logo-container">
             <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
             <div class="shine-layer" id="shine-element"></div>
         </div>
     </div>
 
     <script>
-        const body = document.body;
+        const wrapper = document.getElementById('screenbug-wrapper');
 
         function triggerBroadcastSequence() {
-            body.classList.remove('active-sequence');
-            void body.offsetWidth; // Force Reflow لإعادة تشغيل التسلسل بدقة
-            body.classList.add('active-sequence');
+            document.body.classList.remove('active-sequence');
+            void wrapper.offsetWidth; // Force Reflow
+            document.body.classList.add('active-sequence');
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             triggerBroadcastSequence();
         });
 
-        /* التوافق الكامل مع OBS Studio */
+        /* OBS Source Visibility Integration */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 triggerBroadcastSequence();
             } else {
-                body.classList.remove('active-sequence');
+                document.body.classList.remove('active-sequence');
             }
         });
     </script>

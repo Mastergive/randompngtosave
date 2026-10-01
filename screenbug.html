@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Screenbug - Fall 2026 Creative Update</title>
+    <title>Spacetoon Vintage Screenbug - Fall 2026</title>
     <style>
         * {
             margin: 0;
@@ -18,25 +18,22 @@
             height: 100vh;
         }
 
-        /* Screenbug Main Position */
+        /* تموضع البث العربي القياسي: الزاوية العليا اليمنى */
         #screenbug-wrapper {
             position: absolute;
             top: 35px;
             right: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            width: 360px;
-            height: 130px;
-            filter: blur(0.2px) contrast(1.1) saturate(1.2) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4));
-        }
-
-        /* Logo Layer */
-        #logo-container {
-            position: relative;
             width: 220px;
             height: auto;
-            z-index: 3;
+            filter: blur(0.3px) contrast(1.05) saturate(1.1) drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        /* غلاف الشعار الأصلي */
+        #logo-container {
+            position: relative;
+            width: 100%;
+            height: auto;
+            z-index: 2;
             transform: translate3d(0, 0, 0);
             will-change: transform, opacity;
         }
@@ -47,7 +44,7 @@
             display: block;
         }
 
-        /* Original Crystal Shine Layer */
+        /* طبقة تأثير اللمعان الأصلي دون تغيير */
         .shine-layer {
             position: absolute;
             top: 0;
@@ -86,124 +83,95 @@
             animation: logoShineFastRTL 1.0s linear infinite;
         }
 
-        /* Ambient Autumn Warm Backlight */
-        .fall-glow {
+        /* عنصر أشجار الخريف المصمم للالتصاق بالجانب الأيسر للشعار */
+        .fall-tree-badge {
             position: absolute;
-            right: 0px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 260px;
-            height: 110px;
-            background: radial-gradient(ellipse at center, rgba(230, 81, 0, 0.4) 0%, rgba(245, 124, 0, 0.15) 50%, rgba(0, 0, 0, 0) 75%);
+            left: -48px;
+            bottom: 4px;
+            width: 95px;
+            height: 80px;
             z-index: 1;
             opacity: 0;
             pointer-events: none;
-            will-change: opacity;
-        }
-
-        /* TV Bumper Fall Scene Container */
-        .fall-scene-container {
-            position: absolute;
-            left: -10px;
-            top: 50%;
-            transform: translateY(-50%) translate3d(30px, 0, 0) scale(0.8);
-            width: 150px;
-            height: 120px;
-            z-index: 2;
-            opacity: 0;
-            pointer-events: none;
+            transform-origin: bottom right;
+            transform: translate3d(40px, 0, 0) scale(0.4);
             will-change: transform, opacity;
+            filter: drop-shadow(-2px 2px 4px rgba(0,0,0,0.35));
         }
 
-        /* Wind Animation for Trees */
-        .sway-trees {
+        /* حركات الرياح والأوراق المتساقطة */
+        .tree-sway {
             transform-origin: bottom center;
-            animation: autumnWindSway 2.2s ease-in-out infinite alternate;
+            animation: fallWindSway 2.0s ease-in-out infinite alternate;
         }
 
-        /* Falling Leaf Particles Trajectory */
-        .drifting-leaf {
+        .blowing-leaf {
             will-change: transform, opacity;
-            animation: leafDrift 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            animation: leafFly 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
         }
-        .drifting-leaf-2 {
-            animation-delay: 0.7s;
-            animation-duration: 2.4s;
-        }
-        .drifting-leaf-3 {
-            animation-delay: 1.4s;
-            animation-duration: 3.1s;
+        .blowing-leaf-2 {
+            animation-delay: 0.8s;
+            animation-duration: 1.9s;
         }
 
-        /* --- Master Loop Timeline (8.5s Cycle) --- */
+        /* --- Master Timeline (8.5s Cycle) --- */
         .active-sequence #screenbug-wrapper {
             animation: masterBugFade 8.5s ease-in-out infinite;
         }
 
-        .active-sequence .fall-scene-container {
-            animation: autumnSceneEnter 8.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite;
+        .active-sequence .fall-tree-badge {
+            animation: fallTreeSlideOut 8.5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
         }
 
-        .active-sequence .fall-glow {
-            animation: autumnGlowPulse 8.5s ease-in-out infinite;
-        }
-
-        /* Fade-in & Reset loop */
+        /* ظهور الشعار والدورة الكاملة */
         @keyframes masterBugFade {
-            0% { opacity: 0; transform: translate3d(0, -4px, 0); }
-            5% { opacity: 1; transform: translate3d(0, 0, 0); }
-            94% { opacity: 1; transform: translate3d(0, 0, 0); }
-            100% { opacity: 0; transform: translate3d(0, 4px, 0); }
-        }
-
-        /* Bumper Scene Pop-in (Triggers at 5s, stays for 3s) */
-        @keyframes autumnSceneEnter {
-            0%, 58.8% { /* 0s - 5.0s */
-                opacity: 0;
-                transform: translateY(-50%) translate3d(35px, 0, 0) scale(0.75);
-            }
-            65% { /* 5.5s (Pop Entrance) */
-                opacity: 1;
-                transform: translateY(-50%) translate3d(0, 0, 0) scale(1);
-            }
-            94.1% { /* 8.0s (Exit) */
-                opacity: 1;
-                transform: translateY(-50%) translate3d(0, 0, 0) scale(1);
-            }
-            100% { /* 8.5s (Reset) */
-                opacity: 0;
-                transform: translateY(-50%) translate3d(-20px, 0, 0) scale(0.8);
-            }
-        }
-
-        /* Ambient Glow Trigger */
-        @keyframes autumnGlowPulse {
-            0%, 58.8% { opacity: 0; }
-            65%, 94.1% { opacity: 1; }
+            0% { opacity: 0; }
+            5% { opacity: 0.98; }
+            94% { opacity: 0.98; }
             100% { opacity: 0; }
         }
 
-        /* Natural Breeze Sway */
-        @keyframes autumnWindSway {
-            0% { transform: rotate(0deg) skewX(0deg); }
-            100% { transform: rotate(-5deg) skewX(-2deg); }
+        /* خروج الأشجار من خلف الشعار بعد 5 ثوانٍ، والبقاء لمدة 3 ثوانٍ */
+        @keyframes fallTreeSlideOut {
+            0%, 58.8% { /* 0s - 5.0s (مختفي خلف الشعار) */
+                opacity: 0;
+                transform: translate3d(40px, 0, 0) scale(0.4);
+            }
+            64.7% { /* 5.5s (ظهور وانزلاق سلس للخارج) */
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+            94.1% { /* 8.0s (بقاء طوال الـ 3 ثواني) */
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+            100% { /* 8.5s (اختفاء واسترجاع للشعار) */
+                opacity: 0;
+                transform: translate3d(30px, 0, 0) scale(0.5);
+            }
         }
 
-        /* Particle Motion for Leaves */
-        @keyframes leafDrift {
+        /* اهتزاز الأشجار مع حركة الهواء */
+        @keyframes fallWindSway {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-4deg) translateY(-1px); }
+        }
+
+        /* تطاير الأوراق الخريفية فوق الشعار */
+        @keyframes leafFly {
             0% {
-                transform: translate3d(20px, -10px, 0) rotate(0deg) scale(0.8);
+                transform: translate3d(20px, 0, 0) rotate(0deg) scale(0.8);
                 opacity: 0;
             }
-            15% { opacity: 1; }
-            85% { opacity: 0.9; }
+            20% { opacity: 1; }
+            80% { opacity: 0.8; }
             100% {
-                transform: translate3d(-60px, 45px, 0) rotate(-240deg) scale(0.5);
+                transform: translate3d(-45px, -25px, 0) rotate(-180deg) scale(0.4);
                 opacity: 0;
             }
         }
 
-        /* Original Shine RTL Animation */
+        /* حركة اللمعان الأصلي */
         @keyframes logoShineFastRTL {
             0% { 
                 transform: skewX(25deg) translate3d(-120%, 0, 0); 
@@ -217,92 +185,58 @@
 <body>
 
     <div id="screenbug-wrapper">
-        <!-- Ambient Warm Fall Glow -->
-        <div class="fall-glow"></div>
+        <!-- الأشجار الخريفية المصغرة المثبتة خلف الجانب الأيسر للشعار -->
+        <svg class="fall-tree-badge" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="trunkGrad" x1="0" y1="0" x2="0" y2="100%">
+                    <stop offset="0%" stop-color="#4A2511"/>
+                    <stop offset="100%" stop-color="#261106"/>
+                </linearGradient>
+                <radialGradient id="leafRed" cx="30%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#FF4500"/>
+                    <stop offset="70%" stop-color="#C71585"/>
+                    <stop offset="100%" stop-color="#4A0010"/>
+                </radialGradient>
+                <radialGradient id="leafOrange" cx="30%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#FF8C00"/>
+                    <stop offset="80%" stop-color="#D2691E"/>
+                    <stop offset="100%" stop-color="#8B0000"/>
+                </radialGradient>
+                <radialGradient id="leafGold" cx="30%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#FFD700"/>
+                    <stop offset="80%" stop-color="#FF8C00"/>
+                </radialGradient>
+            </defs>
 
-        <!-- TV Bumper Art: Autumn Trees, Bench & Falling Leaves -->
-        <div class="fall-scene-container">
-            <svg viewBox="0 0 160 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <!-- Foliage Gradients -->
-                    <radialGradient id="treeGradRed" cx="40%" cy="40%" r="60%">
-                        <stop offset="0%" stop-color="#FF3D00"/>
-                        <stop offset="70%" stop-color="#DD2C00"/>
-                        <stop offset="100%" stop-color="#801300"/>
-                    </radialGradient>
-                    
-                    <radialGradient id="treeGradOrange" cx="40%" cy="40%" r="60%">
-                        <stop offset="0%" stop-color="#FF9100"/>
-                        <stop offset="75%" stop-color="#FF6D00"/>
-                        <stop offset="100%" stop-color="#D84315"/>
-                    </radialGradient>
+            <!-- التلة والأرضية الخريفية -->
+            <ellipse cx="50" cy="82" rx="42" ry="7" fill="#8B2500" opacity="0.85"/>
+            <path d="M15 82C30 78 70 78 85 82Z" fill="#D2691E"/>
 
-                    <radialGradient id="treeGradGold" cx="40%" cy="40%" r="60%">
-                        <stop offset="0%" stop-color="#FFEA00"/>
-                        <stop offset="65%" stop-color="#FFC400"/>
-                        <stop offset="100%" stop-color="#FF8F00"/>
-                    </radialGradient>
+            <!-- مجسم الأشجار -->
+            <g class="tree-sway">
+                <!-- الشجرة الخلفية الصغيرة -->
+                <path d="M30 82L30 55 M30 65L22 58" stroke="url(#trunkGrad)" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="28" cy="48" r="14" fill="url(#leafGold)"/>
+                <circle cx="20" cy="52" r="10" fill="url(#leafOrange)"/>
 
-                    <!-- Bark Gradient -->
-                    <linearGradient id="barkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#3E2723"/>
-                        <stop offset="50%" stop-color="#4E342E"/>
-                        <stop offset="100%" stop-color="#271C19"/>
-                    </linearGradient>
+                <!-- الشجرة الرئيسية الملتصقة بالشعار -->
+                <path d="M62 83C62 68 64 60 62 44 M62 62L50 52 M62 55L72 46" stroke="url(#trunkGrad)" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="62" cy="38" r="20" fill="url(#leafRed)"/>
+                <circle cx="48" cy="44" r="15" fill="url(#leafOrange)"/>
+                <circle cx="74" cy="46" r="13" fill="url(#leafGold)"/>
+                <circle cx="62" cy="26" r="13" fill="url(#leafGold)"/>
+            </g>
 
-                    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
-                        <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
-                    </filter>
-                </defs>
+            <!-- أوراق متطايرة مع الريح -->
+            <g class="blowing-leaf">
+                <path d="M60 30C56 26 50 28 48 22 C54 24 56 18 60 20Z" fill="#FF4500" transform="scale(0.5)"/>
+            </g>
+            <g class="blowing-leaf blowing-leaf-2">
+                <path d="M72 40C68 36 62 38 60 32 C66 34 68 28 72 30Z" fill="#FFD700" transform="scale(0.4)"/>
+            </g>
+        </svg>
 
-                <!-- Ground Mound with Fallen Foliage -->
-                <ellipse cx="80" cy="112" rx="70" ry="12" fill="#4E2A18" opacity="0.6"/>
-                <path d="M20 112C40 106 120 106 140 112C120 118 40 118 20 112Z" fill="#BF360C" opacity="0.8"/>
-
-                <!-- Park Bench under the Tree -->
-                <g filter="url(#softShadow)">
-                    <path d="M65 106L65 113 M95 106L95 113 M70 106L70 113 M90 106L90 113" stroke="#212121" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M62 101H98 M62 104H98 M62 107H98" stroke="#D84315" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M64 94H96" stroke="#BF360C" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M63 93L63 102 M97 93L97 102" stroke="#212121" stroke-width="1.5"/>
-                </g>
-
-                <!-- Main Trees Group (Animated by Wind) -->
-                <g class="sway-trees" filter="url(#softShadow)">
-                    <!-- Background Secondary Tree -->
-                    <path d="M42 110 L42 75 M42 88 L32 78 M42 82 L50 75" stroke="url(#barkGrad)" stroke-width="3.5" stroke-linecap="round"/>
-                    <circle cx="36" cy="65" r="22" fill="url(#treeGradOrange)"/>
-                    <circle cx="26" cy="70" r="14" fill="url(#treeGradGold)"/>
-
-                    <!-- Hero Autumn Oak Tree -->
-                    <path d="M110 112 C108 95 112 85 110 60 M110 82 L92 70 M110 74 L122 62 M110 65 L98 52" stroke="url(#barkGrad)" stroke-width="5" stroke-linecap="round"/>
-                    
-                    <!-- Layered Canopy -->
-                    <circle cx="110" cy="50" r="28" fill="url(#treeGradRed)"/>
-                    <circle cx="92" cy="56" r="20" fill="url(#treeGradOrange)"/>
-                    <circle cx="126" cy="58" r="18" fill="url(#treeGradGold)"/>
-                    <circle cx="110" cy="36" r="18" fill="url(#treeGradGold)"/>
-
-                    <!-- Highlights & Leaf Details -->
-                    <circle cx="102" cy="42" r="6" fill="#FFF59D" opacity="0.6"/>
-                    <circle cx="86" cy="52" r="4" fill="#FFE082" opacity="0.7"/>
-                    <circle cx="120" cy="50" r="5" fill="#FFAB91" opacity="0.6"/>
-                </g>
-
-                <!-- Drifting Autumn Leaves Particles -->
-                <g class="drifting-leaf">
-                    <path d="M115 45 C110 40 100 42 98 35 C108 37 110 28 115 32 C118 26 128 30 125 38 Z" fill="#FF3D00" transform="scale(0.35)"/>
-                </g>
-                <g class="drifting-leaf drifting-leaf-2">
-                    <path d="M130 60 C125 55 115 57 113 50 C123 52 125 43 130 47 C133 41 143 45 140 53 Z" fill="#FFC400" transform="scale(0.28)"/>
-                </g>
-                <g class="drifting-leaf drifting-leaf-3">
-                    <path d="M100 35 C95 30 85 32 83 25 C93 27 95 18 100 22 C103 16 113 20 110 28 Z" fill="#FF6D00" transform="scale(0.32)"/>
-                </g>
-            </svg>
-        </div>
-
-        <!-- 3D Logo Screenbug Layer -->
+        <!-- طبقة الشعار واللمعان 3D -->
         <div id="logo-container">
             <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
             <div class="shine-layer" id="shine-element"></div>
@@ -314,7 +248,7 @@
 
         function triggerBroadcastSequence() {
             document.body.classList.remove('active-sequence');
-            void wrapper.offsetWidth; // Force Reflow
+            void wrapper.offsetWidth; // Force Reflow لإعادة الأنميشن
             document.body.classList.add('active-sequence');
         }
 
@@ -322,7 +256,7 @@
             triggerBroadcastSequence();
         });
 
-        /* OBS Source Visibility Handler */
+        /* توافق كامل مع مصادر OBS Studio */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 triggerBroadcastSequence();

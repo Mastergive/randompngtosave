@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Vintage Screenbug (60 FPS Exact Loop)</title>
+    <title>Spacetoon Vintage Screenbug - Fall 2026 Update</title>
     <style>
         * {
             margin: 0;
@@ -23,27 +23,21 @@
             position: absolute;
             top: 35px;
             right: 45px;
-            width: 220px;
-            height: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             opacity: 0;
-            transform-origin: center;
-            /* تفعيل تسريع كرت الشاشة للشعار بالكامل لمنع الـ Lag */
             transform: translate3d(0, 0, 0);
             will-change: opacity;
             filter: blur(0.4px) contrast(1.05) saturate(1.1);
         }
 
-        /* حركة ظهور الشعار بسلاسة */
-        .animate-entrance {
-            animation: spacetoonFadeIntro 0.5s ease-out forwards;
-        }
-
-        /* غلاف الشعار */
+        /* غلاف الشعار الرئيسي */
         .bug-wrapper {
             position: relative;
-            width: 100%;
-            height: 100%;
-            display: inline-block;
+            width: 220px;
+            height: auto;
+            flex-shrink: 0;
         }
 
         /* صورة الشعار ثلاثي الأبعاد */
@@ -53,14 +47,13 @@
             display: block;
         }
 
-        /* طبقة تأثير اللمعان (Shine) */
+        /* طبقة تأثير اللمعان (Shine) الأصلي */
         .shine-layer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* قناع لحصر اللمعان داخل حدود الشعار فقط */
             -webkit-mask-image: url('Stoon3D.png');
             mask-image: url('Stoon3D.png');
             -webkit-mask-size: contain;
@@ -69,45 +62,78 @@
             mask-repeat: no-repeat;
         }
 
-        /* شريط اللمعان المائل من اليمين إلى اليسار */
         .shine-layer::after {
             content: '';
             position: absolute;
             top: 0;
-            /* تثبيت العنصر في أقصى اليمين والتحريك يعتمد كلياً على الـ transform المسرع بالـ GPU */
             right: 0; 
             width: 100%;
             height: 100%;
-            /* لمعان أزرق نحيف وحاد في المنتصف لمحاكاة الانعكاس الكريستالي الأصلي */
             background: linear-gradient(
                 -90deg,
                 transparent 0%,
                 rgba(15, 35, 120, 0) 40%,
                 rgba(25, 60, 180, 0.4) 47%,
-                rgba(70, 120, 255, 0.6) 50%, /* النواة المضيئة */
+                rgba(70, 120, 255, 0.6) 50%,
                 rgba(25, 60, 180, 0.4) 53%,
                 rgba(15, 35, 120, 0) 60%,
                 transparent 100%
             );
-            /* البداية من خارج حدود الشعار يميناً */
             transform: skewX(25deg) translate3d(-120%, 0, 0);
             mix-blend-mode: color-dodge;
             opacity: 0.85;
             will-change: transform;
-        }
-
-        /* تكرار اللمعان اللانهائي كل 1.0 ثانية تماماً مثل كودك القديم */
-        .shine-active::after {
             animation: logoShineFastRTL 1.0s linear infinite;
         }
 
-        /* --- الإطارات المفتاحية المحسنة للـ 60 إطار (Keyframes) --- */
-        @keyframes spacetoonFadeIntro {
-            0% { opacity: 0; }
-            100% { opacity: 0.95; }
+        /* أشجار الخريف 2026 - Fall Vibes SVG Element */
+        .fall-trees {
+            width: 65px;
+            height: 65px;
+            opacity: 0;
+            transform: translate3d(15px, 0, 0) scale(0.9);
+            will-change: transform, opacity;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
-        /* التحريك باستخدام translate3d يضمن معالجة الأنميشن بواسطة الـ GPU بـ 60 إطاراً ناعماً */
+        /* --- الأنميشن والتسلسل الزمني الكامل (8.5 ثانية للدورة) --- */
+        .active-sequence #logo-container {
+            animation: spacetoonFadeSequence 8.5s ease-in-out infinite;
+        }
+
+        .active-sequence .fall-trees {
+            animation: fallTreesSequence 8.5s ease-in-out infinite;
+        }
+
+        /* ظهور الشعار واختفاؤه في أواخر الدورة */
+        @keyframes spacetoonFadeSequence {
+            0% { opacity: 0; }
+            6% { opacity: 0.95; }
+            94% { opacity: 0.95; }
+            100% { opacity: 0; }
+        }
+
+        /* تحريك الأشجار: ظهور بعد 5 ثوانٍ، بقاء لمدة 3 ثوانٍ، ثم الاختفاء مع إعادة الشعار */
+        @keyframes fallTreesSequence {
+            0%, 58.8% { /* 0s - 5s */
+                opacity: 0;
+                transform: translate3d(15px, 0, 0) scale(0.9);
+            }
+            64.7% { /* 5.5s (دخول سلس للأشجار) */
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+            94.1% { /* 8.0s (خروج الأشجار) */
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+            100% { /* 8.5s (إعادة ضبط للوظيفة التالية) */
+                opacity: 0;
+                transform: translate3d(-10px, 0, 0) scale(0.9);
+            }
+        }
+
+        /* تحريك اللمعان الأصلي بدون أي تعديل */
         @keyframes logoShineFastRTL {
             0% { 
                 transform: skewX(25deg) translate3d(-120%, 0, 0); 
@@ -121,6 +147,25 @@
 <body>
 
     <div id="logo-container">
+        <!-- عناصر الأشجار بلمسة خريفية (SVG عالي الدقة وناعم) -->
+        <svg class="fall-trees" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- الشجرة الصغيرة الخلفية (لون برتقالي خريفي) -->
+            <path d="M30 85L30 65" stroke="#5C2C16" stroke-width="4" stroke-linecap="round"/>
+            <path d="M30 25C15 25 10 40 10 52C10 65 20 68 30 68C40 68 50 65 50 52C50 40 45 25 30 25Z" fill="#D95D39"/>
+            <path d="M30 32C22 32 18 42 18 50C22 48 35 48 42 50C42 42 38 32 30 32Z" fill="#E07A5F" opacity="0.6"/>
+            
+            <!-- الشجرة الرئيسية (أحمر خريفي داكن دافئ) -->
+            <path d="M68 88L68 58" stroke="#4A1E0D" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="68" cy="45" r="24" fill="#B83A1B"/>
+            <circle cx="60" cy="38" r="16" fill="#E05A10" opacity="0.7"/>
+            
+            <!-- أوراق خريف متساقطة لطيفة -->
+            <circle cx="38" cy="72" r="2.5" fill="#E07A5F"/>
+            <circle cx="44" cy="78" r="2" fill="#D95D39"/>
+            <circle cx="22" cy="75" r="2" fill="#F2A65A"/>
+        </svg>
+
+        <!-- غلاف الشعار واللمعان -->
         <div class="bug-wrapper">
             <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
             <div class="shine-layer" id="shine-element"></div>
@@ -128,33 +173,24 @@
     </div>
 
     <script>
-        const container = document.getElementById('logo-container');
-        const shineElement = document.getElementById('shine-element');
+        const body = document.body;
 
         function triggerBroadcastSequence() {
-            container.classList.remove('animate-entrance');
-            shineElement.classList.remove('shine-active');
-            void container.offsetWidth; // Force Reflow لإعادة تشغيل الأنميشن من البداية
-            
-            container.classList.add('animate-entrance');
-            
-            // يبدأ اللمعان المستمر فوراً بعد نصف ثانية من ظهور الشعار
-            setTimeout(() => {
-                shineElement.classList.add('shine-active');
-            }, 500);
+            body.classList.remove('active-sequence');
+            void body.offsetWidth; // Force Reflow لإعادة تشغيل التسلسل بدقة
+            body.classList.add('active-sequence');
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             triggerBroadcastSequence();
         });
 
-        /* التوافق مع برمجيات OBS لضمان إعادة تشغيل التأثير عند إظهار المصدر */
+        /* التوافق الكامل مع OBS Studio */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 triggerBroadcastSequence();
             } else {
-                container.classList.remove('animate-entrance');
-                shineElement.classList.remove('shine-active');
+                body.classList.remove('active-sequence');
             }
         });
     </script>

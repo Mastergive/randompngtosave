@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Vintage Screenbug - Fall 2026 Peak Update</title>
+    <title>Spacetoon Screenbug - Fall 2026 Creative Update</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,7 @@
             height: 100vh;
         }
 
-        /* Screenbug Position */
+        /* Screenbug Main Position */
         #screenbug-wrapper {
             position: absolute;
             top: 35px;
@@ -26,17 +26,17 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            width: 320px;
-            height: 120px;
-            filter: blur(0.3px) contrast(1.08) saturate(1.15) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+            width: 360px;
+            height: 130px;
+            filter: blur(0.2px) contrast(1.1) saturate(1.2) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4));
         }
 
-        /* Core Logo Styling */
+        /* Logo Layer */
         #logo-container {
             position: relative;
             width: 220px;
             height: auto;
-            z-index: 2;
+            z-index: 3;
             transform: translate3d(0, 0, 0);
             will-change: transform, opacity;
         }
@@ -86,124 +86,124 @@
             animation: logoShineFastRTL 1.0s linear infinite;
         }
 
-        /* Ambient Autumn Glow Behind Logo */
+        /* Ambient Autumn Warm Backlight */
         .fall-glow {
             position: absolute;
-            right: 10px;
+            right: 0px;
             top: 50%;
             transform: translateY(-50%);
-            width: 200px;
-            height: 90px;
-            background: radial-gradient(ellipse at center, rgba(235, 94, 40, 0.35) 0%, rgba(217, 119, 6, 0) 70%);
+            width: 260px;
+            height: 110px;
+            background: radial-gradient(ellipse at center, rgba(230, 81, 0, 0.4) 0%, rgba(245, 124, 0, 0.15) 50%, rgba(0, 0, 0, 0) 75%);
             z-index: 1;
             opacity: 0;
             pointer-events: none;
             will-change: opacity;
         }
 
-        /* Detailed Autumn Foliage Container */
-        .fall-nature-container {
+        /* TV Bumper Fall Scene Container */
+        .fall-scene-container {
             position: absolute;
-            left: 0;
+            left: -10px;
             top: 50%;
-            transform: translateY(-50%) translate3d(20px, 0, 0) scale(0.85);
-            width: 110px;
-            height: 100px;
-            z-index: 3;
+            transform: translateY(-50%) translate3d(30px, 0, 0) scale(0.8);
+            width: 150px;
+            height: 120px;
+            z-index: 2;
             opacity: 0;
             pointer-events: none;
             will-change: transform, opacity;
         }
 
-        /* Individual Wind Sway Animation for Branches */
-        .sway-branch {
-            transform-origin: bottom right;
-            animation: autumnWindSway 2.5s ease-in-out infinite alternate;
+        /* Wind Animation for Trees */
+        .sway-trees {
+            transform-origin: bottom center;
+            animation: autumnWindSway 2.2s ease-in-out infinite alternate;
         }
 
-        /* Falling Leaf Particles */
+        /* Falling Leaf Particles Trajectory */
         .drifting-leaf {
             will-change: transform, opacity;
-            animation: leafDrift 3.0s linear infinite;
+            animation: leafDrift 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
         .drifting-leaf-2 {
-            animation-delay: 0.8s;
-            animation-duration: 2.6s;
+            animation-delay: 0.7s;
+            animation-duration: 2.4s;
         }
         .drifting-leaf-3 {
-            animation-delay: 1.5s;
-            animation-duration: 3.2s;
+            animation-delay: 1.4s;
+            animation-duration: 3.1s;
         }
 
-        /* --- Master Animation Timeline (8.5s Loop) --- */
+        /* --- Master Loop Timeline (8.5s Cycle) --- */
         .active-sequence #screenbug-wrapper {
             animation: masterBugFade 8.5s ease-in-out infinite;
         }
 
-        .active-sequence .fall-nature-container {
-            animation: autumnFoliageEnter 8.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+        .active-sequence .fall-scene-container {
+            animation: autumnSceneEnter 8.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite;
         }
 
         .active-sequence .fall-glow {
             animation: autumnGlowPulse 8.5s ease-in-out infinite;
         }
 
-        /* Overall Screenbug Loop Transition */
+        /* Fade-in & Reset loop */
         @keyframes masterBugFade {
-            0% { opacity: 0; transform: translate3d(0, -5px, 0); }
-            5% { opacity: 0.98; transform: translate3d(0, 0, 0); }
-            94% { opacity: 0.98; transform: translate3d(0, 0, 0); }
-            100% { opacity: 0; transform: translate3d(0, 5px, 0); }
+            0% { opacity: 0; transform: translate3d(0, -4px, 0); }
+            5% { opacity: 1; transform: translate3d(0, 0, 0); }
+            94% { opacity: 1; transform: translate3d(0, 0, 0); }
+            100% { opacity: 0; transform: translate3d(0, 4px, 0); }
         }
 
-        /* Foliage Slide-In (Appears at 5s, stays until 8s) */
-        @keyframes autumnFoliageEnter {
+        /* Bumper Scene Pop-in (Triggers at 5s, stays for 3s) */
+        @keyframes autumnSceneEnter {
             0%, 58.8% { /* 0s - 5.0s */
                 opacity: 0;
-                transform: translateY(-50%) translate3d(25px, 0, 0) scale(0.8);
+                transform: translateY(-50%) translate3d(35px, 0, 0) scale(0.75);
             }
-            64.7% { /* 5.5s (Smooth Entrance) */
+            65% { /* 5.5s (Pop Entrance) */
                 opacity: 1;
                 transform: translateY(-50%) translate3d(0, 0, 0) scale(1);
             }
-            94.1% { /* 8.0s (Exit Phase) */
+            94.1% { /* 8.0s (Exit) */
                 opacity: 1;
                 transform: translateY(-50%) translate3d(0, 0, 0) scale(1);
             }
             100% { /* 8.5s (Reset) */
                 opacity: 0;
-                transform: translateY(-50%) translate3d(-15px, 0, 0) scale(0.85);
+                transform: translateY(-50%) translate3d(-20px, 0, 0) scale(0.8);
             }
         }
 
         /* Ambient Glow Trigger */
         @keyframes autumnGlowPulse {
             0%, 58.8% { opacity: 0; }
-            64.7%, 94.1% { opacity: 1; }
+            65%, 94.1% { opacity: 1; }
             100% { opacity: 0; }
         }
 
-        /* Natural Breeze Sway for Branches */
+        /* Natural Breeze Sway */
         @keyframes autumnWindSway {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(-4deg) translateY(-2px); }
+            0% { transform: rotate(0deg) skewX(0deg); }
+            100% { transform: rotate(-5deg) skewX(-2deg); }
         }
 
-        /* Wind-blown Leaves Trajectory */
+        /* Particle Motion for Leaves */
         @keyframes leafDrift {
             0% {
-                transform: translate3d(0, 0, 0) rotate(0deg);
+                transform: translate3d(20px, -10px, 0) rotate(0deg) scale(0.8);
                 opacity: 0;
             }
-            20% { opacity: 0.9; }
-            80% { opacity: 0.8; }
+            15% { opacity: 1; }
+            85% { opacity: 0.9; }
             100% {
-                transform: translate3d(-50px, 35px, 0) rotate(-180deg);
+                transform: translate3d(-60px, 45px, 0) rotate(-240deg) scale(0.5);
                 opacity: 0;
             }
         }
 
-        /* Original RTL Shine Animation */
+        /* Original Shine RTL Animation */
         @keyframes logoShineFastRTL {
             0% { 
                 transform: skewX(25deg) translate3d(-120%, 0, 0); 
@@ -217,70 +217,87 @@
 <body>
 
     <div id="screenbug-wrapper">
-        <!-- Ambient Warm Fall Backlight -->
+        <!-- Ambient Warm Fall Glow -->
         <div class="fall-glow"></div>
 
-        <!-- Detailed Vector Autumn Foliage + Falling Leaves -->
-        <div class="fall-nature-container">
-            <svg viewBox="0 0 120 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- TV Bumper Art: Autumn Trees, Bench & Falling Leaves -->
+        <div class="fall-scene-container">
+            <svg viewBox="0 0 160 130" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="leafGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#FF5400"/>
-                        <stop offset="100%" stop-color="#9E0059"/>
+                    <!-- Foliage Gradients -->
+                    <radialGradient id="treeGradRed" cx="40%" cy="40%" r="60%">
+                        <stop offset="0%" stop-color="#FF3D00"/>
+                        <stop offset="70%" stop-color="#DD2C00"/>
+                        <stop offset="100%" stop-color="#801300"/>
+                    </radialGradient>
+                    
+                    <radialGradient id="treeGradOrange" cx="40%" cy="40%" r="60%">
+                        <stop offset="0%" stop-color="#FF9100"/>
+                        <stop offset="75%" stop-color="#FF6D00"/>
+                        <stop offset="100%" stop-color="#D84315"/>
+                    </radialGradient>
+
+                    <radialGradient id="treeGradGold" cx="40%" cy="40%" r="60%">
+                        <stop offset="0%" stop-color="#FFEA00"/>
+                        <stop offset="65%" stop-color="#FFC400"/>
+                        <stop offset="100%" stop-color="#FF8F00"/>
+                    </radialGradient>
+
+                    <!-- Bark Gradient -->
+                    <linearGradient id="barkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#3E2723"/>
+                        <stop offset="50%" stop-color="#4E342E"/>
+                        <stop offset="100%" stop-color="#271C19"/>
                     </linearGradient>
-                    <linearGradient id="leafGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#FFBD00"/>
-                        <stop offset="100%" stop-color="#FF5400"/>
-                    </linearGradient>
-                    <linearGradient id="woodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="#542310"/>
-                        <stop offset="100%" stop-color="#2B0E04"/>
-                    </linearGradient>
-                    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="1.5" result="blur"/>
-                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+
+                    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+                        <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
                     </filter>
                 </defs>
 
-                <!-- Natural Wood Branch Wrap -->
-                <g class="sway-branch">
-                    <path d="M110 85C90 82 75 70 60 55C52 47 42 30 25 22" stroke="url(#woodGrad)" stroke-width="4.5" stroke-linecap="round"/>
-                    <path d="M68 62C55 58 48 50 40 42" stroke="url(#woodGrad)" stroke-width="3" stroke-linecap="round"/>
-                    <path d="M42 32C35 28 28 22 20 18" stroke="url(#woodGrad)" stroke-width="2" stroke-linecap="round"/>
+                <!-- Ground Mound with Fallen Foliage -->
+                <ellipse cx="80" cy="112" rx="70" ry="12" fill="#4E2A18" opacity="0.6"/>
+                <path d="M20 112C40 106 120 106 140 112C120 118 40 118 20 112Z" fill="#BF360C" opacity="0.8"/>
 
-                    <!-- Background Dark Maple Cluster -->
-                    <g opacity="0.85" filter="url(#softGlow)">
-                        <path d="M38 48C28 44 20 48 18 36C26 36 30 28 36 30C40 22 48 24 48 34C52 42 46 48 38 48Z" fill="#7209B7"/>
-                        <path d="M62 68C52 64 44 68 42 56C50 56 54 48 60 50C64 42 72 44 72 54C76 62 70 68 62 68Z" fill="#900C3F"/>
-                    </g>
-
-                    <!-- Main Vibrant Maple Leaves (Hand-Drawn Crisp Geometry) -->
-                    <!-- Leaf 1 (Top Left) -->
-                    <path d="M22 20C18 12 12 10 10 4C18 6 22 14 26 8C28 16 36 14 38 22C32 22 30 30 24 28C22 32 20 24 22 20Z" fill="url(#leafGrad2)"/>
-                    <path d="M22 20L20 4" stroke="#8D0801" stroke-width="0.8" opacity="0.6"/>
-
-                    <!-- Leaf 2 (Center Hero Maple) -->
-                    <path d="M50 42C44 30 34 28 30 18C42 22 48 32 54 24C58 34 70 30 72 44C64 44 60 56 52 52C48 58 44 48 50 42Z" fill="url(#leafGrad1)"/>
-                    <path d="M50 42L30 18" stroke="#FFCCD5" stroke-width="0.8" opacity="0.5"/>
-
-                    <!-- Leaf 3 (Bottom Rich Orange) -->
-                    <path d="M75 66C68 56 58 55 54 46C65 48 70 58 76 50C80 58 90 56 91 68C83 67 80 78 72 73C70 78 66 70 75 66Z" fill="url(#leafGrad2)"/>
-                    
-                    <!-- Small Accent Golden Leaves -->
-                    <circle cx="28" cy="38" r="4" fill="#FFBD00"/>
-                    <circle cx="58" cy="62" r="3" fill="#FF5400"/>
-                    <circle cx="42" cy="24" r="2.5" fill="#FF0054"/>
+                <!-- Park Bench under the Tree -->
+                <g filter="url(#softShadow)">
+                    <path d="M65 106L65 113 M95 106L95 113 M70 106L70 113 M90 106L90 113" stroke="#212121" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M62 101H98 M62 104H98 M62 107H98" stroke="#D84315" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M64 94H96" stroke="#BF360C" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M63 93L63 102 M97 93L97 102" stroke="#212121" stroke-width="1.5"/>
                 </g>
 
-                <!-- Wind Particles / Falling Autumn Leaves -->
+                <!-- Main Trees Group (Animated by Wind) -->
+                <g class="sway-trees" filter="url(#softShadow)">
+                    <!-- Background Secondary Tree -->
+                    <path d="M42 110 L42 75 M42 88 L32 78 M42 82 L50 75" stroke="url(#barkGrad)" stroke-width="3.5" stroke-linecap="round"/>
+                    <circle cx="36" cy="65" r="22" fill="url(#treeGradOrange)"/>
+                    <circle cx="26" cy="70" r="14" fill="url(#treeGradGold)"/>
+
+                    <!-- Hero Autumn Oak Tree -->
+                    <path d="M110 112 C108 95 112 85 110 60 M110 82 L92 70 M110 74 L122 62 M110 65 L98 52" stroke="url(#barkGrad)" stroke-width="5" stroke-linecap="round"/>
+                    
+                    <!-- Layered Canopy -->
+                    <circle cx="110" cy="50" r="28" fill="url(#treeGradRed)"/>
+                    <circle cx="92" cy="56" r="20" fill="url(#treeGradOrange)"/>
+                    <circle cx="126" cy="58" r="18" fill="url(#treeGradGold)"/>
+                    <circle cx="110" cy="36" r="18" fill="url(#treeGradGold)"/>
+
+                    <!-- Highlights & Leaf Details -->
+                    <circle cx="102" cy="42" r="6" fill="#FFF59D" opacity="0.6"/>
+                    <circle cx="86" cy="52" r="4" fill="#FFE082" opacity="0.7"/>
+                    <circle cx="120" cy="50" r="5" fill="#FFAB91" opacity="0.6"/>
+                </g>
+
+                <!-- Drifting Autumn Leaves Particles -->
                 <g class="drifting-leaf">
-                    <path d="M70 40C66 36 60 38 58 32C64 33 66 28 70 30C72 26 78 28 76 34C80 37 76 42 70 40Z" fill="#FF5400" transform="scale(0.55)"/>
+                    <path d="M115 45 C110 40 100 42 98 35 C108 37 110 28 115 32 C118 26 128 30 125 38 Z" fill="#FF3D00" transform="scale(0.35)"/>
                 </g>
                 <g class="drifting-leaf drifting-leaf-2">
-                    <path d="M85 55C81 51 75 53 73 47C79 48 81 43 85 45C87 41 93 43 91 49C95 52 91 57 85 55Z" fill="#FFBD00" transform="scale(0.4)"/>
+                    <path d="M130 60 C125 55 115 57 113 50 C123 52 125 43 130 47 C133 41 143 45 140 53 Z" fill="#FFC400" transform="scale(0.28)"/>
                 </g>
                 <g class="drifting-leaf drifting-leaf-3">
-                    <circle cx="75" cy="45" r="2" fill="#FF0054"/>
+                    <path d="M100 35 C95 30 85 32 83 25 C93 27 95 18 100 22 C103 16 113 20 110 28 Z" fill="#FF6D00" transform="scale(0.32)"/>
                 </g>
             </svg>
         </div>
@@ -305,7 +322,7 @@
             triggerBroadcastSequence();
         });
 
-        /* OBS Source Visibility Integration */
+        /* OBS Source Visibility Handler */
         window.addEventListener('obsSourceVisibleChanged', function(event) {
             if (event.detail.visible) {
                 triggerBroadcastSequence();

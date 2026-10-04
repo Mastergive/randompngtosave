@@ -7,16 +7,15 @@
 <style>
 /* Design stage is a fixed 1920x1080 canvas, scaled to any OBS resolution (720p..4K) */
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{background:transparent;overflow:hidden;width:100%;height:100%}
-#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+body{background:transparent;overflow:hidden;width:100vw;height:100vh}
 
-/* Title-safe: 5% margin (96px / 54px) from top-right */
-#bug{position:absolute;top:54px;right:96px;width:300px;height:170px;
+/* Identical to original: top 35px, right 45px, 240x120 box */
+#bug{position:absolute;top:35px;right:45px;width:240px;height:120px;
   display:flex;align-items:center;justify-content:center;opacity:0;
   --ease-out:cubic-bezier(.16,1,.3,1);--spring:cubic-bezier(.34,1.56,.64,1)}
 
 /* Logo: crisp (no blur), soft grounded shadow only */
-#logo{position:relative;width:230px;z-index:3;
+#logo{position:relative;width:220px;height:auto;z-index:3;
   transform:translateZ(0);filter:drop-shadow(0 6px 10px rgba(0,0,0,.45)) drop-shadow(0 0 1px rgba(0,0,0,.6))}
 #logo img{width:100%;display:block}
 
@@ -66,13 +65,11 @@ html,body{background:transparent;overflow:hidden;width:100%;height:100%}
 </style>
 </head>
 <body>
-<div id="stage">
-  <div id="bug">
+<div id="bug">
     <div id="glow"></div>
     <div class="leaf-layer" id="back"></div>
     <div id="logo"><img src="Stoon3D.png" alt="Spacetoon"><div class="shine"></div></div>
     <div class="leaf-layer" id="front"></div>
-  </div>
 </div>
 
 <svg width="0" height="0" style="position:absolute">
@@ -90,16 +87,11 @@ html,body{background:transparent;overflow:hidden;width:100%;height:100%}
 </svg>
 
 <script>
-const stage = document.getElementById('stage');
 const bug = document.getElementById('bug');
 const back = document.getElementById('back');
 const front = document.getElementById('front');
 const FILLS = ['gRed','gOrange','gGold','gOrange','gBrown','gRed','gGold'];
 const rnd = (a,b)=>a+Math.random()*(b-a);
-
-/* Scale the 1920x1080 stage to whatever resolution OBS gives us */
-function fit(){stage.style.transform='scale('+Math.min(innerWidth/1920,innerHeight/1080)+')'}
-addEventListener('resize',fit);fit();
 
 function leafSVG(fill){
   return '<svg viewBox="0 0 100 100"><use href="#maple" fill="url(#'+fill+')"/></svg>';
@@ -108,10 +100,10 @@ function leafSVG(fill){
 /* Garland: leaves hug an ellipse around the logo, heavier at top-left and bottom edge */
 function build(){
   back.innerHTML = front.innerHTML = '';
-  const cx = 150, cy = 85, N = 15;
+  const cx = 120, cy = 60, N = 15;
   for(let i=0;i<N;i++){
     const a = (i/N)*Math.PI*2 + rnd(-.18,.18);
-    const rx = 128 + rnd(-8,14), ry = 62 + rnd(-6,10);
+    const rx = 120 + rnd(-6,10), ry = 52 + rnd(-5,8);
     const x = cx + Math.cos(a)*rx, y = cy + Math.sin(a)*ry;
     const size = rnd(24, 40) * (Math.sin(a) > .5 ? .85 : 1);
     const el = document.createElement('div');
@@ -125,8 +117,8 @@ function build(){
   for(let i=0;i<6;i++){
     const el = document.createElement('div');
     el.className = 'drift';
-    el.style.cssText = '--s:'+rnd(12,20)+'px;--x0:'+rnd(220,320)+'px;--y0:'+rnd(-20,30)+'px;'
-      + '--x1:'+rnd(-40,40)+'px;--y1:'+rnd(150,200)+'px;--t:'+rnd(3,4.2)+'s;--d:'+(i*.5)+'s';
+    el.style.cssText = '--s:'+rnd(12,20)+'px;--x0:'+rnd(190,260)+'px;--y0:'+rnd(-20,30)+'px;'
+      + '--x1:'+rnd(-40,40)+'px;--y1:'+rnd(110,150)+'px;--t:'+rnd(3,4.2)+'s;--d:'+(i*.5)+'s';
     el.innerHTML = leafSVG(FILLS[(i+2) % FILLS.length]);
     front.appendChild(el);
   }

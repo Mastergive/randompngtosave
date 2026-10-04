@@ -1,344 +1,160 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spacetoon Screenbug - Full Envelope Fall 2026</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spacetoon Screenbug - Autumn 2026 (Pro)</title>
+<style>
+/* Design stage is a fixed 1920x1080 canvas, scaled to any OBS resolution (720p..4K) */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:transparent;overflow:hidden;width:100%;height:100%}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
 
-        body {
-            background: transparent;
-            overflow: hidden;
-            width: 100vw;
-            height: 100vh;
-        }
+/* Title-safe: 5% margin (96px / 54px) from top-right */
+#bug{position:absolute;top:54px;right:96px;width:300px;height:170px;
+  display:flex;align-items:center;justify-content:center;opacity:0;
+  --ease-out:cubic-bezier(.16,1,.3,1);--spring:cubic-bezier(.34,1.56,.64,1)}
 
-        /* تموضع البث القياسي: أعلى اليمين */
-        #screenbug-wrapper {
-            position: absolute;
-            top: 35px;
-            right: 45px;
-            width: 240px;
-            height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            filter: blur(0.2px) contrast(1.08) saturate(1.15) drop-shadow(0 4px 12px rgba(0,0,0,0.35));
-        }
+/* Logo: crisp (no blur), soft grounded shadow only */
+#logo{position:relative;width:230px;z-index:3;
+  transform:translateZ(0);filter:drop-shadow(0 6px 10px rgba(0,0,0,.45)) drop-shadow(0 0 1px rgba(0,0,0,.6))}
+#logo img{width:100%;display:block}
 
-        /* غلاف الشعار الرئيسي */
-        #logo-container {
-            position: relative;
-            width: 220px;
-            height: auto;
-            z-index: 3;
-            transform: translate3d(0, 0, 0);
-            will-change: transform, opacity;
-        }
+/* Specular sweep: soft, short, with a long pause between passes */
+.shine{position:absolute;inset:0;
+  -webkit-mask:url('Stoon3D.png') center/contain no-repeat;mask:url('Stoon3D.png') center/contain no-repeat}
+.shine::after{content:'';position:absolute;inset:-10% 0;width:45%;
+  background:linear-gradient(100deg,transparent 0%,rgba(255,236,200,.0) 20%,rgba(255,244,225,.75) 50%,rgba(255,236,200,0) 80%,transparent 100%);
+  transform:translateX(-130%) skewX(-18deg);mix-blend-mode:screen}
+.run .shine::after{animation:sweep 4.2s cubic-bezier(.45,.05,.25,1) .9s infinite}
+@keyframes sweep{0%{transform:translateX(-130%) skewX(-18deg)}38%,100%{transform:translateX(330%) skewX(-18deg)}}
 
-        .bug-image {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+/* Warm backlight (rim light) behind logo, breathing slowly */
+#glow{position:absolute;inset:-30px -40px;z-index:1;opacity:0;
+  background:radial-gradient(ellipse at 50% 55%,rgba(255,140,40,.55) 0%,rgba(220,70,20,.22) 45%,transparent 72%);
+  transition:opacity 1.2s ease;mix-blend-mode:screen}
+.autumn #glow{opacity:1;animation:breathe 3s ease-in-out infinite alternate}
+@keyframes breathe{from{transform:scale(.96)}to{transform:scale(1.05)}}
 
-        /* اللمعان الأصلي بدون أي تعديل */
-        .shine-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            -webkit-mask-image: url('Stoon3D.png');
-            mask-image: url('Stoon3D.png');
-            -webkit-mask-size: contain;
-            mask-size: contain;
-            -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
-        }
+/* Leaves */
+.leaf-layer{position:absolute;inset:0;pointer-events:none}
+#back{z-index:2}#front{z-index:4}
+.leaf{position:absolute;left:0;top:0;opacity:0;will-change:transform,opacity;
+  transform:translate(var(--x),var(--y)) scale(0) rotate(calc(var(--r) - 120deg));
+  transition:transform .9s var(--spring) var(--d),opacity .35s ease var(--d)}
+.autumn .leaf{opacity:1;transform:translate(var(--x),var(--y)) scale(1) rotate(var(--r))}
+.leaving .leaf{transition:transform .5s ease-in var(--o),opacity .45s ease-in var(--o);
+  opacity:0;transform:translate(var(--x),calc(var(--y) + 14px)) scale(.6) rotate(calc(var(--r) + 40deg))}
+.leaf svg{display:block;width:var(--s);height:var(--s);margin:calc(var(--s) / -2);
+  filter:drop-shadow(0 3px 3px rgba(0,0,0,.35));
+  animation:sway var(--t) ease-in-out var(--d) infinite alternate;transform-origin:50% 90%}
+@keyframes sway{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
 
-        .shine-layer::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0; 
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                -90deg,
-                transparent 0%,
-                rgba(15, 35, 120, 0) 40%,
-                rgba(25, 60, 180, 0.4) 47%,
-                rgba(70, 120, 255, 0.6) 50%,
-                rgba(25, 60, 180, 0.4) 53%,
-                rgba(15, 35, 120, 0) 60%,
-                transparent 100%
-            );
-            transform: skewX(25deg) translate3d(-120%, 0, 0);
-            mix-blend-mode: color-dodge;
-            opacity: 0.85;
-            will-change: transform;
-            animation: logoShineFastRTL 1.0s linear infinite;
-        }
+/* Drifting leaves with real 3D flip, only while autumn is active */
+.drift{position:absolute;left:0;top:0;opacity:0}
+.autumn .drift{animation:drift var(--t) linear var(--d) infinite}
+.drift svg{display:block;width:var(--s);height:var(--s);margin:calc(var(--s) / -2);
+  animation:flip calc(var(--t) / 2.2) ease-in-out infinite alternate;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+@keyframes drift{
+  0%{transform:translate(var(--x0),var(--y0));opacity:0}
+  15%{opacity:1}85%{opacity:.9}
+  100%{transform:translate(var(--x1),var(--y1));opacity:0}}
+@keyframes flip{from{transform:perspective(200px) rotate3d(1,.6,0,-60deg) rotate(0)}
+  to{transform:perspective(200px) rotate3d(1,.6,0,60deg) rotate(160deg)}}
 
-        /* توهج خريفي خلف الشعار بالكامل */
-        .fall-aura-glow {
-            position: absolute;
-            width: 260px;
-            height: 120px;
-            background: radial-gradient(ellipse at center, rgba(255, 109, 0, 0.45) 0%, rgba(221, 44, 0, 0.2) 50%, rgba(0, 0, 0, 0) 75%);
-            z-index: 1;
-            opacity: 0;
-            pointer-events: none;
-            will-change: opacity;
-        }
-
-        /* إطار كامل من الأشجار والنباتات المحيطة بالشعار */
-        .full-fall-envelope {
-            position: absolute;
-            width: 270px;
-            height: 130px;
-            z-index: 2;
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.85);
-            will-change: transform, opacity;
-        }
-
-        /* طبقة الأوراق والجسيمات المتطايرة أمام الشعار */
-        .front-leaf-storm {
-            position: absolute;
-            width: 280px;
-            height: 130px;
-            z-index: 4;
-            opacity: 0;
-            pointer-events: none;
-            will-change: opacity;
-        }
-
-        /* تحريك الرياح على الشجر والأغصان */
-        .forest-sway {
-            transform-origin: bottom center;
-            animation: fallForestWind 2.2s ease-in-out infinite alternate;
-        }
-
-        /* تحريك الجسيمات والأوراق المتطايرة */
-        .particle-leaf {
-            will-change: transform, opacity;
-            animation: leafStormDrift 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
-        }
-        .particle-leaf-2 {
-            animation-delay: 0.6s;
-            animation-duration: 2.1s;
-        }
-        .particle-leaf-3 {
-            animation-delay: 1.2s;
-            animation-duration: 2.8s;
-        }
-        .particle-leaf-4 {
-            animation-delay: 1.8s;
-            animation-duration: 2.4s;
-        }
-
-        /* --- Master Timeline (8.5s Loop) --- */
-        .active-sequence #screenbug-wrapper {
-            animation: masterBugFade 8.5s ease-in-out infinite;
-        }
-
-        .active-sequence .full-fall-envelope {
-            animation: envelopeExpand 8.5s cubic-bezier(0.175, 0.885, 0.32, 1.2) infinite;
-        }
-
-        .active-sequence .fall-aura-glow,
-        .active-sequence .front-leaf-storm {
-            animation: glowAndStormTrigger 8.5s ease-in-out infinite;
-        }
-
-        /* ظهور الشعار والدورة الكاملة */
-        @keyframes masterBugFade {
-            0% { opacity: 0; transform: translate3d(0, -3px, 0); }
-            5% { opacity: 0.98; transform: translate3d(0, 0, 0); }
-            94% { opacity: 0.98; transform: translate3d(0, 0, 0); }
-            100% { opacity: 0; transform: translate3d(0, 3px, 0); }
-        }
-
-        /* انشباك وإحاطة الغابة بالشعار بعد 5 ثوانٍ */
-        @keyframes envelopeExpand {
-            0%, 58.8% { /* 0s - 5.0s (مختفي خلف الشعار) */
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            64.7% { /* 5.5s (توسع كامل وإحاطة بالشعار) */
-                opacity: 1;
-                transform: scale(1);
-            }
-            94.1% { /* 8.0s (بقاء الإحاطة طوال الـ 3 ثواني) */
-                opacity: 1;
-                transform: scale(1);
-            }
-            100% { /* 8.5s (انكماش واختفاء) */
-                opacity: 0;
-                transform: scale(0.85);
-            }
-        }
-
-        @keyframes glowAndStormTrigger {
-            0%, 58.8% { opacity: 0; }
-            64.7%, 94.1% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        /* حركة اهتزاز الرياح للأشجار المحيطة */
-        @keyframes fallForestWind {
-            0% { transform: rotate(0deg) skewX(0deg); }
-            100% { transform: rotate(-3deg) skewX(-1.5deg); }
-        }
-
-        /* تطاير الأوراق عبر مساحة الشعار بالكامل */
-        @keyframes leafStormDrift {
-            0% {
-                transform: translate3d(140px, -20px, 0) rotate(0deg) scale(0.9);
-                opacity: 0;
-            }
-            15% { opacity: 1; }
-            85% { opacity: 0.8; }
-            100% {
-                transform: translate3d(-120px, 60px, 0) rotate(-280deg) scale(0.4);
-                opacity: 0;
-            }
-        }
-
-        /* حركة اللمعان الأصلي */
-        @keyframes logoShineFastRTL {
-            0% { 
-                transform: skewX(25deg) translate3d(-120%, 0, 0); 
-            }
-            100% { 
-                transform: skewX(25deg) translate3d(120%, 0, 0); 
-            }
-        }
-    </style>
+@media (prefers-reduced-motion:reduce){.leaf svg,.drift,.drift svg{animation:none!important}}
+</style>
 </head>
 <body>
+<div id="stage">
+  <div id="bug">
+    <div id="glow"></div>
+    <div class="leaf-layer" id="back"></div>
+    <div id="logo"><img src="Stoon3D.png" alt="Spacetoon"><div class="shine"></div></div>
+    <div class="leaf-layer" id="front"></div>
+  </div>
+</div>
 
-    <div id="screenbug-wrapper">
-        <!-- التوهج الدافئ الخريفي -->
-        <div class="fall-aura-glow"></div>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="gRed" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5a1f"/><stop offset="1" stop-color="#8e1410"/></linearGradient>
+    <linearGradient id="gOrange" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa01c"/><stop offset="1" stop-color="#c24a0a"/></linearGradient>
+    <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe066"/><stop offset="1" stop-color="#d98a0b"/></linearGradient>
+    <linearGradient id="gBrown" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8742a"/><stop offset="1" stop-color="#6b3410"/></linearGradient>
+    <symbol id="maple" viewBox="0 0 100 100">
+      <path id="mp" d="M50 3 58 22 73 15 69 35 92 30 79 49 97 57 72 63 74 73 56 69 56 97 50 97 44 97 44 69 26 73 28 63 3 57 21 49 8 30 31 35 27 15 42 22Z"/>
+      <path d="M50 94V30M50 70 22 56M50 70 78 56M50 52 28 34M50 52 72 34" stroke="rgba(60,10,0,.35)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <path d="M50 3 58 22 73 15 69 35 50 40 31 35 27 15 42 22Z" fill="rgba(255,255,255,.16)"/>
+    </symbol>
+  </defs>
+</svg>
 
-        <!-- غابة الخريف المحيطة بالشعار بالكامل (Envelope SVG) -->
-        <svg class="full-fall-envelope" viewBox="0 0 270 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="barkGrad" x1="0" y1="0" x2="0" y2="100%">
-                    <stop offset="0%" stop-color="#3E2723"/>
-                    <stop offset="100%" stop-color="#1B0000"/>
-                </linearGradient>
+<script>
+const stage = document.getElementById('stage');
+const bug = document.getElementById('bug');
+const back = document.getElementById('back');
+const front = document.getElementById('front');
+const FILLS = ['gRed','gOrange','gGold','gOrange','gBrown','gRed','gGold'];
+const rnd = (a,b)=>a+Math.random()*(b-a);
 
-                <radialGradient id="redFoliage" cx="40%" cy="40%" r="60%">
-                    <stop offset="0%" stop-color="#FF3D00"/>
-                    <stop offset="70%" stop-color="#C2185B"/>
-                    <stop offset="100%" stop-color="#4A000B"/>
-                </radialGradient>
+/* Scale the 1920x1080 stage to whatever resolution OBS gives us */
+function fit(){stage.style.transform='scale('+Math.min(innerWidth/1920,innerHeight/1080)+')'}
+addEventListener('resize',fit);fit();
 
-                <radialGradient id="orangeFoliage" cx="40%" cy="40%" r="60%">
-                    <stop offset="0%" stop-color="#FF9100"/>
-                    <stop offset="70%" stop-color="#E65100"/>
-                    <stop offset="100%" stop-color="#8D0000"/>
-                </radialGradient>
+function leafSVG(fill){
+  return '<svg viewBox="0 0 100 100"><use href="#maple" fill="url(#'+fill+')"/></svg>';
+}
 
-                <radialGradient id="goldFoliage" cx="40%" cy="40%" r="60%">
-                    <stop offset="0%" stop-color="#FFD600"/>
-                    <stop offset="70%" stop-color="#FFAB00"/>
-                    <stop offset="100%" stop-color="#E65100"/>
-                </radialGradient>
+/* Garland: leaves hug an ellipse around the logo, heavier at top-left and bottom edge */
+function build(){
+  back.innerHTML = front.innerHTML = '';
+  const cx = 150, cy = 85, N = 15;
+  for(let i=0;i<N;i++){
+    const a = (i/N)*Math.PI*2 + rnd(-.18,.18);
+    const rx = 128 + rnd(-8,14), ry = 62 + rnd(-6,10);
+    const x = cx + Math.cos(a)*rx, y = cy + Math.sin(a)*ry;
+    const size = rnd(24, 40) * (Math.sin(a) > .5 ? .85 : 1);
+    const el = document.createElement('div');
+    el.className = 'leaf';
+    el.style.cssText = '--x:'+x+'px;--y:'+y+'px;--r:'+rnd(0,360)+'deg;--s:'+size+'px;'
+      + '--d:'+(i*.045)+'s;--o:'+(i*.02)+'s;--t:'+rnd(1.6,2.6)+'s';
+    el.innerHTML = leafSVG(FILLS[i % FILLS.length]);
+    (i % 3 === 0 ? front : back).appendChild(el);
+  }
+  /* a few drifting leaves crossing the logo */
+  for(let i=0;i<6;i++){
+    const el = document.createElement('div');
+    el.className = 'drift';
+    el.style.cssText = '--s:'+rnd(12,20)+'px;--x0:'+rnd(220,320)+'px;--y0:'+rnd(-20,30)+'px;'
+      + '--x1:'+rnd(-40,40)+'px;--y1:'+rnd(150,200)+'px;--t:'+rnd(3,4.2)+'s;--d:'+(i*.5)+'s';
+    el.innerHTML = leafSVG(FILLS[(i+2) % FILLS.length]);
+    front.appendChild(el);
+  }
+}
 
-                <filter id="softDropShadow" x="-10%" y="-10%" width="120%" height="120%">
-                    <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.4"/>
-                </filter>
-            </defs>
-
-            <!-- الأرضية والتلة الخريفية السفلية الممتدة تحت الشعار -->
-            <ellipse cx="135" cy="118" rx="120" ry="10" fill="#3E1C00" opacity="0.8"/>
-            <path d="M15 118C50 110 220 110 255 118Z" fill="#BF360C"/>
-
-            <!-- الأشجار والنباتات الملتفة حول كل الزوايا (Forest Sway) -->
-            <g class="forest-sway" filter="url(#softDropShadow)">
-                
-                <!-- 1. شجرة يسار الشعار (الكبيرة) -->
-                <path d="M40 120C40 95 38 75 30 50 M30 75L18 62 M30 65L42 55" stroke="url(#barkGrad)" stroke-width="4.5" stroke-linecap="round"/>
-                <circle cx="30" cy="40" r="22" fill="url(#redFoliage)"/>
-                <circle cx="15" cy="48" r="16" fill="url(#orangeFoliage)"/>
-                <circle cx="45" cy="45" r="15" fill="url(#goldFoliage)"/>
-
-                <!-- 2. أشجار أعلى الشعار (الأغصان المظلة) -->
-                <path d="M100 35C130 18 170 18 200 32" stroke="url(#barkGrad)" stroke-width="3" stroke-linecap="round"/>
-                <circle cx="90" cy="22" r="14" fill="url(#goldFoliage)"/>
-                <circle cx="120" cy="16" r="16" fill="url(#orangeFoliage)"/>
-                <circle cx="155" cy="14" r="18" fill="url(#redFoliage)"/>
-                <circle cx="190" cy="20" r="15" fill="url(#goldFoliage)"/>
-
-                <!-- 3. شجرة يمين الشعار (الجهة الأخرى) -->
-                <path d="M235 120C235 95 238 80 245 55 M245 80L232 68 M245 70L255 60" stroke="url(#barkGrad)" stroke-width="4" stroke-linecap="round"/>
-                <circle cx="245" cy="46" r="20" fill="url(#orangeFoliage)"/>
-                <circle cx="230" cy="52" r="15" fill="url(#redFoliage)"/>
-                <circle cx="258" cy="50" r="13" fill="url(#goldFoliage)"/>
-
-                <!-- 4. شجيرات وأغصان سفلية تحت الشعار -->
-                <circle cx="75" cy="112" r="12" fill="url(#orangeFoliage)"/>
-                <circle cx="105" cy="114" r="10" fill="url(#goldFoliage)"/>
-                <circle cx="165" cy="114" r="11" fill="url(#redFoliage)"/>
-                <circle cx="195" cy="112" r="13" fill="url(#orangeFoliage)"/>
-            </g>
-        </svg>
-
-        <!-- طبقة الأوراق المتطايرة أمام الشعار بالكامل -->
-        <svg class="front-leaf-storm" viewBox="0 0 280 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g class="particle-leaf">
-                <path d="M140 30C135 25 125 27 123 20 C131 22 133 15 140 18Z" fill="#FF3D00" transform="scale(0.6)"/>
-            </g>
-            <g class="particle-leaf particle-leaf-2">
-                <path d="M180 50C175 45 165 47 163 40 C171 42 173 35 180 38Z" fill="#FFEA00" transform="scale(0.45)"/>
-            </g>
-            <g class="particle-leaf particle-leaf-3">
-                <path d="M220 25C215 20 205 22 203 15 C211 17 213 10 220 13Z" fill="#FF6D00" transform="scale(0.55)"/>
-            </g>
-            <g class="particle-leaf particle-leaf-4">
-                <path d="M100 60C95 55 85 57 83 50 C91 52 93 45 100 48Z" fill="#FF1744" transform="scale(0.5)"/>
-            </g>
-        </svg>
-
-        <!-- طبقة الشعار واللمعان 3D -->
-        <div id="logo-container">
-            <img src="Stoon3D.png" alt="Spacetoon Logo" class="bug-image">
-            <div class="shine-layer" id="shine-element"></div>
-        </div>
-    </div>
-
-    <script>
-        const wrapper = document.getElementById('screenbug-wrapper');
-
-        function triggerBroadcastSequence() {
-            document.body.classList.remove('active-sequence');
-            void wrapper.offsetWidth; // Force Reflow لتطبيق الإعادات المزامنة
-            document.body.classList.add('active-sequence');
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            triggerBroadcastSequence();
-        });
-
-        /* التوافق التام مع مصادر OBS Studio */
-        window.addEventListener('obsSourceVisibleChanged', function(event) {
-            if (event.detail.visible) {
-                triggerBroadcastSequence();
-            } else {
-                document.body.classList.remove('active-sequence');
-            }
-        });
-    </script>
+/* Master timeline: 0s logo in -> 5s foliage blooms -> 8s foliage out -> 8.6s logo out -> loop */
+let timers = [];
+const at = (ms, fn)=>timers.push(setTimeout(fn, ms));
+function stop(){
+  timers.forEach(clearTimeout); timers = [];
+  document.body.classList.remove('run');
+  bug.classList.remove('autumn','leaving');
+  bug.style.transition = 'none'; bug.style.opacity = 0;
+}
+function play(){
+  stop(); build(); void bug.offsetWidth;
+  document.body.classList.add('run');
+  bug.style.transition = 'opacity .8s ease, transform .8s cubic-bezier(.16,1,.3,1)';
+  bug.style.transform = 'translateY(-8px)'; void bug.offsetWidth;
+  bug.style.opacity = 1; bug.style.transform = 'translateY(0)';
+  at(5000, ()=>bug.classList.add('autumn'));
+  at(8000, ()=>bug.classList.add('leaving'));
+  at(8700, ()=>{bug.classList.remove('autumn','leaving'); bug.style.opacity = 0; bug.style.transform = 'translateY(6px)';});
+  at(9700, play);
+}
+addEventListener('DOMContentLoaded', play);
+/* OBS Studio: restart when the source becomes visible, stop when hidden */
+addEventListener('obsSourceVisibleChanged', e => e.detail.visible ? play() : stop());
+</script>
 </body>
 </html>

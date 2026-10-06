@@ -3,168 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spacetoon Screenbug - Birthday Celebration</title>
+<title>Spacetoon Screenbug - Birthday (Lite)</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:transparent;overflow:hidden;width:100vw;height:100vh}
 
-/* Identical to the approved version: top 35px, right 45px, 240x120 box, logo 220px */
+/* Identical to approved version: top 35px, right 45px, 240x120 box, logo 220px */
 #bug{position:absolute;top:35px;right:45px;width:240px;height:120px;
   display:flex;align-items:center;justify-content:center;opacity:0}
 
 #logo{position:relative;width:220px;height:auto;z-index:3;transform:translateZ(0);
   filter:drop-shadow(0 6px 10px rgba(0,0,0,.45)) drop-shadow(0 0 1px rgba(0,0,0,.6))}
 #logo img{width:100%;display:block}
-.party #logo{animation:logoGlow 1s ease-in-out infinite alternate}
-@keyframes logoGlow{
-  from{filter:drop-shadow(0 6px 10px rgba(0,0,0,.45)) drop-shadow(0 0 3px rgba(255,200,60,.25))}
-  to{filter:drop-shadow(0 6px 10px rgba(0,0,0,.45)) drop-shadow(0 0 14px rgba(255,205,70,.95))}}
 
-/* Gold sweep, faster during the party */
+/* Gold sweep (GPU transform only) */
 .shine{position:absolute;inset:0;-webkit-mask:url('Stoon3D.png') center/contain no-repeat;mask:url('Stoon3D.png') center/contain no-repeat}
 .shine::after{content:'';position:absolute;inset:-10% 0;width:45%;
-  background:linear-gradient(100deg,transparent 0%,rgba(255,236,200,0) 20%,rgba(255,246,225,.85) 50%,rgba(255,236,200,0) 80%,transparent 100%);
-  transform:translateX(-130%) skewX(-18deg);mix-blend-mode:screen}
-.run .shine::after{animation:sweep 2.4s cubic-bezier(.45,.05,.25,1) .8s infinite}
-@keyframes sweep{0%{transform:translateX(-130%) skewX(-18deg)}45%,100%{transform:translateX(330%) skewX(-18deg)}}
+  background:linear-gradient(100deg,transparent 0%,rgba(255,236,200,0) 20%,rgba(255,246,225,.8) 50%,rgba(255,236,200,0) 80%,transparent 100%);
+  transform:translateX(-130%) skewX(-18deg)}
+.run .shine::after{animation:sweep 3s cubic-bezier(.45,.05,.25,1) .8s infinite}
+@keyframes sweep{0%{transform:translateX(-130%) skewX(-18deg)}42%,100%{transform:translateX(330%) skewX(-18deg)}}
 
-/* Rotating golden sunburst + warm glow behind logo */
-.rays,#glow{position:absolute;pointer-events:none;opacity:0;transition:opacity .8s ease}
-.rays{z-index:1;left:50%;top:50%;width:560px;height:560px;margin:-280px 0 0 -280px;
-  background:repeating-conic-gradient(from 0deg,rgba(255,214,90,.55) 0 7deg,transparent 7deg 18deg);
-  -webkit-mask:radial-gradient(circle,#000 8%,transparent 62%);mask:radial-gradient(circle,#000 8%,transparent 62%);
-  mix-blend-mode:screen}
-#glow{z-index:1;inset:-40px -60px;background:radial-gradient(ellipse at 50% 50%,rgba(255,170,40,.6) 0%,rgba(255,90,60,.22) 45%,transparent 72%);mix-blend-mode:screen}
-.party .rays{opacity:1;animation:spin 14s linear infinite}
-.party #glow{opacity:1;animation:breathe 1s ease-in-out infinite alternate}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes breathe{from{transform:scale(.94)}to{transform:scale(1.08)}}
+/* Soft warm glow: static gradient, only opacity changes */
+#glow{position:absolute;z-index:1;inset:-30px -50px;pointer-events:none;opacity:0;transition:opacity 1.2s ease;
+  background:radial-gradient(ellipse at 50% 50%,rgba(255,176,60,.5) 0%,rgba(255,110,50,.16) 50%,transparent 74%)}
+.party #glow{opacity:1}
+.ending #glow{opacity:0;transition-duration:.8s}
 
-.layer{position:absolute;inset:0;pointer-events:none;transition:opacity .6s ease}
-#back{z-index:2}#front{z-index:4}
-.ending .layer,.ending .rays,.ending #glow{opacity:0}
-.p{position:absolute;left:0;top:0}
-
-/* Confetti rain */
-.conf{opacity:0}
-.party .conf{animation:fall var(--t) linear var(--d) infinite}
-.conf span{display:block;width:var(--w);height:var(--h);background:var(--c);border-radius:1px;
-  animation:tumble var(--s) linear infinite}
-@keyframes fall{0%{transform:translate(var(--x),-50px);opacity:0}8%{opacity:1}
-  100%{transform:translate(calc(var(--x) + var(--dx)),250px);opacity:.9}}
-@keyframes tumble{to{transform:rotate3d(1,.5,.3,720deg)}}
-
-/* Balloons */
-.balloon{opacity:0}
-.party .balloon{animation:rise var(--t) ease-in var(--d) infinite}
-.balloon svg{display:block;width:var(--s);height:calc(var(--s) * 1.75);transform-origin:50% 100%;
-  animation:swing 1.6s ease-in-out infinite alternate;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))}
-@keyframes rise{0%{transform:translate(var(--x),270px);opacity:1}
-  100%{transform:translate(calc(var(--x) + var(--dx)),-140px);opacity:1}}
-@keyframes swing{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
-
-/* Sparkle stars */
-.star{width:var(--s);height:var(--s);margin:calc(var(--s) / -2);opacity:0;
-  background:radial-gradient(#fff 0 30%,#ffe27a 60%,#ffb300);
-  clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%)}
-.party .star{animation:twinkle var(--t) ease-in-out var(--d) infinite}
-@keyframes twinkle{0%,100%{opacity:0;transform:translate(var(--x),var(--y)) scale(0) rotate(0)}
-  50%{opacity:1;transform:translate(var(--x),var(--y)) scale(1) rotate(90deg)}}
+/* One small canvas behind the logo: left edge = bug left - 300px, top = screen top */
+#fx{position:absolute;z-index:2;left:-300px;top:-35px;width:585px;height:380px;pointer-events:none}
 </style>
 </head>
 <body>
 <div id="bug">
-  <div class="rays"></div>
   <div id="glow"></div>
-  <div class="layer" id="back"></div>
+  <canvas id="fx" width="585" height="380"></canvas>
   <div id="logo"><img src="Stoon3D.png" alt="Spacetoon"><div class="shine"></div></div>
-  <div class="layer" id="front"></div>
 </div>
 
-<svg width="0" height="0" style="position:absolute"><defs>
-  <radialGradient id="b0" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ff8a9b"/><stop offset="1" stop-color="#d4102f"/></radialGradient>
-  <radialGradient id="b1" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#8fe3ff"/><stop offset="1" stop-color="#0a74d6"/></radialGradient>
-  <radialGradient id="b2" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff2a0"/><stop offset="1" stop-color="#f0a500"/></radialGradient>
-  <radialGradient id="b3" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#c6ff9a"/><stop offset="1" stop-color="#2aa628"/></radialGradient>
-  <radialGradient id="b4" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#e0b0ff"/><stop offset="1" stop-color="#7a22c9"/></radialGradient>
-</defs></svg>
-
 <script>
-const bug=document.getElementById('bug'),back=document.getElementById('back'),front=document.getElementById('front');
+const bug=document.getElementById('bug'),cv=document.getElementById('fx'),ctx=cv.getContext('2d');
+const W=cv.width,H=cv.height;
+const OX=300,OY=35;                 /* logo box top-left inside the canvas */
 const rnd=(a,b)=>a+Math.random()*(b-a);
-const COL=['#ff3b6b','#ffd400','#26d0ff','#7cff4d','#b45cff','#ff8a00','#ffffff'];
 const pick=a=>a[Math.floor(Math.random()*a.length)];
-const CX=120,CY=60; /* centre of the 240x120 box */
+const CONF=[[245,197,66],[230,57,70],[42,157,244],[245,245,245],[255,122,182],[106,211,106],[255,150,40]];
+const SPARK=['255,205,90','255,110,110','120,200,255','255,255,255','190,150,255','140,255,170'];
+const parts=[];let raf=0,last=0;
 
-function add(layer,cls,css,html){const e=document.createElement('div');e.className='p '+cls;e.style.cssText=css||'';if(html)e.innerHTML=html;layer.appendChild(e);return e}
-
-/* Looping ambient layers: confetti rain, balloons, sparkles */
-function build(){
-  back.innerHTML=front.innerHTML='';
-  for(let i=0;i<60;i++){
-    const e=add(i%2?back:front,'conf','--x:'+rnd(-170,410)+'px;--dx:'+rnd(-40,40)+'px;--t:'+rnd(2.4,4)+'s;--d:'+rnd(0,3)+'s;--s:'+rnd(.8,1.8)+'s;--c:'+pick(COL)+';--w:'+rnd(5,9)+'px;--h:'+rnd(8,14)+'px','<span></span>');
-  }
-  for(let i=0;i<8;i++){
-    const g='url(#b'+(i%5)+')';
-    add(i%2?back:front,'balloon','--x:'+rnd(-130,350)+'px;--dx:'+rnd(-30,30)+'px;--t:'+rnd(3.6,5)+'s;--d:'+(i*.45)+'s;--s:'+rnd(34,48)+'px',
-      '<svg viewBox="0 0 40 70"><ellipse cx="20" cy="22" rx="17" ry="21" fill="'+g+'"/><ellipse cx="13" cy="13" rx="4" ry="7" fill="#fff" opacity=".4" transform="rotate(-25 13 13)"/><path d="M16 42 20 47 24 42Z" fill="'+g+'"/><path d="M20 47C14 54 26 60 20 68" stroke="#fff" stroke-opacity=".8" stroke-width=".9" fill="none"/></svg>');
-  }
-  for(let i=0;i<18;i++){
-    const a=rnd(0,Math.PI*2);
-    add(front,'star','--x:'+(CX+Math.cos(a)*rnd(95,150))+'px;--y:'+(CY+Math.sin(a)*rnd(45,80))+'px;--s:'+rnd(9,20)+'px;--t:'+rnd(.9,1.7)+'s;--d:'+rnd(0,1.5)+'s');
-  }
+/* ---------- spawners ---------- */
+function confetti(x,y,ang,speed){
+  const a=ang*Math.PI/180,s=speed*rnd(.6,1);
+  parts.push({k:0,x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,w:rnd(5,9),h:rnd(8,13),rot:rnd(0,6.28),vr:rnd(-7,7),
+    ph:rnd(0,6.28),fs:rnd(5,10),c:pick(CONF),age:0,life:rnd(4,6)});
 }
-
-/* One-shot confetti cannon from a corner of the logo */
-function cannon(side,n){
+function cannon(side,n){            /* side -1 = left corner, +1 = right corner */
+  const x=OX+(side<0?8:232),y=OY+112;
+  for(let i=0;i<n;i++)confetti(x,y,side<0?rnd(-125,-80):rnd(-100,-55),rnd(380,640));
+  ensure();
+}
+function rain(){confetti(rnd(OX-100,OX+260),-8,rnd(75,105),rnd(10,40));ensure()}
+function rocket(x,ty){parts.push({k:1,x,y:Math.min(H-10,ty+150),px:x,py:ty+150,ty,v:420});ensure()}
+function burst(x,y){
+  const col=pick(SPARK),n=40;
   for(let i=0;i<n;i++){
-    const w=rnd(5,9),h=rnd(8,14);
-    const e=add(front,'',"width:"+w+"px;height:"+h+"px;background:"+pick(COL)+";opacity:0;border-radius:1px");
-    const ang=(-90+side*rnd(15,70))*Math.PI/180,d=rnd(110,230);
-    const x0=side<0?-5:245,y0=100,px=x0+Math.cos(ang)*d,py=y0+Math.sin(ang)*d;
-    e.animate([
-      {transform:'translate('+x0+'px,'+y0+'px) rotate(0)',opacity:1},
-      {transform:'translate('+px+'px,'+py+'px) rotate('+rnd(200,500)+'deg)',opacity:1,offset:.45,easing:'cubic-bezier(.4,0,.9,.6)'},
-      {transform:'translate('+(px+side*rnd(0,40))+'px,'+(py+rnd(140,220))+'px) rotate('+rnd(600,1000)+'deg)',opacity:0}
-    ],{duration:rnd(1700,2600),easing:'cubic-bezier(.1,.8,.3,1)',delay:rnd(0,160)}).onfinish=()=>e.remove();
+    const a=i/n*6.283+rnd(-.08,.08),s=rnd(55,125);
+    parts.push({k:2,x,y,px:x,py:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,age:0,life:rnd(1.1,1.7),c:i%5?col:'255,255,255'});
   }
 }
 
-/* Firework burst: flash, ring, two rings of sparks with gravity */
-function firework(x,y){
-  const hue=pick(['#ffd400','#ff3b6b','#26d0ff','#7cff4d','#ff8a00','#b45cff']);
-  const f=add(back,'','width:12px;height:12px;margin:-6px;border-radius:50%;background:#fff;box-shadow:0 0 30px 14px '+hue);
-  f.animate([{transform:'translate('+x+'px,'+y+'px) scale(.2)',opacity:1},{transform:'translate('+x+'px,'+y+'px) scale(2.4)',opacity:0}],{duration:420,easing:'ease-out'}).onfinish=()=>f.remove();
-  [[26,rnd(48,70),hue],[16,rnd(26,40),'#fff']].forEach(([n,R,c])=>{
-    for(let i=0;i<n;i++){
-      const a=i/n*Math.PI*2+rnd(-.06,.06),dx=Math.cos(a)*R,dy=Math.sin(a)*R;
-      const p=add(back,'','width:4px;height:4px;margin:-2px;border-radius:50%;background:'+c+';box-shadow:0 0 6px 2px '+c);
-      p.animate([
-        {transform:'translate('+x+'px,'+y+'px) scale(1)',opacity:1},
-        {transform:'translate('+(x+dx)+'px,'+(y+dy)+'px) scale(1)',opacity:1,offset:.55,easing:'ease-in'},
-        {transform:'translate('+(x+dx*1.08)+'px,'+(y+dy*1.08+34)+'px) scale(.2)',opacity:0}
-      ],{duration:rnd(1100,1500),easing:'cubic-bezier(.1,.7,.3,1)'}).onfinish=()=>p.remove();
+/* ---------- simulation (small canvas, plain 2D, no blur/shadow) ---------- */
+function step(t){
+  const dt=Math.min((t-last)/1000,.05);last=t;
+  ctx.clearRect(0,0,W,H);
+  for(let i=parts.length-1;i>=0;i--){
+    const p=parts[i];
+    if(p.k===0){                                     /* paper confetti: drag + flutter + 3D flip */
+      p.age+=dt;p.vx-=p.vx*3.2*dt;p.vy+=(300-p.vy*3.3)*dt;
+      p.ph+=p.fs*dt;p.x+=(p.vx+Math.sin(p.ph*.7)*26)*dt;p.y+=p.vy*dt;p.rot+=p.vr*dt;
+      if(p.y>H+20||p.age>p.life){parts.splice(i,1);continue}
+      const f=Math.cos(p.ph),sh=.62+.38*Math.abs(f),c=p.c;
+      ctx.globalCompositeOperation='source-over';
+      ctx.globalAlpha=p.age>p.life-.6?(p.life-p.age)/.6:1;
+      ctx.fillStyle='rgb('+(c[0]*sh|0)+','+(c[1]*sh|0)+','+(c[2]*sh|0)+')';
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.scale(1,f);
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+    }else if(p.k===1){                               /* firework shell rising */
+      p.px=p.x;p.py=p.y;p.v=Math.max(120,p.v-380*dt);p.y-=p.v*dt;
+      ctx.globalAlpha=.9;ctx.globalCompositeOperation='lighter';
+      ctx.strokeStyle='rgba(255,220,150,.9)';ctx.lineWidth=1.6;
+      ctx.beginPath();ctx.moveTo(p.x,p.y+14);ctx.lineTo(p.x,p.y);ctx.stroke();
+      if(p.y<=p.ty){burst(p.x,p.y);parts.splice(i,1)}
+    }else{                                           /* spark with short trail */
+      p.age+=dt;if(p.age>p.life){parts.splice(i,1);continue}
+      p.px=p.x;p.py=p.y;p.vx-=p.vx*1.9*dt;p.vy+=(75-p.vy*1.9)*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;
+      const u=p.age/p.life;let a=1-u*u;if(u>.7)a*=.55+.45*Math.random();
+      ctx.globalCompositeOperation='lighter';ctx.globalAlpha=a;
+      ctx.strokeStyle='rgb('+p.c+')';ctx.lineWidth=1.7;
+      ctx.beginPath();ctx.moveTo(p.px-(p.x-p.px)*1.5,p.py-(p.y-p.py)*1.5);ctx.lineTo(p.x,p.y);ctx.stroke();
     }
-  });
+  }
+  ctx.globalAlpha=1;
+  raf=parts.length?requestAnimationFrame(step):0;      /* idle = zero CPU */
+  if(!raf)ctx.clearRect(0,0,W,H);
 }
+function ensure(){if(!raf){last=performance.now();raf=requestAnimationFrame(step)}}
 
-/* Timeline: 0s logo in -> 1.4s party starts -> 8s party out -> 8.7s logo out -> loop */
-let timers=[];const at=(ms,fn)=>timers.push(setTimeout(fn,ms));
+/* ---------- timeline: 0s logo in -> 1.2s party -> 7.8s party out -> 8.7s logo out -> loop ---------- */
+let timers=[],amb=0;const at=(ms,fn)=>timers.push(setTimeout(fn,ms));
 function stop(){
-  timers.forEach(clearTimeout);timers=[];
+  timers.forEach(clearTimeout);timers=[];clearInterval(amb);
+  cancelAnimationFrame(raf);raf=0;parts.length=0;ctx.clearRect(0,0,W,H);
   document.body.classList.remove('run');bug.classList.remove('party','ending');
-  bug.style.transition='none';bug.style.opacity=0;back.innerHTML=front.innerHTML='';
+  bug.style.transition='none';bug.style.opacity=0;
 }
 function play(){
-  stop();build();void bug.offsetWidth;
+  stop();void bug.offsetWidth;
   document.body.classList.add('run');
   bug.style.transition='opacity .8s ease, transform .8s cubic-bezier(.16,1,.3,1)';
   bug.style.transform='translateY(-8px)';void bug.offsetWidth;
   bug.style.opacity=1;bug.style.transform='translateY(0)';
-  at(1400,()=>{bug.classList.add('party');cannon(-1,34);cannon(1,34)});
-  for(let k=0;k<11;k++)at(1800+k*520,()=>firework(CX+rnd(-190,190),CY+rnd(-70,80)));
-  at(4600,()=>{cannon(-1,26);cannon(1,26)});
-  at(8000,()=>bug.classList.add('ending'));
+  at(1200,()=>{bug.classList.add('party');cannon(-1,24);cannon(1,24);amb=setInterval(rain,150)});
+  [[1900,160,110],[2900,330,215],[3900,495,95],[4900,225,50],[5900,455,215]]
+    .forEach(([ms,x,y])=>at(ms,()=>rocket(x,y)));
+  at(4100,()=>{cannon(-1,14);cannon(1,14)});
+  at(7000,()=>clearInterval(amb));
+  at(7800,()=>bug.classList.add('ending'));
   at(8700,()=>{bug.style.opacity=0;bug.style.transform='translateY(6px)'});
   at(9800,play);
 }

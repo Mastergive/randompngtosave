@@ -150,24 +150,28 @@
 
         /* --- TICKER --- */
         .scroll-wrapper {
-            width: 100%;
+            flex: 1;
+            min-width: 0;
             overflow: hidden;
             display: flex;
             margin: 0 120px; 
             position: relative;
         }
 
-        .scroll-content {
+        /* المسار المتحرك (يتحرك عبر JS لضمان تكرار سلس بدون قفزات) */
+        .ticker-track {
             display: flex;
-            align-items: center;
-            white-space: nowrap;
-            animation: scroll-rtl 25s linear infinite; 
-            animation-delay: 0.5s;
+            width: max-content;
+            direction: ltr;
+            will-change: transform;
         }
 
-        @keyframes scroll-rtl {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(100%); }
+        .scroll-content {
+            display: flex;
+            flex: none;
+            direction: rtl;
+            align-items: center;
+            white-space: nowrap;
         }
 
         .item { 
@@ -254,8 +258,8 @@
         }
 
         /* تموضعات عناصر الزينة المدرسة */
-        .pop-left { left: 11%; bottom: -10px; animation-delay: 0.8s; transform: rotate(-25deg); }
-        .pop-mid { left: 50%; top: -20px; animation-delay: 0.6s; transform: translateX(-50%) rotate(10deg); }
+        .pop-left { left: 22%; bottom: -10px; animation-delay: 0.8s; transform: rotate(-25deg); }
+        .pop-mid { left: 50%; top: 30px; animation-delay: 0.6s; transform: translateX(-50%) rotate(10deg); }
         .pop-right { right: 12%; bottom: -12px; animation-delay: 1s; transform: rotate(20deg); }
 
     </style>
@@ -273,17 +277,11 @@
     </div>
 
     <div class="scroll-container">
-        <!-- زينة الكتاب في منتصف الشريط من الأعلى -->
-        <div class="school-book pop-mid"></div>
-
-        <div class="scroll-wrapper">
-            <div class="scroll-content" id="content">
-                <div class="item">
-                    <span class="text">أهلاً بكم في الموسم الدراسي الجديد! أرسل رسالتك الآن</span>
-                    <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/StoonNo3D.png">
-                </div>
+        <div class="scroll-wrapper" id="tickerWrap">
+            <div class="ticker-track" id="track">
+                <div class="scroll-content" id="content"></div>
+                <div class="scroll-content" id="copy"></div>
             </div>
-            <div class="scroll-content" id="copy"></div>
         </div>
     </div>
 
@@ -292,7 +290,8 @@
         <div id="emojiVal">✏️</div>
     </div>
 
-    <!-- زينة قلم رصاص وكتاب على الجانبين -->
+    <!-- زينة الكتاب (خارج الشريط حتى لا تُقص) + قلم رصاص وكتاب على الجانبين -->
+    <div class="school-book pop-mid"></div>
     <div class="school-pencil pop-left"></div>
     <div class="school-book pop-right" style="background: #457b9d;"></div>
 </div>
@@ -301,26 +300,81 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
+    const LOGO = "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/StoonNo3D.png";
+    const SPEED = 80;       // px / second (نفس السرعة الأصلية)
+    const MAX_MSGS = 10;
+
+    const tickerWrap = document.getElementById('tickerWrap');
+    const track = document.getElementById('track');
     const content = document.getElementById('content');
     const copy = document.getElementById('copy');
 
-    function updateTickerSpeed() {
-        const width = content.offsetWidth;
-        const duration = width / 80;  
-        content.style.animationDuration = duration + "s";
-        copy.style.animationDuration = duration + "s";
+    let msgs = [{ u: '', t: 'أهلاً بكم في الموسم الدراسي الجديد! أرسل رسالتك الآن' }];
+
+    function makeItem(m) {
+        const item = document.createElement('div');
+        item.className = 'item';
+        if (m.u) {
+            const u = document.createElement('span');
+            u.className = 'username';
+            u.textContent = m.u + ':';
+            item.appendChild(u);
+        }
+        const t = document.createElement('span');
+        t.className = 'text';
+        t.textContent = m.t;          // textContent: آمن من حقن الأكواد
+        item.appendChild(t);
+        const img = document.createElement('img');
+        img.className = 'scroll-logo';
+        img.src = LOGO;
+        item.appendChild(img);
+        return item;
     }
 
-    copy.innerHTML = content.innerHTML;
+    function fill(group, reps) {
+        group.replaceChildren();
+        for (let i = 0; i < reps; i++) msgs.forEach(m => group.appendChild(makeItem(m)));
+    }
+
+    // يكرر الرسائل حتى يملأ الشريط بالكامل فلا تظهر فراغات
+    function renderTicker() {
+        let reps = 1;
+        fill(content, reps);
+        while (content.offsetWidth < tickerWrap.offsetWidth + 200 && reps < 12) {
+            reps++;
+            fill(content, reps);
+        }
+        fill(copy, reps);
+    }
+
+    // حركة سلسة ثابتة السرعة (لا تُعاد عند وصول رسالة جديدة)
+    let x = 0, lastT = performance.now();
+    function tick(now) {
+        const dt = Math.min((now - lastT) / 1000, 0.1);
+        lastT = now;
+        const w = content.offsetWidth;
+        if (w) {
+            x = (x + SPEED * dt) % w;
+            track.style.transform = `translateX(${x - w}px)`;
+        }
+        requestAnimationFrame(tick);
+    }
+
+    function addNewMessage(user, messageText) {
+        msgs.unshift({ u: String(user || '').slice(0, 40), t: String(messageText).slice(0, 250) });
+        msgs = msgs.slice(0, MAX_MSGS);
+        renderTicker();
+    }
 
     // --- أنيميشن الإيموجي الذكي ---
     const eNum = document.getElementById('emojiNum');
     const eVal = document.getElementById('emojiVal');
+    const emojis = ['📚', '✏️', '🎒', '📝'];
     let count = 1;
-    let code = 128218; // يبدأ بإيموجي الكتب والمدرسة (📚)
+    let idx = 0;
 
     async function runEmojiCycle() {
-        while(true) {
+        while (true) {
             eVal.style.opacity = "0";
             eVal.style.transform = "scale(0.5)";
             eNum.innerText = `(${count})`;
@@ -331,15 +385,15 @@
             
             eNum.style.opacity = "0.3"; 
             eNum.style.transform = "scale(0.8)";
-            eVal.innerText = String.fromCodePoint(code);
+            eVal.innerText = emojis[idx];
             eVal.style.opacity = "1";
             eVal.style.transform = "scale(1)";
             
             await new Promise(r => setTimeout(r, 2000));
             
             count++;
-            code++;
-            if (code > 128221) { code = 128218; count = 1; }
+            idx = (idx + 1) % emojis.length;
+            if (count > emojis.length) { count = 1; }
         }
     }
     setTimeout(runEmojiCycle, 1200);
@@ -358,37 +412,33 @@
     }, 5000);
 
     // --- إعدادات الفايربيس (Firebase) ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
-        databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 
-        projectId: "spacetoonold-aaac4",
-        appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
-    };
+    // داخل try/catch: لو فشل التحميل يستمر الشريط بالعمل
+    try {
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
+            databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 
+            projectId: "spacetoonold-aaac4",
+            appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
+        };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-    function addNewMessage(user, messageText) {
-        const newItem = document.createElement('div');
-        newItem.className = 'item';
-        newItem.innerHTML = `
-            <span class="username">${user}:</span>
-            <span class="text">${messageText}</span>
-            <img class="scroll-logo" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/StoonNo3D.png">
-        `;
-        content.appendChild(newItem);
-        copy.innerHTML = content.innerHTML; 
-        updateTickerSpeed();
+        db.ref('latestMessage').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.text) {
+                addNewMessage(data.username, data.text);
+            }
+        });
+    } catch (err) {
+        console.error('Firebase error:', err);
     }
 
-    db.ref('latestMessage').on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data && data.text) {
-            addNewMessage(data.username, data.text);
-        }
+    window.addEventListener('load', () => {
+        renderTicker();
+        requestAnimationFrame(tick);
     });
-
-    window.onload = updateTickerSpeed;
+    window.addEventListener('resize', renderTicker);
 </script>
 
 </body>

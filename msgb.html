@@ -152,26 +152,25 @@
         .scroll-wrapper {
             flex: 1;
             min-width: 0;
+            align-self: stretch;
             overflow: hidden;
             display: flex;
             margin: 0 120px; 
             position: relative;
         }
 
-        /* المسار المتحرك (يتحرك عبر JS لضمان تكرار سلس بدون قفزات) */
+        /* منطقة الشريط: كل رسالة تتحرك بشكل مستقل وتدخل دائماً من اليسار */
         .ticker-track {
-            display: flex;
-            width: max-content;
-            direction: ltr;
-            will-change: transform;
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
-
-        .scroll-content {
-            display: flex;
-            flex: none;
-            direction: rtl;
-            align-items: center;
+        .ticker-track .item {
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
             white-space: nowrap;
+            will-change: transform;
         }
 
         .item { 
@@ -278,10 +277,7 @@
 
     <div class="scroll-container">
         <div class="scroll-wrapper" id="tickerWrap">
-            <div class="ticker-track" id="track">
-                <div class="scroll-content" id="content"></div>
-                <div class="scroll-content" id="copy"></div>
-            </div>
+            <div class="ticker-track" id="track"></div>
         </div>
     </div>
 
@@ -306,10 +302,13 @@
 
     const tickerWrap = document.getElementById('tickerWrap');
     const track = document.getElementById('track');
-    const content = document.getElementById('content');
-    const copy = document.getElementById('copy');
 
-    let msgs = [{ u: '', t: 'أهلاً بكم في الموسم الدراسي الجديد! أرسل رسالتك الآن' }];
+    const WELCOME = { u: '', t: 'أهلاً بكم في الموسم الدراسي الجديد! أرسل رسالتك الآن' };
+    let history = [WELCOME];   // الرسائل التي تتكرر بالتناوب
+    let queue = [];            // رسائل جديدة تنتظر دخولها من اليسار
+    let histIdx = 0;
+    let live = [];             // العناصر الظاهرة حالياً {el, x}
+    let last = null;           // آخر عنصر تم إدخاله
 
     function makeItem(m) {
         const item = document.createElement('div');
@@ -331,39 +330,51 @@
         return item;
     }
 
-    function fill(group, reps) {
-        group.replaceChildren();
-        for (let i = 0; i < reps; i++) msgs.forEach(m => group.appendChild(makeItem(m)));
+    function nextMessage() {
+        if (queue.length) return queue.shift();      // الجديدة أولاً
+        const m = history[histIdx % history.length];
+        histIdx++;
+        return m;
     }
 
-    // يكرر الرسائل حتى يملأ الشريط بالكامل فلا تظهر فراغات
-    function renderTicker() {
-        let reps = 1;
-        fill(content, reps);
-        while (content.offsetWidth < tickerWrap.offsetWidth + 200 && reps < 12) {
-            reps++;
-            fill(content, reps);
-        }
-        fill(copy, reps);
+    // يدخل رسالة جديدة ملاصقة للسابقة من جهة اليسار
+    function spawn() {
+        const el = makeItem(nextMessage());
+        track.appendChild(el);
+        const w = el.offsetWidth;
+        const x = (last ? last.x : 0) - w;
+        el.style.transform = `translateX(${x}px)`;
+        last = { el, x };
+        live.push(last);
     }
 
-    // حركة سلسة ثابتة السرعة (لا تُعاد عند وصول رسالة جديدة)
-    let x = 0, lastT = performance.now();
+    let lastT = performance.now();
     function tick(now) {
         const dt = Math.min((now - lastT) / 1000, 0.1);
         lastT = now;
-        const w = content.offsetWidth;
-        if (w) {
-            x = (x + SPEED * dt) % w;
-            track.style.transform = `translateX(${x - w}px)`;
+        const V = tickerWrap.offsetWidth;
+
+        for (let i = live.length - 1; i >= 0; i--) {
+            const it = live[i];
+            it.x += SPEED * dt;
+            it.el.style.transform = `translateX(${it.x}px)`;
+            if (it.x > V) {                      // خرج من اليمين
+                it.el.remove();
+                live.splice(i, 1);
+                if (it === last) last = null;
+            }
         }
+
+        let guard = 0;
+        while ((!last || last.x >= 0) && guard++ < 30) spawn();
+
         requestAnimationFrame(tick);
     }
 
     function addNewMessage(user, messageText) {
-        msgs.unshift({ u: String(user || '').slice(0, 40), t: String(messageText).slice(0, 250) });
-        msgs = msgs.slice(0, MAX_MSGS);
-        renderTicker();
+        const m = { u: String(user || '').slice(0, 40), t: String(messageText).slice(0, 250) };
+        queue.push(m);
+        history = [m, ...history].slice(0, MAX_MSGS);
     }
 
     // --- أنيميشن الإيموجي الذكي ---
@@ -435,10 +446,9 @@
     }
 
     window.addEventListener('load', () => {
-        renderTicker();
+        last = { x: tickerWrap.offsetWidth };   // يملأ الشريط من البداية
         requestAnimationFrame(tick);
     });
-    window.addEventListener('resize', renderTicker);
 </script>
 
 </body>

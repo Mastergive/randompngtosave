@@ -1,318 +1,221 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body { 
-            margin: 0; padding: 0; 
-            overflow: hidden; 
-            background-color: transparent; 
-            font-family: 'Segoe UI', Arial, sans-serif;
-            width: 100vw;
-            box-sizing: border-box;
-        }
-        
-        .wrapper {
-            margin-top: 60px; 
-            position: relative;
-            width: 100%;
-            height: 160px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{
+    --red:#cc0004;
+    --gloss:#ff4d51;
+    --dark:#730002;
+    --white:#ffffff;
+    --yellow:#ffeb00;
+}
+*{box-sizing:border-box}
+body{
+    margin:0;padding:0;overflow:hidden;background:transparent;
+    font-family:'Arial Black',Tahoma,'Segoe UI',Arial,sans-serif;width:100vw;
+}
+.wrapper{position:relative;width:100%;height:160px;margin-top:40px}
 
-        /* --- أنيميشن ظهور حاوية الشريط السفلية (نمط مسطرة مدرسية) --- */
-        .scroll-container {
-            display: flex;
-            align-items: center;
-            height: 60px; 
-            width: 92%;
-            margin: 0 auto;
-            background: #fff3b0; /* أصفر مدرسي دافئ */
-            border-top: 6px dashed #1d3557; /* كحلي مدرسي */
-            border-bottom: 6px dashed #1d3557;
-            position: relative;
-            z-index: 10;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            
-            /* أنيميشن الدخول */
-            animation: container-entrance 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            transform: scaleX(0);
-            opacity: 0;
-        }
+/* ================= BAR ================= */
+.bar-shell{
+    position:absolute;left:2%;right:2%;bottom:14px;height:58px;
+    filter:drop-shadow(0 3px 3px rgba(0,0,0,.6));
+    opacity:0;transform:translateX(-60px);
+    animation:slide-in .6s ease-out forwards;
+}
+@keyframes slide-in{to{opacity:1;transform:translateX(0)}}
 
-        /* خطوط تدريج المسطرة أعلى الشريط */
-        .scroll-container::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 8px;
-            background: repeating-linear-gradient(
-                90deg,
-                #1d3557,
-                #1d3557 2px,
-                transparent 2px,
-                transparent 12px
-            );
-            opacity: 0.4;
-        }
+.bar{
+    position:absolute;inset:0;overflow:hidden;
+    clip-path:polygon(0 100%,85px 0,100% 0,100% 100%);
+    background:
+        radial-gradient(ellipse 380px 90px at 140px 0,rgba(255,140,150,.55),rgba(255,140,150,0) 70%),
+        linear-gradient(180deg,var(--gloss) 0%,var(--red) 45%,var(--dark) 50%,var(--red) 100%);
+    /* white top edge, yellow bottom edge (Spacetoon colours) */
+    box-shadow:inset 0 3px 0 var(--white),inset 0 -4px 0 var(--yellow);
+}
 
-        @keyframes container-entrance {
-            100% {
-                transform: scaleX(1);
-                opacity: 1;
-            }
-        }
+/* --- slow red water: two sine-wave layers drifting at different speeds --- */
+.water{
+    position:absolute;left:0;right:0;top:0;bottom:4px;z-index:0;
+    background-repeat:repeat-x;
+}
+.w1{
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='58'><path d='M0 30 Q50 14 100 30 T200 30 V58 H0Z' fill='rgba(255,255,255,0.09)'/></svg>");
+    background-size:200px 58px;
+    animation:drift-r 16s linear infinite;
+}
+.w2{
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='58'><path d='M0 36 Q80 18 160 36 T320 36 V58 H0Z' fill='rgba(255,90,100,0.14)'/></svg>");
+    background-size:320px 58px;
+    animation:drift-l 24s linear infinite;
+}
+@keyframes drift-r{to{background-position-x:200px}}
+@keyframes drift-l{to{background-position-x:-320px}}
 
-        /* --- LEFT BADGE --- */
-        .left-badge {
-            position: absolute;
-            left: 2%;
-            width: 110px;
-            height: 110px;
-            background: radial-gradient(circle, #fff3b0 60%, #e63946 100%);
-            border: 4px solid #1d3557;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            perspective: 1000px;
+/* --- faint twinkling stars (space theme) --- */
+.stars{
+    position:absolute;inset:0;z-index:0;opacity:.35;
+    background-image:
+        radial-gradient(circle,#fff 0 1px,transparent 1.6px),
+        radial-gradient(circle,#fff 0 1px,transparent 1.6px),
+        radial-gradient(circle,var(--yellow) 0 1.2px,transparent 1.8px);
+    background-size:97px 41px,151px 53px,223px 47px;
+    background-position:10px 8px,60px 30px,120px 15px;
+    animation:twinkle 4s ease-in-out infinite alternate;
+}
+.stars.s2{
+    background-position:45px 20px,10px 5px,30px 35px;
+    animation-delay:2s;
+}
+@keyframes twinkle{from{opacity:.12}to{opacity:.5}}
 
-            animation: left-badge-entrance 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards;
-            transform: translateX(-200px) rotate(-360deg);
-            opacity: 0;
-        }
+/* --- glass glint sweeping across every few seconds --- */
+.glint{
+    position:absolute;top:0;bottom:0;left:0;width:140px;z-index:1;
+    background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.22),rgba(255,255,255,0));
+    transform:translateX(-200px);
+    animation:glint 8s ease-in-out 2s infinite;
+}
+@keyframes glint{
+    0%{transform:translateX(-200px)}
+    35%,100%{transform:translateX(2400px)}
+}
 
-        @keyframes left-badge-entrance {
-            100% {
-                transform: translateX(0) rotate(0deg);
-                opacity: 1;
-            }
-        }
+/* gloss (lighter top half) */
+.bar::before{
+    content:'';position:absolute;left:0;right:0;top:0;height:50%;z-index:1;
+    background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.05));
+}
+/* darker right end */
+.bar::after{
+    content:'';position:absolute;right:0;top:0;bottom:0;width:30%;z-index:1;
+    background:linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,.28));
+}
 
-        .flipper-content {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease-in-out;
-            backface-visibility: hidden;
-        }
-        
-        #qrImg { width: 70px; height: 70px; background: white; padding: 4px; border-radius: 5px; border: 2px solid #1d3557; }
-        #logoImg { width: 85px; height: auto; object-fit: contain; }
-        
-        .hidden { opacity: 0; visibility: hidden; transform: rotateY(180deg); }
-        .visible { opacity: 1; visibility: visible; transform: rotateY(0deg); }
+/* ================= TICKER ================= */
+.scroll-wrapper{
+    position:absolute;left:150px;right:120px;top:0;bottom:0;overflow:hidden;z-index:3;
+}
+.ticker-track{position:relative;width:100%;height:100%}
+.ticker-track .item{
+    position:absolute;top:0;left:0;height:100%;
+    white-space:nowrap;will-change:transform;
+}
+.item{display:flex;align-items:center;padding-left:90px}
+.text{
+    font-size:25px;font-weight:700;color:#fff;
+    text-shadow:2px 2px 0 #000;
+}
+.username{
+    font-size:26px;font-weight:900;color:var(--yellow);margin-left:10px;
+    text-shadow:2px 2px 0 #000;
+}
+.num{font-size:17px;font-weight:700;color:#fff;margin-left:8px;text-shadow:2px 2px 0 #000}
+.scroll-logo{height:28px;width:auto;margin:0 22px;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.6))}
 
-        /* --- RIGHT BADGE --- */
-        .emoji-area {
-            position: absolute;
-            right: 2%;
-            width: 105px;
-            height: 105px;
-            background: #1d3557;
-            border: 4px solid #ffd500;
-            border-radius: 50%;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            color: #fff3b0;
-            font-weight: bold;
+/* ================= BADGES (glass spheres) ================= */
+.badge,.emoji-area{
+    position:absolute;z-index:20;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;transform:scale(.7);
+    animation:badge-in .45s ease-out .5s forwards;
+}
+@keyframes badge-in{to{opacity:1;transform:scale(1)}}
 
-            animation: right-badge-entrance 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards;
-            transform: translateX(200px) scale(0.5);
-            opacity: 0;
-        }
+.badge{left:calc(2% + 8px);bottom:10px;width:108px;height:108px}
+.emoji-area{right:calc(2% + 8px);bottom:16px;width:88px;height:88px;animation-delay:.65s}
 
-        @keyframes right-badge-entrance {
-            100% {
-                transform: translateX(0) scale(1);
-                opacity: 1;
-            }
-        }
+.badge::before,.emoji-area::before{
+    content:'';position:absolute;inset:0;border-radius:50%;
+    border:6px solid transparent;
+    background:
+        radial-gradient(circle at 50% 35%,var(--gloss),var(--red) 60%,var(--dark)) padding-box,
+        linear-gradient(145deg,#fff,var(--yellow) 45%,#b89a00 55%,#fff) border-box;
+    box-shadow:0 2px 5px rgba(0,0,0,.55),inset 0 -3px 6px rgba(0,0,0,.35);
+}
+.badge::after,.emoji-area::after{
+    content:'';position:absolute;left:16%;right:16%;top:9%;height:36%;
+    border-radius:50%;
+    background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.05));
+}
 
-        #emojiVal, #emojiNum {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        #emojiVal { font-size: 45px; }
-        #emojiNum { font-size: 18px; margin-bottom: -5px; color: #ffd500; }
+.flipper-content{
+    position:absolute;inset:0;z-index:2;
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity .5s ease-in-out;
+}
+#qrImg{width:64px;height:64px;background:#fff;padding:0;image-rendering:pixelated}
+#logoImg{width:72px;height:auto;object-fit:contain}
+.hidden{opacity:0;visibility:hidden}
+.visible{opacity:1;visibility:visible}
 
-        /* --- TICKER --- */
-        .scroll-wrapper {
-            flex: 1;
-            min-width: 0;
-            align-self: stretch;
-            overflow: hidden;
-            display: flex;
-            margin: 0 120px; 
-            position: relative;
-        }
-
-        /* منطقة الشريط: كل رسالة تتحرك بشكل مستقل وتدخل دائماً من اليسار */
-        .ticker-track {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        .ticker-track .item {
-            position: absolute;
-            top: 0; left: 0;
-            height: 100%;
-            white-space: nowrap;
-            will-change: transform;
-        }
-
-        .item { 
-            display: flex; 
-            align-items: center; 
-            padding-left: 100px; 
-        }
-        .text { font-size: 26px; color: #1d3557; font-weight: bold; } 
-        .username { color: #e63946; font-weight: 900; font-size: 26px; margin-left: 10px; }
-        .scroll-logo { height: 35px; margin: 0 20px; }
-
-        /* --- SCHOOL DECORATIONS (قلم ورقية ودفتر) --- */
-        
-        /* 1. تصميم القلم الرصاص (Pencil) */
-        .school-pencil {
-            position: absolute;
-            z-index: 110;
-            width: 18px;
-            height: 70px;
-            background: #ffd500;
-            border: 2px solid #1d3557;
-            border-radius: 2px;
-            animation: school-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.5) forwards;
-            opacity: 0;
-        }
-        /* ممحاة القلم من الأعلى */
-        .school-pencil::before {
-            content: '';
-            position: absolute;
-            top: -12px; left: -2px;
-            width: 18px; height: 10px;
-            background: #ffb703;
-            border: 2px solid #1d3557;
-            border-bottom: 2px solid #8d99ae;
-            border-radius: 4px 4px 0 0;
-        }
-        /* سن القلم من الأسفل */
-        .school-pencil::after {
-            content: '';
-            position: absolute;
-            bottom: -15px; left: -2px;
-            width: 0; height: 0;
-            border-left: 11px solid transparent;
-            border-right: 11px solid transparent;
-            border-top: 15px solid #d4a373;
-        }
-
-        /* 2. تصميم كتاب/دفتر مدرسي (Book) */
-        .school-book {
-            position: absolute;
-            z-index: 110;
-            width: 45px;
-            height: 35px;
-            background: #e63946;
-            border: 3px solid #1d3557;
-            border-radius: 4px;
-            box-shadow: 2px 2px 0px #1d3557;
-            animation: school-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.5) forwards;
-            opacity: 0;
-        }
-        /* صفحات الكتاب */
-        .school-book::before {
-            content: '';
-            position: absolute;
-            right: 3px; top: 3px; bottom: 3px;
-            width: 8px;
-            background: #fff;
-            border-left: 2px solid #1d3557;
-        }
-        /* شريط علامة الصفحة */
-        .school-book::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 10px;
-            width: 6px; height: 18px;
-            background: #ffd500;
-            border: 1px solid #1d3557;
-        }
-
-        @keyframes school-pop {
-            100% {
-                opacity: 1;
-            }
-        }
-
-        /* تموضعات عناصر الزينة المدرسة */
-        .pop-left { left: 22%; bottom: -10px; animation-delay: 0.8s; transform: rotate(-25deg); }
-        .pop-mid { left: 50%; top: 30px; animation-delay: 0.6s; transform: translateX(-50%) rotate(10deg); }
-        .pop-right { right: 12%; bottom: -12px; animation-delay: 1s; transform: rotate(20deg); }
-
-    </style>
+#emojiVal{
+    position:relative;z-index:2;font-size:40px;line-height:1;
+    filter:drop-shadow(2px 2px 0 rgba(0,0,0,.6));
+    transition:opacity .3s,transform .3s;
+}
+</style>
 </head>
 <body>
 
 <div class="wrapper">
-    <div class="left-badge">
-        <div class="flipper-content visible" id="qrContainer">
-            <img id="qrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spacetoonold.netlify.app/message">
+    <div class="bar-shell">
+        <div class="bar">
+            <div class="water w1"></div>
+            <div class="water w2"></div>
+            <div class="stars"></div>
+            <div class="stars s2"></div>
+            <div class="glint"></div>
         </div>
-        <div class="flipper-content hidden" id="logoContainer">
-            <img id="logoImg" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/StoonNo3D.png">
-        </div>
-    </div>
-
-    <div class="scroll-container">
         <div class="scroll-wrapper" id="tickerWrap">
             <div class="ticker-track" id="track"></div>
         </div>
     </div>
 
-    <div class="emoji-area">
-        <div id="emojiNum">(1)</div>
-        <div id="emojiVal">✏️</div>
+    <div class="badge">
+        <div class="flipper-content visible" id="qrContainer">
+            <img id="qrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spacetoonold.netlify.app/message">
+        </div>
+        <div class="flipper-content hidden" id="logoContainer">
+            <img id="logoImg" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+        </div>
     </div>
 
-    <!-- زينة الكتاب (خارج الشريط حتى لا تُقص) + قلم رصاص وكتاب على الجانبين -->
-    <div class="school-book pop-mid"></div>
-    <div class="school-pencil pop-left"></div>
-    <div class="school-book pop-right" style="background: #457b9d;"></div>
+    <div class="emoji-area">
+        <div id="emojiVal">⭐</div>
+    </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-
 <script>
-    const LOGO = "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/StoonNo3D.png";
-    const SPEED = 80;       // px / second (نفس السرعة الأصلية)
+    const LOGO = "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png";
+    const SPEED = 80;
     const MAX_MSGS = 10;
 
     const tickerWrap = document.getElementById('tickerWrap');
     const track = document.getElementById('track');
 
-    const WELCOME = { u: '', t: 'أهلاً بكم في الموسم الدراسي الجديد! أرسل رسالتك الآن' };
-    let history = [WELCOME];   // الرسائل التي تتكرر بالتناوب
-    let queue = [];            // رسائل جديدة تنتظر دخولها من اليسار
+    const WELCOME = { u: '', t: 'أرسل رسالتك الآن لتظهر على الشاشة', n: 0 };
+    let history = [WELCOME];
+    let queue = [];
     let histIdx = 0;
-    let live = [];             // العناصر الظاهرة حالياً {el, x}
-    let last = null;           // آخر عنصر تم إدخاله
+    let live = [];
+    let last = null;
+    let msgTotal = 0;
 
     function makeItem(m) {
         const item = document.createElement('div');
         item.className = 'item';
+        if (m.n) {
+            const n = document.createElement('span');
+            n.className = 'num';
+            n.textContent = '(' + m.n + ')';
+            item.appendChild(n);
+        }
         if (m.u) {
             const u = document.createElement('span');
             u.className = 'username';
@@ -321,7 +224,7 @@
         }
         const t = document.createElement('span');
         t.className = 'text';
-        t.textContent = m.t;          // textContent: آمن من حقن الأكواد
+        t.textContent = m.t;
         item.appendChild(t);
         const img = document.createElement('img');
         img.className = 'scroll-logo';
@@ -331,13 +234,12 @@
     }
 
     function nextMessage() {
-        if (queue.length) return queue.shift();      // الجديدة أولاً
+        if (queue.length) return queue.shift();
         const m = history[histIdx % history.length];
         histIdx++;
         return m;
     }
 
-    // يدخل رسالة جديدة ملاصقة للسابقة من جهة اليسار
     function spawn() {
         const el = makeItem(nextMessage());
         track.appendChild(el);
@@ -358,7 +260,7 @@
             const it = live[i];
             it.x += SPEED * dt;
             it.el.style.transform = `translateX(${it.x}px)`;
-            if (it.x > V) {                      // خرج من اليمين
+            if (it.x > V) {
                 it.el.remove();
                 live.splice(i, 1);
                 if (it === last) last = null;
@@ -367,89 +269,66 @@
 
         let guard = 0;
         while ((!last || last.x >= 0) && guard++ < 30) spawn();
-
         requestAnimationFrame(tick);
     }
 
     function addNewMessage(user, messageText) {
-        const m = { u: String(user || '').slice(0, 40), t: String(messageText).slice(0, 250) };
+        msgTotal++;
+        const m = { u: String(user || '').slice(0, 40), t: String(messageText).slice(0, 250), n: msgTotal };
         queue.push(m);
         history = [m, ...history].slice(0, MAX_MSGS);
     }
 
-    // --- أنيميشن الإيموجي الذكي ---
-    const eNum = document.getElementById('emojiNum');
+    // --- emoji badge (simple swap) ---
     const eVal = document.getElementById('emojiVal');
-    const emojis = ['📚', '✏️', '🎒', '📝'];
-    let count = 1;
-    let idx = 0;
+    const emojis = ['⭐', '🚀', '🌙', '🪐', '👽', '🎈', '🌟', '😀'];
+    let ei = 0;
+    setInterval(() => {
+        eVal.style.opacity = '0';
+        eVal.style.transform = 'scale(.8)';
+        setTimeout(() => {
+            ei = (ei + 1) % emojis.length;
+            eVal.textContent = emojis[ei];
+            eVal.style.opacity = '1';
+            eVal.style.transform = 'scale(1)';
+        }, 300);
+    }, 3500);
 
-    async function runEmojiCycle() {
-        while (true) {
-            eVal.style.opacity = "0";
-            eVal.style.transform = "scale(0.5)";
-            eNum.innerText = `(${count})`;
-            eNum.style.opacity = "1";
-            eNum.style.transform = "scale(1)";
-            
-            await new Promise(r => setTimeout(r, 1000));
-            
-            eNum.style.opacity = "0.3"; 
-            eNum.style.transform = "scale(0.8)";
-            eVal.innerText = emojis[idx];
-            eVal.style.opacity = "1";
-            eVal.style.transform = "scale(1)";
-            
-            await new Promise(r => setTimeout(r, 2000));
-            
-            count++;
-            idx = (idx + 1) % emojis.length;
-            if (count > emojis.length) { count = 1; }
-        }
-    }
-    setTimeout(runEmojiCycle, 1200);
-
-    // --- أنيميشن البادج الأيسر ---
+    // --- left badge (QR <-> logo crossfade) ---
     const qrC = document.getElementById('qrContainer');
     const logoC = document.getElementById('logoContainer');
     setInterval(() => {
-        if(qrC.classList.contains('visible')) {
+        if (qrC.classList.contains('visible')) {
             qrC.classList.replace('visible', 'hidden');
             logoC.classList.replace('hidden', 'visible');
         } else {
             logoC.classList.replace('visible', 'hidden');
             qrC.classList.replace('hidden', 'visible');
         }
-    }, 5000);
+    }, 6000);
 
-    // --- إعدادات الفايربيس (Firebase) ---
-    // داخل try/catch: لو فشل التحميل يستمر الشريط بالعمل
+    // --- Firebase ---
     try {
         const firebaseConfig = {
             apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
-            databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 
+            databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com",
             projectId: "spacetoonold-aaac4",
             appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-
         db.ref('latestMessage').on('value', (snapshot) => {
             const data = snapshot.val();
-            if (data && data.text) {
-                addNewMessage(data.username, data.text);
-            }
+            if (data && data.text) addNewMessage(data.username, data.text);
         });
     } catch (err) {
         console.error('Firebase error:', err);
     }
 
     window.addEventListener('load', () => {
-        last = { x: tickerWrap.offsetWidth };   // يملأ الشريط من البداية
+        last = { x: tickerWrap.offsetWidth };
         requestAnimationFrame(tick);
     });
 </script>
-
 </body>
 </html>

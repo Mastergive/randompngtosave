@@ -3,237 +3,580 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مركز بث سبيستون القديم</title>
+    <meta name="description" content="مركز رسائل سبيستون - أرسل تحيتك لتظهر على الشاشة">
+    <meta name="theme-color" content="#cc0004">
+    <title>مركز رسائل سبيستون | أرسل تحيتك 🌟</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21%D8%B4%D8%B9%D8%A7%D8%B1_%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86.png" type="image/x-icon">
+    <link rel="stylesheet" href="spacetoon-theme.css">
+
     <style>
-        :root {
-            --space-blue: #0a114d;
-            --stoon-blue: #182694;
-            --stoon-gold: #ffd700;
-            --stoon-green: #3dfc4a;
-            --google-red: #ea4335;
-        }
-
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: var(--space-blue); 
-            background: radial-gradient(circle, #1e2a78 0%, #0a114d 100%);
-            color: white; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        .card { 
-            background: var(--stoon-blue); 
-            padding: 40px; 
-            border-radius: 25px; 
-            width: 450px; 
-            max-width: 90%;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 15px rgba(255,255,255,0.1); 
-            border: 3px solid var(--stoon-gold); 
-            text-align: center;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        h2 { 
-            color: var(--stoon-gold); 
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            font-size: 28px;
-            margin-bottom: 30px;
-        }
-
-        input, button, textarea { 
-            width: 100%; 
-            margin-top: 15px; 
-            padding: 14px; 
-            border-radius: 12px; 
-            border: 2px solid rgba(255,255,255,0.2); 
-            box-sizing: border-box; 
-            font-size: 16px;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        input, textarea { background: rgba(255, 255, 255, 0.95); color: #111; font-weight: 500; }
-        input:focus, textarea:focus { border-color: var(--stoon-gold); box-shadow: 0 0 10px var(--stoon-gold); }
-
-        button { 
-            background: var(--stoon-gold); 
-            color: var(--stoon-blue); 
-            font-weight: 900; 
-            cursor: pointer; 
-            border: none;
-            box-shadow: 0 4px 0 #b39700;
-        }
-
-        button:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 6px 0 #ccc; }
-        button:active { transform: translateY(2px); box-shadow: 0 0 0; }
-
-        .btn-google {
-            background: var(--google-red);
-            color: white;
-            box-shadow: 0 4px 0 #a82e24;
+        /* Page-specific styles for message center */
+        .message-page {
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            padding: var(--gap-lg);
+            position: relative;
+            overflow: hidden;
         }
-        .btn-google:hover { background: #ff6659; box-shadow: 0 6px 0 #c23b30; color: white;}
 
+        .message-page::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(204,0,4,0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255,235,0,0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .message-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 500px;
+            background: var(--bg-panel);
+            border: 2px solid var(--st-yellow);
+            border-radius: var(--radius-lg);
+            padding: var(--gap-xl);
+            box-shadow:
+                var(--shadow-lg),
+                var(--shadow-glow-yellow),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            animation: card-enter 0.6s var(--spring);
+        }
+
+        @keyframes card-enter {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .message-header {
+            text-align: center;
+            margin-bottom: var(--gap-xl);
+            position: relative;
+        }
+
+        .message-header::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--st-yellow), var(--st-red));
+            border-radius: 2px;
+        }
+
+        .message-title {
+            font-size: var(--fs-3xl);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--st-yellow) 0%, var(--st-red-gloss) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--gap-xs);
+        }
+
+        .message-subtitle {
+            color: var(--text-secondary);
+            font-size: var(--fs-base);
+            font-weight: 500;
+        }
+
+        /* Auth Section */
+        .auth-section {
+            text-align: center;
+        }
+
+        .auth-description {
+            color: var(--text-secondary);
+            font-size: var(--fs-sm);
+            margin-bottom: var(--gap-lg);
+            line-height: 1.7;
+        }
+
+        .btn-google {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--gap-md);
+            width: 100%;
+            padding: 16px 24px;
+            background: var(--st-white);
+            color: #1a1a1a;
+            font-family: var(--font-display);
+            font-size: var(--fs-base);
+            font-weight: 700;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-google:hover {
+            background: #fafafa;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--st-yellow);
+        }
+
+        .btn-google:active { transform: translateY(0); }
+
+        .btn-google svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+        /* Username Setup */
+        .username-setup {
+            text-align: center;
+            animation: fade-in 0.4s var(--ease-out);
+        }
+
+        .username-setup .message-subtitle {
+            color: var(--st-yellow);
+            margin-bottom: var(--gap-lg);
+        }
+
+        .username-setup .input-field {
+            text-align: center;
+            font-size: var(--fs-lg);
+            letter-spacing: 1px;
+            direction: ltr;
+        }
+
+        .username-setup .input-field::placeholder {
+            color: var(--text-muted);
+            letter-spacing: normal;
+        }
+
+        /* Main Section (after login) */
+        .main-section {
+            animation: fade-in 0.4s var(--ease-out);
+        }
+
+        .user-welcome {
+            text-align: right;
+            font-size: var(--fs-sm);
+            color: var(--text-muted);
+            margin-bottom: var(--gap-lg);
+            padding-bottom: var(--gap-md);
+            border-bottom: 1px dashed var(--border-subtle);
+        }
+
+        .user-welcome strong {
+            color: var(--st-yellow);
+            font-size: var(--fs-base);
+        }
+
+        /* Nav Tabs */
         .nav-tabs {
             display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-            padding-bottom: 10px;
-        }
-        .nav-link {
-            color: #aaa;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-        .nav-link.active {
-            color: var(--stoon-gold);
-            border-bottom: 2px solid var(--stoon-gold);
-            padding-bottom: 8px;
+            gap: var(--gap-sm);
+            margin-bottom: var(--gap-lg);
+            border-bottom: 2px solid var(--border-subtle);
+            padding-bottom: var(--gap-sm);
         }
 
+        .nav-tab {
+            flex: 1;
+            padding: var(--gap-sm) var(--gap-md);
+            background: transparent;
+            border: 2px solid transparent;
+            border-bottom: none;
+            border-radius: var(--radius-md) var(--radius-md) 0 0;
+            color: var(--text-muted);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: var(--fs-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--st-yellow), var(--st-red));
+            border-radius: 2px 2px 0 0;
+            transform: scaleX(0);
+            transition: transform var(--transition-base);
+        }
+
+        .nav-tab:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.03);
+        }
+
+        .nav-tab.active {
+            color: var(--st-yellow);
+        }
+
+        .nav-tab.active::before {
+            transform: scaleX(1);
+        }
+
+        /* Tab Content */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fade-in 0.3s var(--ease-out); }
+
+        /* Message Form */
+        .message-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap-md);
+        }
+
+        .textarea-field {
+            min-height: 120px;
+            resize: vertical;
+            font-family: var(--font-arabic);
+            direction: rtl;
+        }
+
+        .char-count {
+            text-align: left;
+            font-size: var(--fs-xs);
+            color: var(--text-muted);
+        }
+
+        .char-count.warning { color: var(--st-yellow); }
+        .char-count.error { color: #ff4444; }
+
+        /* History */
         .history-container {
-            margin-top: 20px;
-            text-align: right;
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 15px;
-            border: 1px dashed var(--stoon-gold);
-            max-height: 200px;
+            background: rgba(10,10,10,0.4);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: var(--gap-md);
+            max-height: 250px;
             overflow-y: auto;
         }
 
-        .history-title { font-size: 14px; color: var(--stoon-gold); margin-bottom: 10px; border-bottom: 1px solid #444; padding-bottom: 5px;}
-        
-        .msg-item {
-            font-size: 13px;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            animation: fadeIn 0.5s ease;
+        .history-title {
+            font-size: var(--fs-sm);
+            font-weight: 700;
+            color: var(--st-yellow);
+            margin-bottom: var(--gap-md);
+            padding-bottom: var(--gap-sm);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .msg-user { color: var(--stoon-gold); font-weight: bold; }
 
-        .admin-only { background: #ff4d4d !important; color: white !important; margin-top: 20px; box-shadow: 0 4px 0 #a32a2a; }
+        .history-clear {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: var(--fs-xs);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .history-clear:hover {
+            color: #ff4444;
+            background: rgba(255,68,68,0.1);
+        }
+
+        .history-list { display: flex; flex-direction: column; gap: var(--gap-sm); }
+
+        .msg-item {
+            padding: var(--gap-sm);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            animation: fade-in 0.4s var(--ease-out);
+            transition: all var(--transition-fast);
+        }
+
+        .msg-item:hover {
+            border-color: var(--st-yellow);
+            background: rgba(255,235,0,0.05);
+        }
+
+        .msg-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            gap: var(--gap-sm);
+        }
+
+        .msg-user {
+            font-weight: 800;
+            color: var(--st-yellow);
+            font-size: var(--fs-sm);
+        }
+
+        .msg-time {
+            font-size: var(--fs-xs);
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .msg-text {
+            font-size: var(--fs-sm);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .msg-number {
+            display: inline-block;
+            background: var(--st-red);
+            color: var(--st-white);
+            font-size: var(--fs-xs);
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: var(--radius-pill);
+            margin-left: var(--gap-sm);
+        }
+
+        .history-empty {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: var(--fs-sm);
+            padding: var(--gap-xl);
+        }
+
+        /* Settings Tab */
+        .settings-section {
+            margin-top: var(--gap-lg);
+        }
+
+        .settings-title {
+            font-size: var(--fs-lg);
+            color: var(--st-yellow);
+            margin-bottom: var(--gap-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--gap-sm);
+        }
+
+        .settings-desc {
+            font-size: var(--fs-sm);
+            color: var(--text-muted);
+            margin-bottom: var(--gap-lg);
+        }
+
+        .btn-logout {
+            margin-top: var(--gap-xl);
+            width: 100%;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            padding: 10px;
+            font-size: var(--fs-sm);
+        }
+
+        .btn-logout:hover {
+            color: #ff4444;
+            border-color: #ff4444;
+            background: rgba(255,68,68,0.05);
+        }
+
+        /* Status Message */
+        #status {
+            min-height: 24px;
+            text-align: center;
+            font-size: var(--fs-sm);
+            font-weight: 600;
+            margin-top: var(--gap-md);
+            transition: all var(--transition-base);
+        }
+
+        /* Hidden utility */
         .hidden { display: none !important; }
-        #status { margin-top: 15px; color: var(--stoon-green); font-weight: bold; font-size: 14px;}
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .message-card { padding: var(--gap-lg); margin: var(--gap-md); }
+            .message-title { font-size: var(--fs-2xl); }
+            .nav-tab { font-size: var(--fs-xs); padding: var(--gap-xs) var(--gap-sm); }
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>شريط ذكريات سبيستون 🚀</h2>
-    
-    <!-- قسم تسجيل الدخول عبر جوجل -->
-    <div id="auth-section">
-        <p style="margin-bottom: 25px; color: #ccc; font-size: 14px;">مرحباً بك في مركز بث كواكب سبيستون، سجل دخولك عبر حسابك في Google لتنضم إلى شباب المستقبل!</p>
-        <button onclick="loginWithGoogle()" class="btn-google">
-            <svg style="width:20px; height:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M21.35,11.1H12V12.9H19.6C18.9,14.9 17.1,16.3 15,16.9L15,18.1H18.1C20.1,16.3 21.3,13.9 21.35,11.1M12,21C14.4,21 16.5,20.2 18.1,18.9L15,16.9C14.1,17.5 13.1,17.9 12,17.9C9.7,17.9 7.8,16.4 7.1,14.3L3.9,16.7C5.4,19.3 8.5,21 12,21M5.4,12C5.4,11.4 5.5,10.7 5.7,10.1L2.5,7.7C1.8,9 1.5,10.4 1.5,12C1.5,13.6 1.8,15 2.5,16.3L5.7,13.9C5.5,13.3 5.4,12.6 5.4,12M12,6.1C13.3,6.1 14.4,6.5 15.4,7.4L18.2,4.6C16.5,3 14.4,2 12,2C8.5,2 5.4,3.7 3.9,6.3L7.1,8.7C7.8,6.6 9.7,6.1 12,6.1Z" /></svg>
-            الدخول عبر حساب Google
-        </button>
-    </div>
+<div class="message-page">
+    <div class="message-card" role="main">
+        <header class="message-header">
+            <h1 class="message-title">شريط ذكريات سبيستون 🚀</h1>
+            <p class="message-subtitle">مركز بث كواكب سبيستون</p>
+        </header>
 
-    <!-- قسم إعداد اسم المستخدم لأول مرة -->
-    <div id="username-setup-section" class="hidden">
-        <p style="color: var(--stoon-gold); font-size: 14px;">أنت هنا لأول مرة! يرجى اختيار اسمك السبيستوني المميز والفريد:</p>
-        <input type="text" id="new-unique-username" placeholder="مثال: المحقق_كونان">
-        <button onclick="setupInitialUsername()">حفظ والوصول إلى الكوكب</button>
-    </div>
+        <!-- Auth Section -->
+        <section id="auth-section" class="auth-section" aria-labelledby="auth-title">
+            <h2 id="auth-title" class="visually-hidden">تسجيل الدخول</h2>
+            <p class="auth-description">
+                مرحباً بك في مركز بث كواكب سبيستون، سجل دخولك عبر حسابك في Google لتنضم إلى شباب المستقبل!
+            </p>
+            <button type="button" class="btn-google" onclick="loginWithGoogle()" aria-label="تسجيل الدخول بحساب جوجل">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.35,11.1H12V12.9H19.6C18.9,14.9 17.1,16.3 15,16.9L15,18.1H18.1C20.1,16.3 21.3,13.9 21.35,11.1M12,21C14.4,21 16.5,20.2 18.1,18.9L15,16.9C14.1,17.5 13.1,17.9 12,17.9C9.7,17.9 7.8,16.4 7.1,14.3L3.9,16.7C5.4,19.3 8.5,21 12,21M5.4,12C5.4,11.4 5.5,10.7 5.7,10.1L2.5,7.7C1.8,9 1.5,10.4 1.5,12C1.5,13.6 1.8,15 2.5,16.3L5.7,13.9C5.5,13.3 5.4,12.6 5.4,12M12,6.1C13.3,6.1 14.4,6.5 15.4,7.4L18.2,4.6C16.5,3 14.4,2 12,2C8.5,2 5.4,3.7 3.9,6.3L7.1,8.7C7.8,6.6 9.7,6.1 12,6.1Z"/></svg>
+                الدخول عبر حساب Google
+            </button>
+        </section>
 
-    <!-- لوحة التحكم الرئيسية بعد الدخول -->
-    <div id="main-section" class="hidden">
-        <div class="nav-tabs">
-            <span id="tab-home" class="nav-link active" onclick="switchTab('home')">الشريط العام</span>
-            <span id="tab-settings" class="nav-link" onclick="switchTab('settings')">الإعدادات</span>
-        </div>
+        <!-- Username Setup Section -->
+        <section id="username-setup-section" class="username-setup hidden" aria-labelledby="setup-title">
+            <h2 id="setup-title" class="visually-hidden">إعداد اسم المستخدم</h2>
+            <p class="message-subtitle">أنت هنا لأول مرة! يرجى اختيار اسمك السبيستوني المميز والفريد:</p>
+            <div class="input-group">
+                <label for="new-unique-username" class="input-label">اسمك السبيستوني</label>
+                <input type="text" id="new-unique-username" class="input-field" placeholder="مثال: المحقق_كونان" maxlength="20" autocomplete="username" aria-describedby="username-hint">
+                <div id="username-hint" class="char-count">20 حرف كحد أقصى</div>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="setupInitialUsername()" style="width: 100%; margin-top: var(--gap-sm);">
+                <i class="fas fa-rocket"></i> حفظ والوصول إلى الكوكب
+            </button>
+        </section>
 
-        <!-- واجهة إرسال الرسائل والشريط -->
-        <div id="content-home">
-            <p style="font-size: 13px; color: #aaa; margin-top: 15px; text-align: right;">مرحباً بك: <span id="display-nickname" style="color:var(--stoon-gold); font-weight:bold;">...</span></p>
-            <textarea id="msg" rows="3" placeholder="اكتب رسالتك لتظهر على القناة..."></textarea>
-            <button onclick="sendMessage()">إرسال إلى سبيستون ✨</button>
-            
-            <div class="history-container">
-                <div class="history-title">آخر الرسائل المرسلة:</div>
-                <div id="history-list"></div>
+        <!-- Main Section (After Login) -->
+        <section id="main-section" class="main-section hidden" aria-labelledby="main-title">
+            <h2 id="main-title" class="visually-hidden">لوحة التحكم</h2>
+
+            <div class="user-welcome">
+                مرحباً بك: <strong id="display-nickname">...</strong>
             </div>
 
-            <button id="clear-btn" class="admin-only hidden" onclick="clearMessages()">مسح الشريط (للمشرف)</button>
-        </div>
+            <nav class="nav-tabs" role="tablist" aria-label="أقسام المركز">
+                <button role="tab" id="tab-home" class="nav-tab active" aria-selected="true" aria-controls="content-home" onclick="switchTab('home')">
+                    <i class="fas fa-comments"></i> الشريط العام
+                </button>
+                <button role="tab" id="tab-settings" class="nav-tab" aria-selected="false" aria-controls="content-settings" onclick="switchTab('settings')">
+                    <i class="fas fa-cog"></i> الإعدادات
+                </button>
+            </nav>
 
-        <!-- واجهة الإعدادات -->
-        <div id="content-settings" class="hidden">
-            <h3 style="color: var(--stoon-gold); font-size: 18px; margin-top: 20px;">تعديل الملف السبيستوني</h3>
-            <p style="font-size: 12px; color: #ccc;">يمكنك تغيير اسمك السبيستوني من هنا بشرط ألا يكون محجوزاً.</p>
-            <input type="text" id="edit-username-input" placeholder="اسم سبيستوني جديد">
-            <button onclick="updateUsername()">تحديث الاسم</button>
-        </div>
+            <!-- Home Tab -->
+            <div id="content-home" class="tab-content active" role="tabpanel" aria-labelledby="tab-home">
+                <form class="message-form" onsubmit="sendMessage(event)">
+                    <div class="input-group">
+                        <label for="msg" class="input-label">رسالتك</label>
+                        <textarea id="msg" class="textarea-field input-field" rows="4" placeholder="اكتب رسالتك لتظهر على القناة... 🌟" maxlength="250" aria-describedby="char-count"></textarea>
+                        <div id="char-count" class="char-count"><span id="char-current">0</span> / 250 حرف</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i> إرسال إلى سبيستون ✨
+                    </button>
+                </form>
 
-        <button onclick="logout()" style="background: transparent; color: #aaa; box-shadow: none; font-size: 11px; margin-top: 25px; border: 1px solid #444; width: auto; padding: 5px 15px;">تسجيل الخروج</button>
+                <div class="history-container" aria-labelledby="history-title">
+                    <div class="history-title">
+                        <span><i class="fas fa-history"></i> آخر الرسائل المرسلة</span>
+                        <button type="button" class="history-clear" onclick="clearHistory()" aria-label="مسح السجل المحلي">مسح السجل</button>
+                    </div>
+                    <div id="history-list" class="history-list" role="log" aria-live="polite">
+                        <div class="history-empty">لا توجد رسائل بعد، كن أول من يرسل! 🚀</div>
+                    </div>
+                </div>
+
+                <button id="clear-btn" class="btn btn-secondary hidden admin-only" onclick="clearMessages()" style="width: 100%; margin-top: var(--gap-md);">
+                    <i class="fas fa-trash-alt"></i> مسح الشريط بالكامل (للمشرف)
+                </button>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="content-settings" class="tab-content" role="tabpanel" aria-labelledby="tab-settings">
+                <div class="settings-section">
+                    <h3 class="settings-title"><i class="fas fa-user-edit"></i> تعديل الملف السبيستوني</h3>
+                    <p class="settings-desc">يمكنك تغيير اسمك السبيستوني من هنا بشرط ألا يكون محجوزاً.</p>
+
+                    <div class="input-group">
+                        <label for="edit-username-input" class="input-label">اسم سبيستوني جديد</label>
+                        <input type="text" id="edit-username-input" class="input-field" placeholder="اسمك الجديد" maxlength="20" autocomplete="off">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="updateUsername()" style="width: 100%;">
+                        <i class="fas fa-sync-alt"></i> تحديث الاسم
+                    </button>
+                </div>
+
+                <button type="button" class="btn btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                </button>
+            </div>
+
+            <p id="status" aria-live="polite"></p>
+        </section>
     </div>
-
-    <p id="status"></p>
 </div>
 
-<!-- مكتبات Firebase الإصدار المتوافق -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
 <script>
-    // إعدادات Firebase الخاص بك
-    const firebaseConfig = {
+    // ============================================
+    // SHARED CONFIG (same as index.html)
+    // ============================================
+    const FIREBASE_CONFIG = {
         apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
         authDomain: "spacetoonold-aaac4.firebaseapp.com",
-        databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com", 
+        databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com",
         projectId: "spacetoonold-aaac4",
         storageBucket: "spacetoonold-aaac4.firebasestorage.app",
         appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.database();
-    
+    const ADMIN_EMAIL = "aymanbouraaman@gmail.com";
+
+    // ============================================
+    // FIREBASE INIT
+    // ============================================
+    let firebaseApp, auth, db;
+    try {
+        firebaseApp = firebase.initializeApp(FIREBASE_CONFIG);
+        auth = firebase.auth();
+        db = firebase.database();
+        console.log('✅ Firebase initialized');
+    } catch (e) {
+        console.error('❌ Firebase init failed:', e);
+        showStatus('خطأ في تهيئة Firebase', '#ff4444');
+    }
+
+    // ============================================
+    // STATE
+    // ============================================
     let currentUser = null;
     let currentUsername = "";
 
-    // تسجيل الدخول بواسطة Google
+    // ============================================
+    // AUTH
+    // ============================================
     function loginWithGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
         auth.signInWithPopup(provider).catch(error => {
-            showStatus("خطأ أثناء تسجيل الدخول: " + error.message, "#ff4d4d");
+            showStatus("خطأ أثناء تسجيل الدخول: " + error.message, "#ff4444");
         });
     }
 
-    // مراقبة حالة المستخدم
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             currentUser = user;
             document.getElementById('auth-section').classList.add('hidden');
-            
-            // التحقق مما إذا كان للمستخدم اسم مستخدم مسجل مسبقاً في الـ Database
+
             const userRef = db.ref('users/' + user.uid);
             const snapshot = await userRef.once('value');
-            
+
             if (snapshot.exists() && snapshot.val().username) {
                 currentUsername = snapshot.val().username;
                 showMainSection();
             } else {
-                // إذا لم يكن لديه اسم مستخدم، نفتح واجهة الإعداد الأولي
                 document.getElementById('username-setup-section').classList.remove('hidden');
                 document.getElementById('main-section').classList.add('hidden');
             }
@@ -246,59 +589,59 @@
         }
     });
 
-    // إظهار القسم الرئيسي بعد التأكد من وجود اسم المستخدم
     function showMainSection() {
         document.getElementById('username-setup-section').classList.add('hidden');
         document.getElementById('main-section').classList.remove('hidden');
-        document.getElementById('display-nickname').innerText = currentUsername;
+        document.getElementById('display-nickname').textContent = currentUsername;
         document.getElementById('edit-username-input').value = currentUsername;
-        
-        // إظهار زر المشرف لحسابك الخاص
-        if (currentUser.email === "aymanbouraaman@gmail.com") {
+
+        // Admin check
+        if (currentUser.email === ADMIN_EMAIL) {
             document.getElementById('clear-btn').classList.remove('hidden');
         } else {
             document.getElementById('clear-btn').classList.add('hidden');
         }
-        
+
         loadHistory();
+        showStatus("مرحباً بك في كواكب سبيستون! 🚀", "#3dfc4a");
     }
 
-    // التحقق من فركانية اسم المستخدم وحجزه
+    // ============================================
+    // USERNAME MANAGEMENT
+    // ============================================
     async function checkAndReserveUsername(username, uid) {
         const cleanedUsername = username.trim();
-        if(!cleanedUsername) {
-            alert("الرجاء إدخال اسم مستخدم صالح.");
+        if (!cleanedUsername) {
+            showStatus("الرجاء إدخال اسم مستخدم صالح.", "#ff4444");
+            return false;
+        }
+        if (cleanedUsername.length > 20) {
+            showStatus("الاسم طويل جداً (20 حرف كحد أقصى).", "#ff4444");
             return false;
         }
 
-        // البحث في قائمة الأسماء المحجوزة
         const usernameTakenRef = db.ref('takenUsernames/' + cleanedUsername);
         const snapshot = await usernameTakenRef.once('value');
 
         if (snapshot.exists() && snapshot.val() !== uid) {
-            alert("هذا الاسم السبيستوني محجوز بالفعل لمقاتل آخر! اختر اسماً غيره.");
+            showStatus("هذا الاسم محجوز بالفعل! اختر اسماً آخر.", "#ff4444");
             return false;
         }
         return cleanedUsername;
     }
 
-    // إعداد الاسم لأول مرة
     async function setupInitialUsername() {
         const inputName = document.getElementById('new-unique-username').value;
         const checkedName = await checkAndReserveUsername(inputName, currentUser.uid);
-        
+
         if (checkedName) {
-            // حفظ الاسم للمستخدم وحجزه في الداتابيز بالتزامن
             await db.ref('users/' + currentUser.uid).set({ username: checkedName });
             await db.ref('takenUsernames/' + checkedName).set(currentUser.uid);
-            
             currentUsername = checkedName;
             showMainSection();
-            showStatus("مرحباً بك في كواكب سبيستون! 🚀", "#3dfc4a");
         }
     }
 
-    // تحديث اسم المستخدم من الإعدادات
     async function updateUsername() {
         const newName = document.getElementById('edit-username-input').value;
         if (newName.trim() === currentUsername) {
@@ -307,93 +650,125 @@
         }
 
         const checkedName = await checkAndReserveUsername(newName, currentUser.uid);
-        
         if (checkedName) {
-            // حذف الاسم القديم من الأسماء المحجوزة
             if (currentUsername) {
                 await db.ref('takenUsernames/' + currentUsername).remove();
             }
-            
-            // إعداد وحجز الاسم الجديد
             await db.ref('users/' + currentUser.uid).update({ username: checkedName });
             await db.ref('takenUsernames/' + checkedName).set(currentUser.uid);
-            
             currentUsername = checkedName;
-            document.getElementById('display-nickname').innerText = currentUsername;
+            document.getElementById('display-nickname').textContent = currentUsername;
             showStatus("تم تحديث اسمك السبيستوني بنجاح! 🌟", "#3dfc4a");
             switchTab('home');
         }
     }
 
-    // إرسال الرسائل للشريط
-    function sendMessage() {
+    // ============================================
+    // MESSAGES
+    // ============================================
+    function sendMessage(e) {
+        e.preventDefault();
         const msgText = document.getElementById('msg').value.trim();
-        if(!msgText) return;
+        if (!msgText) return;
 
-        const newMsg = { 
-            username: currentUsername, 
-            text: msgText, 
-            timestamp: Date.now() 
+        const newMsg = {
+            username: currentUsername,
+            text: msgText,
+            timestamp: Date.now()
         };
 
         db.ref('latestMessage').set(newMsg);
         db.ref('history').push(newMsg);
-        
+
         showStatus("تم الإرسال لشباب المستقبل! 🌠", "#3dfc4a");
         document.getElementById('msg').value = "";
+        updateCharCount();
     }
 
-    // تحميل شريط الرسائل (آخر 5 رسائل)
     function loadHistory() {
-        db.ref('history').limitToLast(5).on('value', (snapshot) => {
+        db.ref('history').limitToLast(20).on('value', (snapshot) => {
             const list = document.getElementById('history-list');
+            if (!snapshot.exists()) {
+                list.innerHTML = '<div class="history-empty">لا توجد رسائل بعد، كن أول من يرسل! 🚀</div>';
+                return;
+            }
             list.innerHTML = "";
-            snapshot.forEach(child => {
-                const data = child.val();
+            const messages = [];
+            snapshot.forEach(child => messages.push({ key: child.key, ...child.val() }));
+            messages.reverse().forEach(data => {
                 const div = document.createElement('div');
                 div.className = 'msg-item';
-                div.innerHTML = `<span class="msg-user">${data.username}:</span> ${data.text}`;
-                list.prepend(div);
+                const time = new Date(data.timestamp).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+                div.innerHTML = `
+                    <div class="msg-header">
+                        <span class="msg-user">${data.username}</span>
+                        <span class="msg-time">${time}</span>
+                    </div>
+                    <p class="msg-text">${escapeHtml(data.text)}</p>
+                `;
+                list.appendChild(div);
             });
         });
     }
 
-    // التبديل بين التبويبات (الشريط / الإعدادات)
-    function switchTab(tab) {
-        if (tab === 'home') {
-            document.getElementById('tab-home').classList.add('active');
-            document.getElementById('tab-settings').classList.remove('active');
-            document.getElementById('content-home').classList.remove('hidden');
-            document.getElementById('content-settings').classList.add('hidden');
-        } else {
-            document.getElementById('tab-home').classList.remove('active');
-            document.getElementById('tab-settings').classList.add('active');
-            document.getElementById('content-home').classList.add('hidden');
-            document.getElementById('content-settings').classList.remove('hidden');
+    function clearHistory() {
+        if (confirm("مسح السجل المحلي فقط؟ (لن يحذف من السيرفر)")) {
+            document.getElementById('history-list').innerHTML = '<div class="history-empty">تم مسح السجل المحلي</div>';
         }
     }
 
-    // مسح الرسائل (للمشرف فقط)
     function clearMessages() {
-        if(confirm("هل تريد مسح سجل الرسائل بالكامل؟")) {
+        if (confirm("هل تريد مسح سجل الرسائل بالكامل من السيرفر؟")) {
             db.ref('latestMessage').remove();
             db.ref('history').remove();
             showStatus("تم تنظيف الكوكب من الرسائل القديمة!", "#3dfc4a");
         }
     }
 
-    // عرض رسائل الحالة المؤقتة
-    function showStatus(text, color) {
-        const statusEl = document.getElementById('status');
-        statusEl.innerText = text;
-        statusEl.style.color = color;
-        setTimeout(() => { statusEl.innerText = ""; }, 3000);
+    // ============================================
+    // UI HELPERS
+    // ============================================
+    function switchTab(tab) {
+        const tabs = { home: 'tab-home', settings: 'tab-settings' };
+        const contents = { home: 'content-home', settings: 'content-settings' };
+
+        Object.keys(tabs).forEach(t => {
+            const isActive = t === tab;
+            document.getElementById(tabs[t]).classList.toggle('active', isActive);
+            document.getElementById(tabs[t]).setAttribute('aria-selected', isActive);
+            document.getElementById(contents[t]).classList.toggle('active', isActive);
+        });
     }
 
-    // تسجيل الخروج
-    function logout() { 
-        auth.signOut(); 
+    function showStatus(text, color) {
+        const statusEl = document.getElementById('status');
+        statusEl.textContent = text;
+        statusEl.style.color = color;
+        clearTimeout(statusEl._timeout);
+        statusEl._timeout = setTimeout(() => { statusEl.textContent = ""; }, 3000);
     }
+
+    function logout() { auth.signOut(); }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Character counter
+    const msgInput = document.getElementById('msg');
+    const charCurrent = document.getElementById('char-current');
+    const charCount = document.getElementById('char-count');
+
+    function updateCharCount() {
+        const len = msgInput.value.length;
+        charCurrent.textContent = len;
+        charCount.classList.toggle('warning', len > 200);
+        charCount.classList.toggle('error', len > 250);
+    }
+
+    msgInput.addEventListener('input', updateCharCount);
 </script>
 </body>
 </html>

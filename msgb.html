@@ -4,141 +4,331 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-:root{--red:#cc0004;--gloss:#ff4d51;--dark:#730002;--white:#fff;--yellow:#ffeb00}
+:root{
+    --red:#cc0004;
+    --gloss:#ff4d51;
+    --dark:#730002;
+    --white:#ffffff;
+    --yellow:#ffeb00;
+}
 *{box-sizing:border-box}
-body{margin:0;overflow:hidden;background:transparent;font-family:'Arial Black',Tahoma,'Segoe UI',Arial,sans-serif;width:100vw;height:100vh}
+body{
+    margin:0;padding:0;overflow:hidden;background:transparent;
+    font-family:'Arial Black',Tahoma,'Segoe UI',Arial,sans-serif;width:100vw;
+}
+.wrapper{position:relative;width:100%;height:160px;margin-top:40px}
 
-/* ===== position on screen (same 108px glass sphere as the ticker badge) ===== */
-.badge{position:absolute;right:calc(3% + 70px);top:70px;width:108px;height:108px;
-       display:flex;align-items:center;justify-content:center;perspective:600px;
-       opacity:0;transform:scale(.7);animation:badge-in .45s ease-out .3s forwards}
+/* ================= BAR ================= */
+.bar-shell{
+    position:absolute;left:2%;right:2%;bottom:14px;height:58px;
+    filter:drop-shadow(0 3px 3px rgba(0,0,0,.6));
+    opacity:0;transform:translateX(-60px);
+    animation:slide-in .6s ease-out forwards;
+}
+@keyframes slide-in{to{opacity:1;transform:translateX(0)}}
+
+.bar{
+    position:absolute;inset:0;overflow:hidden;
+    clip-path:polygon(0 100%,85px 0,100% 0,100% 100%);
+    background:
+        radial-gradient(ellipse 380px 90px at 140px 0,rgba(255,140,150,.55),rgba(255,140,150,0) 70%),
+        linear-gradient(180deg,var(--gloss) 0%,var(--red) 45%,var(--dark) 50%,var(--red) 100%);
+    /* white top edge, yellow bottom edge (Spacetoon colours) */
+    box-shadow:inset 0 3px 0 var(--white),inset 0 -4px 0 var(--yellow);
+}
+
+/* --- slow red water: two sine-wave layers drifting at different speeds --- */
+.water{
+    position:absolute;left:0;right:0;top:0;bottom:4px;z-index:0;
+    background-repeat:repeat-x;
+}
+.w1{
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='58'><path d='M0 30 Q50 14 100 30 T200 30 V58 H0Z' fill='rgba(255,255,255,0.09)'/></svg>");
+    background-size:200px 58px;
+    animation:drift-r 16s linear infinite;
+}
+.w2{
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='58'><path d='M0 36 Q80 18 160 36 T320 36 V58 H0Z' fill='rgba(255,90,100,0.14)'/></svg>");
+    background-size:320px 58px;
+    animation:drift-l 24s linear infinite;
+}
+@keyframes drift-r{to{background-position-x:200px}}
+@keyframes drift-l{to{background-position-x:-320px}}
+
+/* --- faint twinkling stars (space theme) --- */
+.stars{
+    position:absolute;inset:0;z-index:0;opacity:.35;
+    background-image:
+        radial-gradient(circle,#fff 0 1px,transparent 1.6px),
+        radial-gradient(circle,#fff 0 1px,transparent 1.6px),
+        radial-gradient(circle,var(--yellow) 0 1.2px,transparent 1.8px);
+    background-size:97px 41px,151px 53px,223px 47px;
+    background-position:10px 8px,60px 30px,120px 15px;
+    animation:twinkle 4s ease-in-out infinite alternate;
+}
+.stars.s2{
+    background-position:45px 20px,10px 5px,30px 35px;
+    animation-delay:2s;
+}
+@keyframes twinkle{from{opacity:.12}to{opacity:.5}}
+
+/* --- glass glint sweeping across every few seconds --- */
+.glint{
+    position:absolute;top:0;bottom:0;left:0;width:140px;z-index:1;
+    background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.22),rgba(255,255,255,0));
+    transform:translateX(-200px);
+    animation:glint 8s ease-in-out 2s infinite;
+}
+@keyframes glint{
+    0%{transform:translateX(-200px)}
+    35%,100%{transform:translateX(2400px)}
+}
+
+/* gloss (lighter top half) */
+.bar::before{
+    content:'';position:absolute;left:0;right:0;top:0;height:50%;z-index:1;
+    background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.05));
+}
+/* darker right end */
+.bar::after{
+    content:'';position:absolute;right:0;top:0;bottom:0;width:30%;z-index:1;
+    background:linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,.28));
+}
+
+/* ================= TICKER ================= */
+.scroll-wrapper{
+    position:absolute;left:150px;right:120px;top:0;bottom:0;overflow:hidden;z-index:3;
+}
+.ticker-track{position:relative;width:100%;height:100%}
+.ticker-track .item{
+    position:absolute;top:0;left:0;height:100%;
+    white-space:nowrap;will-change:transform;
+}
+.item{display:flex;align-items:center;padding-left:90px}
+.text{
+    font-size:25px;font-weight:700;color:#fff;
+    text-shadow:2px 2px 0 #000;
+}
+.username{
+    font-size:26px;font-weight:900;color:var(--yellow);margin-left:10px;
+    text-shadow:2px 2px 0 #000;
+}
+.num{font-size:17px;font-weight:700;color:#fff;margin-left:8px;text-shadow:2px 2px 0 #000}
+.scroll-logo{height:28px;width:auto;margin:0 22px;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.6))}
+
+/* ================= BADGES (glass spheres) ================= */
+.badge,.emoji-area{
+    position:absolute;z-index:20;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;transform:scale(.7);
+    animation:badge-in .45s ease-out .5s forwards;
+}
 @keyframes badge-in{to{opacity:1;transform:scale(1)}}
 
-/* sphere: copied 1:1 from the original badge */
-.badge::before{
-    content:'';position:absolute;inset:0;border-radius:50%;border:6px solid transparent;
+.badge{left:calc(2% + 8px);bottom:10px;width:108px;height:108px}
+.emoji-area{right:calc(2% + 8px);bottom:16px;width:88px;height:88px;animation-delay:.65s}
+
+.badge::before,.emoji-area::before{
+    content:'';position:absolute;inset:0;border-radius:50%;
+    border:6px solid transparent;
     background:
         radial-gradient(circle at 50% 35%,var(--gloss),var(--red) 60%,var(--dark)) padding-box,
         linear-gradient(145deg,#fff,var(--yellow) 45%,#b89a00 55%,#fff) border-box;
     box-shadow:0 2px 5px rgba(0,0,0,.55),inset 0 -3px 6px rgba(0,0,0,.35);
 }
-.badge::after{
-    content:'';position:absolute;left:16%;right:16%;top:9%;height:36%;border-radius:50%;z-index:3;pointer-events:none;
+.badge::after,.emoji-area::after{
+    content:'';position:absolute;left:16%;right:16%;top:9%;height:36%;
+    border-radius:50%;
     background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.05));
 }
 
-/* ===== faces (swap every 5s with a flip) ===== */
-.face{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;
-      transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .45s ease-in-out;backface-visibility:hidden}
-.face.hide{opacity:0;transform:rotateY(90deg) scale(.6);pointer-events:none}
+.flipper-content{
+    position:absolute;inset:0;z-index:2;
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity .5s ease-in-out;
+}
+#qrImg{width:64px;height:64px;background:#fff;padding:0;image-rendering:pixelated}
 #logoImg{width:72px;height:auto;object-fit:contain}
+.hidden{opacity:0;visibility:hidden}
+.visible{opacity:1;visibility:visible}
 
-/* clean 100-subs face */
-#cleanImg{width:60px;height:auto;margin-top:2px;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.5))}
-.count{font-size:31px;line-height:1;color:var(--yellow);font-weight:900;margin-top:1px;
-       text-shadow:2px 2px 0 #000,0 0 10px rgba(255,235,0,.6)}
-.sub{font-size:13px;line-height:1;color:#fff;font-weight:700;margin-top:2px;text-shadow:1.5px 1.5px 0 #000}
-.count.pop{animation:numpop .5s ease-out}
-@keyframes numpop{50%{transform:scale(1.3)}}
-
-/* ===== effects (only while the 100 face is showing) ===== */
-.ring,.ripple{position:absolute;border-radius:50%;pointer-events:none;opacity:0}
-.ring{inset:-9px;z-index:1;
-      background:conic-gradient(from 0deg,transparent 0 20%,var(--yellow) 45%,#fff 50%,transparent 70% 100%);
-      -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));
-              mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));
-      transition:opacity .4s}
-.badge.on .ring{opacity:1;animation:spin 1.6s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-.ripple{inset:0;border:3px solid var(--yellow);z-index:0}
-.badge.on .ripple{animation:ripple 1.6s ease-out 1}
-.badge.on .ripple.r2{animation-delay:.35s}
-@keyframes ripple{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.9)}}
-
-.glint{position:absolute;inset:6px;border-radius:50%;overflow:hidden;z-index:4;pointer-events:none}
-.glint::before{content:'';position:absolute;top:0;bottom:0;width:40px;left:-60px;
-               background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0))}
-.badge.on .glint::before{animation:glint 1.1s ease-in-out .5s 1}
-@keyframes glint{to{transform:translateX(220px)}}
-
-.spark{position:absolute;left:50%;top:50%;font-size:20px;z-index:6;pointer-events:none;
-       filter:drop-shadow(1px 1px 0 rgba(0,0,0,.5))}
+#emojiVal{
+    position:relative;z-index:2;font-size:40px;line-height:1;
+    filter:drop-shadow(2px 2px 0 rgba(0,0,0,.6));
+    transition:opacity .3s,transform .3s;
+}
 </style>
 </head>
 <body>
 
-<div class="badge" id="badge">
-    <div class="ripple"></div><div class="ripple r2"></div>
-    <div class="ring"></div>
-
-    <!-- normal Spacetoon screenbug (unchanged sphere + logo) -->
-    <div class="face" id="logoFace">
-        <img id="logoImg" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+<div class="wrapper">
+    <div class="bar-shell">
+        <div class="bar">
+            <div class="water w1"></div>
+            <div class="water w2"></div>
+            <div class="stars"></div>
+            <div class="stars s2"></div>
+            <div class="glint"></div>
+        </div>
+        <div class="scroll-wrapper" id="tickerWrap">
+            <div class="ticker-track" id="track"></div>
+        </div>
     </div>
 
-    <!-- clean version + 100 subscribers -->
-    <div class="face hide" id="cleanFace">
-        <img id="cleanImg" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/StoonNo3D.png">
-        <div class="count" id="count">0</div>
-        <div class="sub">مشترك</div>
+    <div class="badge">
+        <div class="flipper-content visible" id="qrContainer">
+            <img id="qrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://spacetoonold.netlify.app/message">
+        </div>
+        <div class="flipper-content hidden" id="logoContainer">
+            <img id="logoImg" src="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png">
+        </div>
     </div>
 
-    <div class="glint"></div>
+    <div class="emoji-area">
+        <div id="emojiVal">⭐</div>
+    </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 <script>
-    const badge = document.getElementById('badge');
-    const logoFace = document.getElementById('logoFace');
-    const cleanFace = document.getElementById('cleanFace');
-    const countEl = document.getElementById('count');
-    const EMOJIS = ['⭐','🚀','🌟','🪐','✨','🎉','👽','🎈'];
-    let showClean = false;
+    const LOGO = "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Stoon2013.png";
+    const SPEED = 80;
+    const MAX_MSGS = 10;
 
-    function countUp() {
-        const t0 = performance.now(), D = 1300;
-        (function step(now){
-            const p = Math.min((now - t0) / D, 1);
-            countEl.textContent = Math.round(100 * (1 - Math.pow(1 - p, 3)));
-            if (p < 1) requestAnimationFrame(step);
-            else { countEl.classList.remove('pop'); void countEl.offsetWidth; countEl.classList.add('pop'); }
-        })(t0);
-    }
+    const tickerWrap = document.getElementById('tickerWrap');
+    const track = document.getElementById('track');
 
-    function confetti() {
-        for (let i = 0; i < 12; i++) {
-            const s = document.createElement('span');
-            s.className = 'spark';
-            s.textContent = EMOJIS[i % EMOJIS.length];
-            badge.appendChild(s);
-            const a = (i / 12) * Math.PI * 2 + Math.random() * .4;
-            const d = 80 + Math.random() * 40;
-            const dx = Math.cos(a) * d, dy = Math.sin(a) * d;
-            s.animate([
-                { transform: 'translate(-50%,-50%) scale(.2)', opacity: 0 },
-                { transform: 'translate(-50%,-50%) scale(1)', opacity: 1, offset: .2 },
-                { transform: `translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(1.1) rotate(${Math.random()*360}deg)`, opacity: 0 }
-            ], { duration: 1500 + Math.random() * 400, delay: 350, easing: 'ease-out', fill: 'both' })
-             .onfinish = () => s.remove();
+    const WELCOME = { u: '', t: 'أرسل رسالتك الآن لتظهر على الشاشة', n: 0 };
+    let history = [WELCOME];
+    let queue = [];
+    let histIdx = 0;
+    let live = [];
+    let last = null;
+    let msgTotal = 0;
+
+    function makeItem(m) {
+        const item = document.createElement('div');
+        item.className = 'item';
+        if (m.n) {
+            const n = document.createElement('span');
+            n.className = 'num';
+            n.textContent = '(' + m.n + ')';
+            item.appendChild(n);
         }
+        if (m.u) {
+            const u = document.createElement('span');
+            u.className = 'username';
+            u.textContent = m.u + ':';
+            item.appendChild(u);
+        }
+        const t = document.createElement('span');
+        t.className = 'text';
+        t.textContent = m.t;
+        item.appendChild(t);
+        const img = document.createElement('img');
+        img.className = 'scroll-logo';
+        img.src = LOGO;
+        item.appendChild(img);
+        return item;
     }
 
-    function swap() {
-        showClean = !showClean;
-        if (showClean) {
-            logoFace.classList.add('hide');
-            cleanFace.classList.remove('hide');
-            badge.classList.remove('on'); void badge.offsetWidth; badge.classList.add('on');
-            countEl.textContent = '0';
-            setTimeout(countUp, 350);
-            confetti();
+    function nextMessage() {
+        if (queue.length) return queue.shift();
+        const m = history[histIdx % history.length];
+        histIdx++;
+        return m;
+    }
+
+    function spawn() {
+        const el = makeItem(nextMessage());
+        track.appendChild(el);
+        const w = el.offsetWidth;
+        const x = (last ? last.x : 0) - w;
+        el.style.transform = `translateX(${x}px)`;
+        last = { el, x };
+        live.push(last);
+    }
+
+    let lastT = performance.now();
+    function tick(now) {
+        const dt = Math.min((now - lastT) / 1000, 0.1);
+        lastT = now;
+        const V = tickerWrap.offsetWidth;
+
+        for (let i = live.length - 1; i >= 0; i--) {
+            const it = live[i];
+            it.x += SPEED * dt;
+            it.el.style.transform = `translateX(${it.x}px)`;
+            if (it.x > V) {
+                it.el.remove();
+                live.splice(i, 1);
+                if (it === last) last = null;
+            }
+        }
+
+        let guard = 0;
+        while ((!last || last.x >= 0) && guard++ < 30) spawn();
+        requestAnimationFrame(tick);
+    }
+
+    function addNewMessage(user, messageText) {
+        msgTotal++;
+        const m = { u: String(user || '').slice(0, 40), t: String(messageText).slice(0, 250), n: msgTotal };
+        queue.push(m);
+        history = [m, ...history].slice(0, MAX_MSGS);
+    }
+
+    // --- emoji badge (simple swap) ---
+    const eVal = document.getElementById('emojiVal');
+    const emojis = ['⭐', '🚀', '🌙', '🪐', '👽', '🎈', '🌟', '😀'];
+    let ei = 0;
+    setInterval(() => {
+        eVal.style.opacity = '0';
+        eVal.style.transform = 'scale(.8)';
+        setTimeout(() => {
+            ei = (ei + 1) % emojis.length;
+            eVal.textContent = emojis[ei];
+            eVal.style.opacity = '1';
+            eVal.style.transform = 'scale(1)';
+        }, 300);
+    }, 3500);
+
+    // --- left badge (QR <-> logo crossfade) ---
+    const qrC = document.getElementById('qrContainer');
+    const logoC = document.getElementById('logoContainer');
+    setInterval(() => {
+        if (qrC.classList.contains('visible')) {
+            qrC.classList.replace('visible', 'hidden');
+            logoC.classList.replace('hidden', 'visible');
         } else {
-            cleanFace.classList.add('hide');
-            logoFace.classList.remove('hide');
-            badge.classList.remove('on');
+            logoC.classList.replace('visible', 'hidden');
+            qrC.classList.replace('hidden', 'visible');
         }
+    }, 6000);
+
+    // --- Firebase ---
+    try {
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtO7mz0ZptyJKCBo1ouV420ej5bWC5VYY",
+            databaseURL: "https://spacetoonold-aaac4-default-rtdb.firebaseio.com",
+            projectId: "spacetoonold-aaac4",
+            appId: "1:511855750136:web:d353fa9309ac5e54a9040d"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        db.ref('latestMessage').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.text) addNewMessage(data.username, data.text);
+        });
+    } catch (err) {
+        console.error('Firebase error:', err);
     }
-    setInterval(swap, 5000);
+
+    window.addEventListener('load', () => {
+        last = { x: tickerWrap.offsetWidth };
+        requestAnimationFrame(tick);
+    });
 </script>
 </body>
 </html>

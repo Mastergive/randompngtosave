@@ -22,9 +22,19 @@ body{background:transparent;overflow:hidden;width:100vw;height:100vh}
 }
 
 #logo {
+  position: relative;
   width: 220px;
-  height: auto;
+  height: 110px;            /* same ratio as the 500x250 viewBox */
+  perspective: 700px;
 }
+
+/* the two versions are stacked and flipped every 5s */
+.layer{
+  position:absolute; inset:0;
+  transition: opacity .45s ease, transform .6s cubic-bezier(.5,0,.2,1);
+  backface-visibility:hidden;
+}
+.layer.hide{ opacity:0; transform: rotateY(90deg) scale(.85); pointer-events:none; }
 
 #logo svg {
   width: 100%;
@@ -47,11 +57,59 @@ body{background:transparent;overflow:hidden;width:100vw;height:100vh}
 /* Entrance animation */
 #bug.show { opacity: 1; transform: translateY(0); }
 #bug { transform: translateY(-10px); }
+
+/* ================= 100 SUBSCRIBERS (clean version only) ================= */
+#clean.on{ animation: glow 1.4s ease-in-out infinite alternate; }
+@keyframes glow{
+  from{ filter: drop-shadow(0 0 2px rgba(255,235,0,.35)); }
+  to  { filter: drop-shadow(0 0 10px rgba(255,235,0,.95)); }
+}
+
+.pill{
+  position:absolute; right:6px; bottom:-14px; width:132px; height:32px; z-index:5;
+  transform-origin:100% 50%; transform:scaleX(0); opacity:0;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.6));
+}
+#clean.on .pill{ animation: pill-pop .6s cubic-bezier(.2,1.4,.4,1) .35s forwards; }
+@keyframes pill-pop{ 0%{transform:scaleX(0);opacity:0} 100%{transform:scaleX(1);opacity:1} }
+
+.pill-body{
+  position:absolute; inset:0; overflow:hidden; direction:rtl;
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+  background:linear-gradient(180deg,#ff4d51 0%,#cc0004 45%,#730002 50%,#cc0004 100%);
+  box-shadow:inset 0 2px 0 #fff, inset 0 -3px 0 #ffeb00;
+  display:flex; align-items:center; justify-content:center; gap:7px;
+  white-space:nowrap; font-family:'Arial Black',Tahoma,'Segoe UI',Arial,sans-serif;
+  text-shadow:1.5px 1.5px 0 #000;
+}
+.pill-body::before{
+  content:''; position:absolute; left:0; right:0; top:0; height:50%;
+  background:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,.05));
+}
+.pill-body::after{
+  content:''; position:absolute; top:0; bottom:0; width:34px; left:-50px;
+  background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.5),rgba(255,255,255,0));
+}
+#clean.on .pill-body::after{ animation: pill-glint 1.1s ease-in-out 1s 1; }
+@keyframes pill-glint{ to{ transform:translateX(220px) } }
+
+#count{ position:relative; font-size:23px; line-height:1; color:#ffeb00; font-weight:900; }
+#count.pop{ animation:numpop .45s ease-out; }
+@keyframes numpop{ 50%{ transform:scale(1.3) } }
+.sub{ position:relative; font-size:14px; line-height:1; color:#fff; font-weight:700; }
+
+.spark{
+  position:absolute; left:0; top:0; font-size:17px; z-index:6; pointer-events:none;
+  filter:drop-shadow(1px 1px 0 rgba(0,0,0,.5));
+}
 </style>
 </head>
 <body>
 <div id="bug">
   <div id="logo">
+
+    <!-- ===== A: ORIGINAL SPACETOON SCREENBUG (unchanged) ===== -->
+    <div class="layer" id="normal">
     <svg viewBox="0 0 500 250">
       <defs>
         <!-- Linear gradient for the light glint/shine -->
@@ -78,20 +136,105 @@ body{background:transparent;overflow:hidden;width:100vw;height:100vh}
         <rect class="shine-rect" x="-100%" y="0" width="300%" height="100%" fill="url(#shineGrad)" mix-blend-mode="screen" />
       </g>
     </svg>
+    </div>
+
+    <!-- ===== B: CLEAN VERSION + 100 SUBSCRIBERS =====
+         StoonNo3D.png is loaded from GitHub; if you keep it next to this file
+         just replace the URL with  StoonNo3D.png  (both places) -->
+    <div class="layer hide" id="clean">
+    <svg viewBox="0 0 500 250">
+      <defs>
+        <mask id="logoMask2">
+          <image href="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/StoonNo3D.png" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+        </mask>
+      </defs>
+      <image href="https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/StoonNo3D.png" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" />
+      <g mask="url(#logoMask2)">
+        <rect class="shine-rect" x="-100%" y="0" width="300%" height="100%" fill="url(#shineGrad)" mix-blend-mode="screen" />
+      </g>
+    </svg>
+
+    <div class="pill" id="pill">
+      <div class="pill-body"><span id="count">0</span><span class="sub">مشترك</span></div>
+    </div>
+    </div>
+
   </div>
 </div>
 
 <script>
 const bug = document.getElementById('bug');
+const normal = document.getElementById('normal');
+const clean = document.getElementById('clean');
+const pill = document.getElementById('pill');
+const countEl = document.getElementById('count');
+const EMOJIS = ['⭐','🚀','🌟','🪐','✨','🎉','👽','🎈'];
+let timer = null, showClean = false;
+
+function countUp(){
+  const t0 = performance.now(), D = 1200;
+  (function step(now){
+    const p = Math.min((now - t0) / D, 1);
+    countEl.textContent = Math.round(100 * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(step);
+    else { countEl.classList.remove('pop'); void countEl.offsetWidth; countEl.classList.add('pop'); }
+  })(t0);
+}
+
+function confetti(){
+  const box = pill.getBoundingClientRect(), host = clean.getBoundingClientRect();
+  const cx = box.left - host.left + box.width / 2, cy = box.top - host.top + box.height / 2;
+  for (let i = 0; i < 12; i++){
+    const s = document.createElement('span');
+    s.className = 'spark';
+    s.textContent = EMOJIS[i % EMOJIS.length];
+    s.style.left = cx + 'px'; s.style.top = cy + 'px';
+    clean.appendChild(s);
+    const a = (i / 12) * Math.PI * 2 + Math.random() * .4, d = 55 + Math.random() * 45;
+    const dx = Math.cos(a) * d, dy = Math.sin(a) * d * .8;
+    s.animate([
+      { transform:'translate(-50%,-50%) scale(.2)', opacity:0 },
+      { transform:'translate(-50%,-50%) scale(1)', opacity:1, offset:.2 },
+      { transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(1.1) rotate(${Math.random()*360}deg)`, opacity:0 }
+    ], { duration:1400 + Math.random()*400, delay:700, easing:'ease-out', fill:'both' })
+     .onfinish = () => s.remove();
+  }
+}
+
+function swap(){
+  showClean = !showClean;
+  if (showClean){
+    normal.classList.add('hide');
+    clean.classList.remove('hide');
+    clean.classList.remove('on'); void clean.offsetWidth; clean.classList.add('on');
+    countEl.textContent = '0';
+    setTimeout(countUp, 700);
+    confetti();
+  } else {
+    clean.classList.add('hide');
+    clean.classList.remove('on');
+    normal.classList.remove('hide');
+  }
+}
+
+function startCycle(){
+  clearInterval(timer);
+  showClean = false;
+  normal.classList.remove('hide');
+  clean.classList.add('hide'); clean.classList.remove('on');
+  timer = setInterval(swap, 5000);   // switch every 5 seconds
+}
 
 function show(){
   bug.style.transition = 'opacity .6s ease, transform .6s cubic-bezier(.16,1,.3,1)';
   bug.classList.add('show');
+  startCycle();
 }
 
 function hide(){
   bug.classList.remove('show');
   bug.style.transition = 'opacity .5s ease, transform .5s ease-in';
+  clearInterval(timer);
 }
 
 document.addEventListener('DOMContentLoaded', show);

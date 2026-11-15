@@ -1,101 +1,124 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-th="dark" data-ui="glass">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>StoonOld - بث مباشر</title>
+<title>StoonOld</title>
 <link rel="icon" href="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b0d24;--panel:#151839;--line:#272c5a;--star:#ffd23f;--text:#f3f4ff;--mute:#9a9fcf;--live:#ff3b5c}
+:root{color-scheme:dark;--bg:#090a14;--tx:#f4f5ff;--mu:#a3a8cc;--ac:#ffc400;--acx:#1a1300;--lv:#ff3d63;--sf:#151833;--sb:#2a2f5e;--bf:none;--pl:64%;--ga:22%;--gb:38%;--pcx:#10122a;--sh:none;--blob:1}
+[data-th=light]{color-scheme:light;--bg:#eceffb;--tx:#14162b;--mu:#565c86;--ac:#f0a800;--lv:#e8264f;--sf:#fff;--sb:#d3d8ef;--pl:42%;--ga:90%;--gb:74%;--pcx:#fff}
+[data-ui=glass]{--sf:rgba(26,30,68,.42);--sb:rgba(255,255,255,.18);--bf:blur(22px) saturate(1.7);--sh:inset 0 1px 0 rgba(255,255,255,.28),0 10px 34px rgba(0,0,0,.28)}
+[data-ui=glass][data-th=light]{--sf:rgba(255,255,255,.5);--sb:rgba(255,255,255,.85);--sh:inset 0 1px 0 #fff,0 10px 34px rgba(60,70,140,.18)}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;color:var(--text);font:400 15px/1.5 Cairo,sans-serif;
- background:var(--bg) radial-gradient(1.2px 1.2px at 20px 30px,#fff6 50%,transparent 51%) 0 0/140px 140px,
- radial-gradient(1px 1px at 90px 100px,#fff4 50%,transparent 51%) 0 0/190px 190px}
-h1,h2,h3,.disp{font-family:"Baloo Bhaijaan 2",Cairo,sans-serif;margin:0;line-height:1.2}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 15px/1.5 Cairo,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:-10%;z-index:-1;pointer-events:none;opacity:var(--blob);
+ background:radial-gradient(40% 35% at 12% 18%,hsl(172 80% 50%/.3),transparent),radial-gradient(35% 35% at 88% 8%,hsl(325 85% 58%/.26),transparent),radial-gradient(45% 40% at 72% 92%,hsl(255 85% 62%/.3),transparent)}
+[data-ui=classic]{--blob:0}
+[data-th=light][data-ui=glass]{--blob:.7}
+h1,h2,h3,.dp{font-family:"Baloo Bhaijaan 2",Cairo,sans-serif;margin:0;line-height:1.2}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 [hidden]{display:none!important}
-:focus-visible{outline:3px solid var(--star);outline-offset:2px}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
 bdi{unicode-bidi:isolate}
+.gl{background:var(--sf);border:1px solid var(--sb);-webkit-backdrop-filter:var(--bf);backdrop-filter:var(--bf);box-shadow:var(--sh)}
+[hsl],.pc{--pc:hsl(var(--h) 82% var(--pl))}
 
-.bar{display:flex;align-items:center;gap:14px;padding:12px 28px;border-bottom:1px solid var(--line);background:#0b0d24d9;position:sticky;top:0;z-index:10;backdrop-filter:blur(6px)}
-.bar img{height:38px}
-.bar h1{font-size:1.6rem;font-weight:800}
-.onair{display:flex;align-items:center;gap:7px;padding:1px 12px;border-radius:99px;background:var(--live);font:700 .85rem "Baloo Bhaijaan 2",sans-serif}
-.onair i{width:8px;height:8px;border-radius:50%;background:#fff}
-.bar .sp{flex:1}
-.clock{color:var(--mute);font-weight:600}
+.bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:10px 24px;border-width:0 0 1px}
+.bar img{height:36px}.bar h1{font-size:1.5rem;font-weight:800}
+.onair{display:flex;align-items:center;gap:6px;padding:0 12px;border-radius:99px;background:var(--lv);color:#fff;font:700 .8rem "Baloo Bhaijaan 2",sans-serif}
+.onair i{width:7px;height:7px;border-radius:50%;background:#fff;animation:bl 1.6s infinite}
+@keyframes bl{50%{opacity:.3}}@media(prefers-reduced-motion:reduce){.onair i{animation:none}}
+.sp{flex:1}.clock{color:var(--mu);font-weight:600}
+.ctl{display:flex;gap:6px}
+.ctl button{min-width:38px;height:34px;padding:0 12px;border-radius:99px;font-weight:600;background:var(--sf);border:1px solid var(--sb)}
+.ctl button:hover{border-color:var(--ac)}
 
-.wrap{max-width:1360px;margin:0 auto;padding:24px 28px 40px;display:grid;grid-template-columns:minmax(0,1fr) 370px;grid-template-areas:"stage chat" "now chat" "tl tl" "pk pk";gap:20px}
-.stage{grid-area:stage}.now{grid-area:now}.chat{grid-area:chat}.tl{grid-area:tl}.pk{grid-area:pk}
-
-.screen{position:relative;aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.wrap{max-width:1380px;margin:0 auto;padding:22px 24px 40px;display:grid;grid-template-columns:minmax(0,1fr) 370px;grid-template-areas:"stage chat" "now chat" "fy fy" "gd gd" "pn pn";gap:20px}
+.stage{grid-area:stage}.now{grid-area:now}.chat{grid-area:chat}.fy{grid-area:fy}.gdw{grid-area:gd}.pn{grid-area:pn}
+.screen{position:relative;aspect-ratio:16/9;background:#000;border-radius:20px;overflow:hidden;border:1px solid var(--sb);box-shadow:0 18px 50px rgba(0,0,0,.35)}
 .screen video,.screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;object-fit:contain}
-.tag{position:absolute;top:12px;inset-inline-start:12px;z-index:3;padding:0 10px;border-radius:6px;background:#000b;font:700 .85rem "Baloo Bhaijaan 2",sans-serif}
-.tag[data-s=live]{background:var(--live)}
-.unm{position:absolute;top:12px;inset-inline-end:12px;z-index:3;padding:2px 14px;border-radius:99px;background:var(--star);color:#1b1500;font-weight:600}
-.off{position:absolute;inset:0;z-index:2;display:grid;place-content:center;gap:4px;text-align:center;padding:20px;background:var(--panel);color:var(--mute)}
-.off b{font:700 1.5rem "Baloo Bhaijaan 2",sans-serif;color:var(--text)}
+.tag{position:absolute;top:12px;inset-inline-start:12px;z-index:3;padding:0 10px;border-radius:6px;background:#000b;color:#fff;font:700 .85rem "Baloo Bhaijaan 2",sans-serif}
+.tag[data-s=live]{background:var(--lv)}
+.unm{position:absolute;top:12px;inset-inline-end:12px;z-index:3;padding:2px 14px;border-radius:99px;background:var(--ac);color:var(--acx);font-weight:600}
+.off{position:absolute;inset:0;z-index:2;display:grid;place-content:center;gap:4px;text-align:center;padding:20px;background:#12142a;color:#a3a8cc}
+.off b{font:700 1.5rem "Baloo Bhaijaan 2",sans-serif;color:#fff}
 
-.now{display:flex;align-items:stretch;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;border-inline-start:8px solid var(--pc,var(--star))}
-.now .info{flex:1;min-width:0}
-.chipp{display:inline-block;padding:0 12px;border-radius:99px;background:var(--pc,var(--star));color:#14112b;font-weight:700;font-size:.85rem}
-.now h2{font-size:1.9rem;font-weight:800;margin:4px 0 0}
-.now .meta{color:var(--mute)}
-.prog{height:8px;border-radius:99px;background:#0b0d24;margin:10px 0 6px;overflow:hidden}
-.prog span{display:block;height:100%;width:var(--p,0%);background:var(--pc,var(--star));border-radius:99px}
-.servers{display:flex;flex-direction:column;gap:8px;justify-content:center}
-.servers button{padding:4px 16px;border-radius:10px;border:1px solid var(--line);font-weight:600;white-space:nowrap}
-.servers button.on{background:var(--star);border-color:var(--star);color:#1b1500}
+.now{--pc:hsl(var(--h) 82% var(--pl));display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding:16px 18px;border-radius:20px}
+.art{width:92px;height:92px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,hsl(var(--h) 55% var(--ga)),hsl(var(--h) 75% var(--gb)));font:800 2.4rem "Baloo Bhaijaan 2",sans-serif;color:#fff}
+.art img{width:76%;height:76%;object-fit:contain}
+.chipp{display:inline-block;padding:0 12px;border-radius:99px;background:var(--pc);color:var(--pcx);font-weight:700;font-size:.82rem}
+.now h2{font-size:1.9rem;font-weight:800;margin:2px 0}
+.meta{color:var(--mu);font-size:.92rem}
+.pb{margin:10px 0 2px}
+.pbt{position:relative;height:8px;border-radius:99px;background:color-mix(in srgb,var(--tx) 16%,transparent)}
+.pbt span{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--pc);width:0}
+.pbt i{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--pc),0 2px 8px rgba(0,0,0,.4);left:0}
+.pbt b{position:absolute;top:-3px;bottom:-3px;width:2px;background:color-mix(in srgb,var(--tx) 35%,transparent);left:var(--x)}
+.pb.end .pbt span{background:var(--lv)}.pb.end .pbt i{box-shadow:0 0 0 3px var(--lv),0 2px 8px rgba(0,0,0,.4)}
+.pbl{display:flex;justify-content:space-between;margin-top:8px;font:600 .85rem Cairo,sans-serif;color:var(--mu)}
+.pbl em{font-style:normal;color:var(--tx);font-weight:700}
+.pb.end .pbl em{color:var(--lv)}
+.srv{display:flex;flex-direction:column;gap:8px}
+.srv button{padding:4px 16px;border-radius:12px;border:1px solid var(--sb);font-weight:600;white-space:nowrap}
+.srv button.on{background:var(--ac);border-color:var(--ac);color:var(--acx)}
 
-.chat{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-height:480px}
-.chat h3{padding:12px 16px;font-size:1.15rem;border-bottom:1px solid var(--line)}
+.chat{border-radius:20px;overflow:hidden;display:flex;flex-direction:column;min-height:480px}
+.chat h3{padding:12px 16px;font-size:1.1rem;border-bottom:1px solid var(--sb)}
 .chat iframe{flex:1;border:0;width:100%;background:#fff}
-.chat p{margin:auto;color:var(--mute)}
+.chat p{margin:auto;color:var(--mu)}
 
-.sec h2{font-size:1.5rem;font-weight:800;margin-bottom:2px}
-.sec .sub{color:var(--mute);margin:0 0 12px}
-.rail{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 14px;scrollbar-width:thin}
-.blk{flex:none;min-height:110px;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--line);border-top:5px solid var(--pc);text-align:start;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
-.blk:hover{background:#1c2050}
-.blk small{color:var(--mute)}
-.blk b{font:700 1.05rem/1.25 "Baloo Bhaijaan 2",Cairo,sans-serif}
-.blk .st{position:absolute;top:8px;inset-inline-end:10px;color:var(--star)}
-.blk.fav{box-shadow:0 0 0 2px var(--pc)}
-.blk.cur::before{content:"";position:absolute;inset:0;width:var(--p,0%);background:var(--pc);opacity:.22}
-.blk.cur .nw{color:var(--live);font-weight:700}
+.sec h2{font-size:1.45rem;font-weight:800}.sub{color:var(--mu);margin:0 0 12px}
+.row{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 14px}
+.card{--pc:hsl(var(--h) 82% var(--pl));flex:none;width:224px;padding:8px 8px 12px;border-radius:16px;text-align:start;display:flex;flex-direction:column;gap:2px;transition:transform .2s}
+.card:hover{transform:translateY(-3px)}
+.cth{position:relative;aspect-ratio:16/9;border-radius:10px;display:grid;place-items:center;margin-bottom:6px;background:linear-gradient(135deg,hsl(var(--h) 55% var(--ga)),hsl(var(--h) 75% var(--gb)));color:#fff;font:800 2rem "Baloo Bhaijaan 2",sans-serif}
+.cth img{height:78%;object-fit:contain}
+.cth time{position:absolute;bottom:5px;inset-inline-end:6px;padding:0 7px;border-radius:6px;background:#000a;font:700 .8rem Cairo,sans-serif}
+.cth u{position:absolute;top:4px;inset-inline-start:8px;color:var(--ac);text-decoration:none}
+.card b{font:700 1.02rem/1.25 "Baloo Bhaijaan 2",Cairo,sans-serif;padding:0 4px}
+.card small{color:var(--mu);padding:0 4px}.card .in{color:var(--pc);font-weight:600}
 
-.pk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:28px}
-.planets{display:flex;flex-wrap:wrap;gap:12px}
-.pl{width:84px;text-align:center;font-size:.85rem;font-weight:600}
-.pl span{display:grid;place-items:center;width:64px;height:64px;margin:0 auto 4px;border-radius:50%;border:3px solid var(--line);background:var(--panel);font:800 1.5rem "Baloo Bhaijaan 2",sans-serif;color:var(--pc)}
+.gdw{border-radius:20px;padding:16px 0 8px 0}
+.gdw .sec{padding:0 20px}
+.gs{overflow-x:auto;padding:0 20px 12px}
+.gd{position:relative;height:118px;direction:ltr}
+.tk{position:absolute;top:0;height:22px;border-inline-start:1px solid var(--sb);padding-left:6px;font-size:.78rem;color:var(--mu);white-space:nowrap}
+.bk{--pc:hsl(var(--h) 82% var(--pl));position:absolute;top:30px;height:80px;padding:8px 10px;border-radius:12px;overflow:hidden;text-align:start;display:flex;flex-direction:column;justify-content:space-between;background:color-mix(in srgb,var(--pc) 18%,var(--sf));border:1px solid var(--sb);border-top:4px solid var(--pc);unicode-bidi:plaintext}
+.bk:hover{background:color-mix(in srgb,var(--pc) 30%,var(--sf))}
+.bk b{font:700 .98rem/1.2 "Baloo Bhaijaan 2",Cairo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bk small{color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bk.fav{box-shadow:0 0 0 2px var(--pc)}
+.bk .st{position:absolute;top:4px;right:8px;color:var(--ac)}
+#nl{position:absolute;top:0;bottom:0;width:2px;background:var(--lv);z-index:4;pointer-events:none}
+#nl::before{content:attr(data-l);position:absolute;top:-1px;left:4px;padding:0 6px;border-radius:5px;background:var(--lv);color:#fff;font:700 .72rem Cairo,sans-serif}
+
+.planets{display:flex;flex-wrap:wrap;gap:14px}
+.pl{--pc:hsl(var(--h) 82% var(--pl));width:88px;text-align:center;font-size:.85rem;font-weight:600}
+.pl span{display:grid;place-items:center;width:66px;height:66px;margin:0 auto 4px;border-radius:50%;border:3px solid var(--sb);background:var(--sf);font:800 1.5rem "Baloo Bhaijaan 2",sans-serif;color:var(--pc)}
 .pl img{width:46px;height:46px;object-fit:contain}
-.pl.on span{border-color:var(--pc);box-shadow:0 0 16px -2px var(--pc)}
-.picks{display:grid;gap:10px}
-.pick{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;background:var(--panel);border:1px solid var(--line);border-inline-start:6px solid var(--pc);text-align:start;width:100%}
-.pick:hover{background:#1c2050}
-.pick time{font:800 1.2rem "Baloo Bhaijaan 2",sans-serif;min-width:72px;color:var(--pc)}
-.pick small{display:block;color:var(--mute)}
-.empty{color:var(--mute)}
-.toast{position:fixed;bottom:24px;inset-inline-start:24px;padding:10px 20px;border-radius:10px;background:var(--star);color:#1b1500;font-weight:600;z-index:50}
-footer{text-align:center;color:var(--mute);padding:0 0 28px;font-size:.85rem}
+.pl.on span{border-color:var(--pc);box-shadow:0 0 18px -2px var(--pc)}
+.toast{position:fixed;bottom:22px;inset-inline-start:22px;padding:10px 20px;border-radius:12px;background:var(--ac);color:var(--acx);font-weight:600;z-index:50}
+footer{text-align:center;color:var(--mu);padding:0 0 26px;font-size:.85rem}
 
 @media(max-width:1000px){
- .wrap{grid-template-columns:1fr;grid-template-areas:"stage" "now" "chat" "tl" "pk";padding:16px}
- .chat{min-height:460px}.pk{grid-template-columns:1fr}.bar{padding:10px 16px}
- .now{flex-direction:column}.servers{flex-direction:row}
+ .wrap{grid-template-columns:1fr;grid-template-areas:"stage" "now" "chat" "fy" "gd" "pn";padding:14px}
+ .now{grid-template-columns:auto 1fr}.srv{grid-column:1/-1;flex-direction:row}
+ .bar{padding:8px 12px;gap:8px}.clock,.bar h1{display:none}.chat{min-height:440px}
 }
 </style>
 </head>
 <body>
-
-<header class="bar">
+<header class="bar gl">
  <img src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png" alt="">
- <h1>StoonOld</h1>
- <span class="onair"><i></i>على الهواء</span>
- <span class="sp"></span>
- <span class="clock" id="clock"></span>
+ <h1>StoonOld</h1><span class="onair"><i></i><span data-i="onair"></span></span>
+ <span class="sp"></span><span class="clock" id="clock"></span>
+ <div class="ctl">
+  <button id="bL" type="button" aria-label="Language"></button>
+  <button id="bT" type="button" aria-label="Theme"></button>
+  <button id="bU" type="button" aria-label="Style"></button>
+ </div>
 </header>
 
 <main class="wrap">
@@ -103,90 +126,107 @@ footer{text-align:center;color:var(--mute);padding:0 0 28px;font-size:.85rem}
   <div class="screen">
    <video id="v" controls autoplay muted playsinline></video>
    <iframe id="od" title="Odysee" allowfullscreen hidden></iframe>
-   <span class="tag" id="tag" data-s="c">جاري الاتصال</span>
-   <button class="unm" id="unm" type="button">تشغيل الصوت</button>
-   <div class="off" id="off" hidden><b>البث متوقف حالياً</b><span>تتم إعادة المحاولة تلقائياً، أو جرّب السيرفر 2</span></div>
+   <span class="tag" id="tag" data-s="c"></span>
+   <button class="unm" id="unm" type="button" data-i="unmute"></button>
+   <div class="off" id="off" hidden><b data-i="offT"></b><span data-i="offS"></span></div>
   </div>
  </section>
 
- <section class="now" id="now" style="--p:0%">
-  <div class="info">
-   <span class="chipp" id="nPl">...</span>
-   <h2 id="nTitle">جاري تحميل الجدول</h2>
+ <section class="now gl" id="now" style="--h:45">
+  <div class="art" id="nArt">S</div>
+  <div>
+   <span class="chipp" id="nPl"></span>
+   <h2 id="nTitle"></h2>
    <div class="meta" id="nMeta"></div>
-   <div class="prog"><span id="nProg"></span></div>
+   <div class="pb" id="pb" dir="ltr">
+    <div class="pbt"><span id="pbf"></span><b style="--x:25%"></b><b style="--x:50%"></b><b style="--x:75%"></b><i id="pbk"></i></div>
+    <div class="pbl"><span id="pe">0:00</span><em id="pst"></em><span id="pr">-0:00</span></div>
+   </div>
    <div class="meta" id="nNext"></div>
   </div>
-  <div class="servers">
-   <button type="button" class="on" data-n="0">السيرفر 1</button>
-   <button type="button" data-n="1">السيرفر 2</button>
-  </div>
+  <div class="srv"><button type="button" class="on" data-n="0" data-i="s1"></button><button type="button" data-n="1" data-i="s2"></button></div>
  </section>
 
- <aside class="chat" id="chat"><h3>الدردشة المباشرة</h3></aside>
+ <aside class="chat gl" id="chat"><h3 data-i="chat"></h3></aside>
 
- <section class="tl sec">
-  <h2>جدول البث</h2>
-  <p class="sub">اضغط على أي فقرة لحفظها. الأوقات بتوقيت جهازك.</p>
-  <div class="rail" id="rail"></div>
- </section>
+ <section class="fy sec"><h2 data-i="fyT"></h2><p class="sub" data-i="fyS"></p><div class="row" id="fy"></div></section>
 
- <section class="pk">
-  <div class="sec">
-   <h2>تابع الكواكب</h2>
-   <p class="sub">اختر كواكبك المفضلة وسنظهر فقراتها أولاً.</p>
-   <div class="planets" id="planets"></div>
-  </div>
-  <div class="sec">
-   <h2>مختارات لك</h2>
-   <p class="sub">مرتبة حسب الكواكب والفقرات التي حفظتها وقرب موعدها.</p>
-   <div class="picks" id="picks"></div>
-  </div>
- </section>
+ <section class="gdw gl"><div class="sec"><h2 data-i="gdT"></h2><p class="sub" data-i="gdS"></p></div><div class="gs"><div class="gd" id="gd"></div></div></section>
+
+ <section class="pn sec"><h2 data-i="pnT"></h2><p class="sub" data-i="pnS"></p><div class="planets" id="pls"></div></section>
 </main>
 <footer>StoonOld</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
 <script>
-/* ===== الإعدادات ===== */
+/* ===== Settings / الإعدادات ===== */
 const CFG = {
-  STREAM_URL: "http://192.168.100.45:8888/stoonold/index.m3u8", // رابط MediaMTX
+  STREAM_URL: "http://192.168.100.45:8888/stoonold/index.m3u8", // MediaMTX
   ODYSEE_URL: "https://odysee.com/$/embed/@SpacetoonOld:d/SToon-Old:d?r=8K9b5FpWexD8q7xXpB8v9xW2xM3xL4xN",
   CHAT_URL: "https://www5.cbox.ws/box/?boxid=968962&boxtag=wI54eM",
-  // ملف الجدول (الرابط الثاني احتياطي في حال كان اسم الفرع main)
   SCHEDULE_URLS: [
     "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/mainn/schedule.json",
     "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/schedule.json"
   ],
-  // فرق التوقيت لجهاز البث عن UTC (الأوقات في الملف بتوقيته)
-  OFFSET: "+01:00"
+  OFFSET: "+01:00" // UTC offset of the stream PC / فرق توقيت جهاز البث
 };
 const G = "https://github.com/Mastergive/randompngtosave/blob/main/";
 const P = {
-  action:{n:"أكشن",c:"#ff6b57",img:G+"Action_planet-Photoroom.png?raw=true"},
-  adventure:{n:"مغامرات",c:"#2fc4b2",img:G+"Adventure-Photoroom.png?raw=true"},
-  sports:{n:"رياضة",c:"#4aa3ff",img:G+"Sports-Photoroom.png?raw=true"},
-  bonbon:{n:"بون بون",c:"#ff7ac6",img:G+"Planet_Bon_Bon_New.png?raw=true"},
-  comedy:{n:"كوميديا",c:"#ffb02e",img:G+"%D9%83%D9%88%D9%83%D8%A8_%D9%83%D9%88%D9%82%D9%8A%D8%AF%D9%8A%D8%A7-Photoroom.png?raw=true"},
-  zomoroda:{n:"زمردة",c:"#3ddc84",img:G+"%D9%83%D9%88%D9%83%D8%A8_%D8%B2%D9%85%D8%B1%D8%AF%D8%A9-Photoroom.png?raw=true"},
-  science:{n:"علوم",c:"#9b86ff"},
-  abjad:{n:"أبجد",c:"#ff9f6e"},
-  movies:{n:"أفلام",c:"#dfe3ff"}
+  action:{h:8,ar:"أكشن",en:"Action",img:G+"Action_planet-Photoroom.png?raw=true"},
+  adventure:{h:172,ar:"مغامرات",en:"Adventure",img:G+"Adventure-Photoroom.png?raw=true"},
+  sports:{h:210,ar:"رياضة",en:"Sports",img:G+"Sports-Photoroom.png?raw=true"},
+  bonbon:{h:325,ar:"بون بون",en:"Bon Bon",img:G+"Planet_Bon_Bon_New.png?raw=true"},
+  comedy:{h:38,ar:"كوميديا",en:"Comedy",img:G+"%D9%83%D9%88%D9%83%D8%A8_%D9%83%D9%88%D9%82%D9%8A%D8%AF%D9%8A%D8%A7-Photoroom.png?raw=true"},
+  zomoroda:{h:145,ar:"زمردة",en:"Zomoroda",img:G+"%D9%83%D9%88%D9%83%D8%A8_%D8%B2%D9%85%D8%B1%D8%AF%D8%A9-Photoroom.png?raw=true"},
+  science:{h:255,ar:"علوم",en:"Science"},abjad:{h:20,ar:"أبجد",en:"Abjad"},movies:{h:230,ar:"أفلام",en:"Movies"}
+};
+const L = {
+ ar:{onair:"على الهواء",unmute:"تشغيل الصوت",offT:"البث متوقف حالياً",offS:"تتم إعادة المحاولة تلقائياً، أو جرّب السيرفر 2",s1:"السيرفر 1",s2:"السيرفر 2",chat:"الدردشة المباشرة",
+  fyT:"مختارات لك",fyS:"مرتبة حسب كواكبك المفضلة وما حفظته وقرب الموعد. اضغط للحفظ.",gdT:"دليل البث",gdS:"الأوقات بتوقيت جهازك. اضغط على أي فقرة لحفظها.",pnT:"تابع الكواكب",pnS:"اختر كواكبك المفضلة وسنظهر فقراتها أولاً.",
+  glass:"زجاجي",classic:"عادي",live:"مباشر",conn:"جاري الاتصال",stop:"متوقف",now:"الآن",ep:"الحلقة ",movie:"فيلم",min:" دقيقة",next:"التالي: ",at:" الساعة ",in:"بعد ",m:" د",h:" س",
+  p:"كوكب ",saved:"تم حفظ الفقرة",fol:"تتابع الآن كوكب ",load:"جاري تحميل الجدول",err:"تعذر تحميل الجدول",none:"لا توجد فقرات قادمة",
+  s0:"بدأت للتو",s1p:"في بدايتها",s2p:"في المنتصف",s3p:"في النصف الثاني",s4p:"تقترب من النهاية",s5p:"انتهت، فقرة جديدة قريباً"},
+ en:{onair:"On air",unmute:"Unmute",offT:"Stream is offline",offS:"Retrying automatically. You can also try Server 2.",s1:"Server 1",s2:"Server 2",chat:"Live chat",
+  fyT:"Picked for you",fyS:"Ranked by your followed planets, saved shows and start time. Tap to save.",gdT:"Guide",gdS:"Times are in your local time. Tap any show to save it.",pnT:"Follow planets",pnS:"Pick your favorite planets and their shows come first.",
+  glass:"Glass",classic:"Classic",live:"Live",conn:"Connecting",stop:"Offline",now:"NOW",ep:"Episode ",movie:"Movie",min:" min",next:"Up next: ",at:" at ",in:"in ",m:" min",h:" h",
+  p:"",saved:"Saved",fol:"Now following ",load:"Loading schedule",err:"Could not load the schedule",none:"No upcoming shows",
+  s0:"Just started",s1p:"Early on",s2p:"Halfway through",s3p:"In the second half",s4p:"Almost over",s5p:"Finished, next show soon"}
 };
 const $ = s => document.querySelector(s);
 const store = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
-const toast = t => { const d = document.createElement("div"); d.className = "toast"; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2200); };
-const tf = new Intl.DateTimeFormat("ar-u-nu-latn", { hour: "numeric", minute: "2-digit" });
+let lang = store.get("lang", (navigator.language || "en").startsWith("ar") ? "ar" : "en");
+let th = store.get("th", matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+let ui = store.get("ui", "glass"), tf;
+const t = k => L[lang][k];
+const pl = k => P[k] || { h: 230, ar: k, en: k };
+const pn = k => pl(k)[lang];
 const hm = d => tf.format(d);
-const pl = k => P[k] || { n: k, c: "#9a9fcf" };
+const mmss = s => Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
+const away = ms => { const m = Math.max(1, Math.round(ms / 6e4)); return t("in") + (m < 60 ? m + t("m") : Math.round(m / 60) + t("h")); };
+const toast = x => { const d = document.createElement("div"); d.className = "toast"; d.textContent = x; document.body.appendChild(d); setTimeout(() => d.remove(), 2200); };
 
-/* الدردشة */
+function prefs() {
+  const d = document.documentElement;
+  d.lang = lang; d.dir = lang === "ar" ? "rtl" : "ltr"; d.dataset.th = th; d.dataset.ui = ui;
+  document.querySelectorAll("[data-i]").forEach(e => e.textContent = t(e.dataset.i));
+  $("#bL").textContent = lang === "ar" ? "EN" : "ع";
+  $("#bT").textContent = th === "dark" ? "☀" : "☾";
+  $("#bU").textContent = ui === "glass" ? t("classic") : t("glass");
+  document.title = "StoonOld - " + t("live");
+  tf = new Intl.DateTimeFormat(lang === "ar" ? "ar-u-nu-latn" : "en-US", { hour: "numeric", minute: "2-digit" });
+  setState(state);
+}
+$("#bL").onclick = () => { lang = lang === "ar" ? "en" : "ar"; store.set("lang", lang); prefs(); render(); };
+$("#bT").onclick = () => { th = th === "dark" ? "light" : "dark"; store.set("th", th); prefs(); };
+$("#bU").onclick = () => { ui = ui === "glass" ? "classic" : "glass"; store.set("ui", ui); prefs(); };
+
+/* Chat */
 const chat = $("#chat");
-if (CFG.CHAT_URL) { const f = document.createElement("iframe"); f.src = CFG.CHAT_URL; f.title = "الدردشة"; chat.appendChild(f); }
-else chat.insertAdjacentHTML("beforeend", "<p>الدردشة غير مفعّلة</p>");
+if (CFG.CHAT_URL) { const f = document.createElement("iframe"); f.src = CFG.CHAT_URL; f.title = "Chat"; chat.appendChild(f); }
 
-/* الجدول */
-let ENT = [], follow = store.get("follow", {}), saved = store.get("saved", {}), okUrl = null;
+/* Schedule */
+let ENT = [], follow = store.get("follow", {}), saved = store.get("saved", {}), okUrl = null, W0 = 0;
+const PX = 4;
 function clean(e) {
   const planet = (e.planet || "").toLowerCase();
   const name = planet === "movies" ? e.title : (e.series || e.title).replace(/\s*\((?:S\d+\s*)?\d+p\)\s*$/i, "");
@@ -195,59 +235,72 @@ function clean(e) {
   return { id: e.start, planet, name, ep: m ? m[1] : "", mins: e.slot_minutes, dur: e.duration_sec, start, end: new Date(+start + e.slot_minutes * 6e4) };
 }
 async function load() {
-  const urls = okUrl ? [okUrl] : CFG.SCHEDULE_URLS;
-  for (const u of urls) {
+  for (const u of okUrl ? [okUrl] : CFG.SCHEDULE_URLS) {
     try {
       const r = await fetch(u + "?t=" + Math.floor(Date.now() / 3e5), { cache: "no-store" });
       if (!r.ok) continue;
-      const j = await r.json();
-      ENT = (j.entries || []).map(clean).sort((a, b) => a.start - b.start);
+      ENT = ((await r.json()).entries || []).map(clean).sort((a, b) => a.start - b.start);
       okUrl = u; break;
     } catch (e) {}
   }
   render();
 }
-function score(x) { return (follow[x.planet] ? 3 : 0) + (saved[x.id] ? 2 : 0) + 8 / (1 + Math.max(0, (x.start - Date.now()) / 36e5)); }
+const kind = x => x.ep ? t("ep") + x.ep : t("movie");
+const art = (k, big) => { const p = pl(k); return p.img ? '<img src="' + p.img + '" alt="">' : pn(k)[0]; };
+const score = x => (follow[x.planet] ? 3 : 0) + (saved[x.id] ? 2 : 0) + 8 / (1 + Math.max(0, (x.start - Date.now()) / 36e5));
+
 function render() {
   const now = Date.now(), cur = ENT.find(x => x.start <= now && now < x.end), up = ENT.filter(x => +x.start > now);
   $("#clock").textContent = hm(new Date());
-  if (!ENT.length) { $("#nTitle").textContent = "تعذر تحميل الجدول"; return; }
+  if (!ENT.length) { $("#nTitle").textContent = okUrl === null ? t("load") : t("err"); return; }
   if (cur) {
-    const p = pl(cur.planet);
-    $("#now").style.setProperty("--pc", p.c);
-    $("#nPl").textContent = "كوكب " + p.n;
+    $("#now").style.setProperty("--h", pl(cur.planet).h);
+    $("#nArt").innerHTML = art(cur.planet);
+    $("#nPl").textContent = t("p") + pn(cur.planet);
     $("#nTitle").innerHTML = "<bdi>" + cur.name + "</bdi>";
-    $("#nMeta").textContent = (cur.ep ? "الحلقة " + cur.ep : "فيلم") + " · " + cur.mins + " دقيقة";
-    $("#nProg").style.width = Math.min(100, (now - cur.start) / (cur.dur * 1e3) * 100) + "%";
-  } else { $("#nPl").textContent = "على الهواء"; $("#nTitle").textContent = "StoonOld"; $("#nMeta").textContent = ""; $("#nProg").style.width = "0"; }
+    $("#nMeta").textContent = kind(cur) + " · " + cur.mins + t("min");
+  } else { $("#nTitle").textContent = "StoonOld"; $("#nMeta").textContent = ""; $("#nPl").textContent = ""; }
   const nx = up[0];
-  $("#nNext").innerHTML = nx ? "التالي: <bdi>" + nx.name + "</bdi> الساعة " + hm(nx.start) : "";
+  $("#nNext").innerHTML = nx ? t("next") + "<bdi>" + nx.name + "</bdi>" + t("at") + hm(nx.start) + " · " + away(nx.start - now) : "";
 
-  $("#rail").innerHTML = ENT.filter(x => x.end > now).slice(0, 14).map(x => {
-    const p = pl(x.planet), c = x === cur;
-    const pr = c ? Math.min(100, (now - x.start) / (x.end - x.start) * 100) : 0;
-    return '<button class="blk' + (c ? " cur" : "") + (follow[x.planet] ? " fav" : "") + '" data-id="' + x.id + '" style="--pc:' + p.c + ";--p:" + pr + "%;width:" + Math.max(150, x.mins * 5) + 'px">' +
-      (saved[x.id] ? '<span class="st">★</span>' : "") +
-      "<small>" + (c ? '<span class="nw">الآن</span> · ' : "") + hm(x.start) + " · " + p.n + "</small><b><bdi>" + x.name + "</bdi></b><small>" + (x.ep ? "الحلقة " + x.ep : "فيلم") + "</small></button>";
-  }).join("");
+  const card = x => { const p = pl(x.planet); return '<button class="card gl" data-id="' + x.id + '" style="--h:' + p.h + '"><div class="cth">' + (saved[x.id] ? "<u>★</u>" : "") + art(x.planet) + "<time>" + hm(x.start) + "</time></div><b><bdi>" + x.name + "</bdi></b><small>" + t("p") + pn(x.planet) + " · " + kind(x) + '</small><small class="in">' + away(x.start - now) + "</small></button>"; };
+  const picks = up.filter(x => x.start - now < 12 * 36e5).map(x => ({ x, s: score(x) })).sort((a, b) => b.s - a.s).slice(0, 8).map(o => o.x);
+  $("#fy").innerHTML = picks.length ? picks.map(card).join("") : "<p class='sub'>" + t("none") + "</p>";
 
-  const ks = [...new Set(ENT.map(x => x.planet))];
-  $("#planets").innerHTML = ks.map(k => { const p = pl(k); return '<button class="pl' + (follow[k] ? " on" : "") + '" data-k="' + k + '" style="--pc:' + p.c + '"><span>' + (p.img ? '<img src="' + p.img + '" alt="">' : p.n[0]) + "</span>" + p.n + "</button>"; }).join("");
+  W0 = +(cur || nx || { start: now }).start;
+  let g = "";
+  for (let i = 0; i < 12; i++) g += '<span class="tk" style="left:' + i * 30 * PX + 'px">' + hm(new Date(W0 + i * 18e5)) + "</span>";
+  ENT.filter(x => x.end > W0 && +x.start < W0 + 6 * 36e5).forEach(x => {
+    const p = pl(x.planet), w = x.mins * PX - 4;
+    g += '<button class="bk' + (follow[x.planet] ? " fav" : "") + '" data-id="' + x.id + '" style="--h:' + p.h + ";left:" + (x.start - W0) / 6e4 * PX + "px;width:" + w + 'px">' + (saved[x.id] ? '<span class="st">★</span>' : "") + "<small>" + hm(x.start) + " · " + pn(x.planet) + "</small><b>" + x.name + "</b><small>" + kind(x) + "</small></button>";
+  });
+  $("#gd").innerHTML = g + '<div id="nl" data-l="' + t("now") + '"></div>';
+  $("#gd").style.width = 12 * 30 * PX + "px";
 
-  const picks = up.filter(x => x.start - now < 12 * 36e5).map(x => ({ x, s: score(x) })).sort((a, b) => b.s - a.s).slice(0, 5).map(o => o.x);
-  $("#picks").innerHTML = picks.length ? picks.map(x => { const p = pl(x.planet); return '<button class="pick" data-id="' + x.id + '" style="--pc:' + p.c + '"><time>' + hm(x.start) + "</time><div><b><bdi>" + x.name + "</bdi></b><small>كوكب " + p.n + (saved[x.id] ? " · محفوظ" : "") + "</small></div></button>"; }).join("") : '<div class="empty">لا توجد فقرات قادمة</div>';
+  $("#pls").innerHTML = [...new Set(ENT.map(x => x.planet))].map(k => '<button class="pl' + (follow[k] ? " on" : "") + '" data-k="' + k + '" style="--h:' + pl(k).h + '"><span>' + art(k) + "</span>" + pn(k) + "</button>").join("");
+  tick();
 }
-function toggleSave(id) { saved[id] ? delete saved[id] : (saved[id] = 1, toast("تم حفظ الفقرة")); store.set("saved", saved); render(); }
-$("#rail").onclick = e => { const b = e.target.closest(".blk"); if (b) toggleSave(b.dataset.id); };
-$("#picks").onclick = e => { const b = e.target.closest(".pick"); if (b) toggleSave(b.dataset.id); };
-$("#planets").onclick = e => { const b = e.target.closest(".pl"); if (!b) return; const k = b.dataset.k; follow[k] ? delete follow[k] : (follow[k] = 1, toast("تتابع الآن كوكب " + pl(k).n)); store.set("follow", follow); render(); };
-load(); setInterval(load, 3e5); setInterval(render, 3e4);
+function tick() {
+  const now = Date.now(), cur = ENT.find(x => x.start <= now && now < x.end);
+  const nl = $("#nl"); if (nl) nl.style.left = (now - W0) / 6e4 * PX + "px";
+  $("#clock").textContent = hm(new Date());
+  if (!cur) return;
+  const el = Math.min(cur.dur, (now - cur.start) / 1e3), pct = el / cur.dur * 100;
+  $("#pbf").style.width = pct + "%"; $("#pbk").style.left = pct + "%";
+  $("#pe").textContent = mmss(el); $("#pr").textContent = "-" + mmss(cur.dur - el);
+  $("#pb").classList.toggle("end", pct >= 88);
+  const done = (now - cur.start) / 1e3 >= cur.dur;
+  $("#pst").textContent = t(done ? "s5p" : pct < 8 ? "s0" : pct < 38 ? "s1p" : pct < 62 ? "s2p" : pct < 88 ? "s3p" : "s4p");
+}
+const sv = id => { saved[id] ? delete saved[id] : (saved[id] = 1, toast(t("saved"))); store.set("saved", saved); render(); };
+["#fy", "#gd"].forEach(s => $(s).onclick = e => { const b = e.target.closest("[data-id]"); if (b) sv(b.dataset.id); });
+$("#pls").onclick = e => { const b = e.target.closest(".pl"); if (!b) return; const k = b.dataset.k; follow[k] ? delete follow[k] : (follow[k] = 1, toast(t("fol") + pn(k))); store.set("follow", follow); render(); };
 
-/* البث */
+/* Stream */
 const video = $("#v"), od = $("#od");
-let hls = null, timer = null;
+let hls = null, timer = null, state = "c";
 const srcUrl = () => new URLSearchParams(location.search).get("src") || CFG.STREAM_URL;
-function setState(s) { const t = $("#tag"); t.dataset.s = s; t.textContent = { c: "جاري الاتصال", live: "مباشر", off: "متوقف" }[s]; $("#off").hidden = s !== "off"; }
+function setState(s) { state = s; const g = $("#tag"); g.dataset.s = s; g.textContent = t({ c: "conn", live: "live", off: "stop" }[s]); $("#off").hidden = s !== "off"; }
 function stopHls() { if (hls) { hls.destroy(); hls = null; } clearTimeout(timer); }
 function retry() { stopHls(); setState("off"); timer = setTimeout(startHls, 5000); }
 function startHls() {
@@ -269,7 +322,9 @@ document.querySelectorAll("[data-n]").forEach(b => b.onclick = () => {
   video.hidden = !own; od.hidden = own; $("#tag").hidden = !own; $("#unm").hidden = !own || !video.muted;
   if (own) startHls(); else { stopHls(); video.pause(); $("#off").hidden = true; if (!od.getAttribute("src")) od.src = CFG.ODYSEE_URL; }
 });
-startHls();
+
+prefs(); startHls(); load();
+setInterval(load, 3e5); setInterval(render, 3e4); setInterval(tick, 1000);
 </script>
 </body>
 </html>

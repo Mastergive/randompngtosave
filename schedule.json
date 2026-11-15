@@ -1,19 +1,8 @@
 {
     "date": "2026-11-15",
-    "generated": "2026-11-15T22:28:30",
+    "generated": "2026-11-15T22:59:38",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Black Cat (S1 570p)/EP 1 - Black Cat.mp4",
-            "planet": "Action",
-            "series": "Black Cat (S1 570p)",
-            "title": "Black Cat",
-            "slot_minutes": 30,
-            "duration_sec": 1314,
-            "start": "2026-11-15 23:00",
-            "time": "11:00 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Haikyuu (S1 570p)/EP 1 - Haikyuu.mp4",

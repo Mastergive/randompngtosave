@@ -1,580 +1,246 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محطة سبيستون القديمة - موسم العودة إلى المدارس</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png" type="image/x-icon">
-    
-    <style>
-        :root {
-            --bg-dark: #0f172a;       /* أزرق داكن */
-            --panel-bg: #1e293b;      /* خلفية الألواح */
-            --school-yellow: #f59e0b; /* أصفر قلم الرصاص */
-            --school-blue: #38bdf8;   /* أزرق مدرسة */
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --chalkboard-green: #064e3b; /* أخضر السبورة */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محطة سبيستون القديمة</title>
+<link rel="icon" href="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#12151f;--panel:#1b2030;--line:#2b3247;--yellow:#ffc20e;--text:#f1f3f8;--mute:#9aa3b8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;line-height:1.5}
+a{color:inherit}
+button{font-family:inherit}
+:focus-visible{outline:3px solid #fff;outline-offset:2px}
 
-        body {
-            margin: 0; padding: 0;
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            overflow-x: hidden;
-            padding-bottom: 70px;
-            /* خلفية بتأثير شبكة الدفتر المدرسي */
-            background-image: 
-                radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0),
-                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 24px 24px;
-        }
+header{background:var(--panel);border-bottom:3px solid var(--yellow);padding:14px 20px;text-align:center}
+.logo{width:120px;display:block;margin:0 auto}
+nav{display:flex;justify-content:center;gap:22px;margin-top:8px;font-weight:600}
+nav a{text-decoration:none;color:var(--mute);padding:2px 0;border-bottom:2px solid transparent}
+nav a:hover{color:var(--text);border-bottom-color:var(--yellow)}
+.planets{display:flex;justify-content:center;flex-wrap:wrap;gap:6px 18px;margin-top:12px}
+.planets div{width:70px;text-align:center;font-size:.8rem;color:var(--mute)}
+.planets img{width:44px;height:44px;object-fit:contain;display:block;margin:0 auto 2px}
 
-        @keyframes marquee-slow {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
+.wrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;grid-template-areas:"player chat" "game chat";gap:16px;max-width:1240px;margin:0 auto;padding:18px;align-items:start}
+.player{grid-area:player}.chat{grid-area:chat}.game{grid-area:game}
+h2{margin:0 0 10px;font-size:1.15rem;font-weight:700}
 
-        /* الهيدر الرئيسي بتصميم السبورة المدرسية */
-        .top-header {
-            background-color: #111827;
-            padding: 20px;
-            border-bottom: 4px solid var(--school-yellow);
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            position: relative;
-        }
+.screen{position:relative;max-width:720px;margin:0 auto;aspect-ratio:4/3;background:#000;border:2px solid var(--line);border-radius:6px;overflow:hidden}
+.screen video,.screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.screen video{object-fit:contain}
+[hidden]{display:none!important}
+.badge{position:absolute;top:10px;inset-inline-start:10px;z-index:3;padding:1px 12px;border-radius:4px;font-size:.9rem;font-weight:700;background:rgba(0,0,0,.75);color:var(--mute)}
+.badge[data-s=live]{background:#c4161c;color:#fff}
+.unmute{position:absolute;top:10px;inset-inline-end:10px;z-index:3;border:0;border-radius:4px;padding:3px 14px;font-weight:700;background:var(--yellow);color:#000;cursor:pointer}
+.off{position:absolute;inset:0;z-index:2;display:grid;place-content:center;text-align:center;padding:20px;background:var(--panel);color:var(--mute)}
+.off strong{color:var(--text);font-size:1.3rem}
+.servers{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.servers button{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:5px 18px;border-radius:4px;font-weight:600;cursor:pointer}
+.servers button[aria-pressed=true]{background:var(--yellow);border-color:var(--yellow);color:#000}
 
-        .school-badge {
-            display: inline-block;
-            background: #b91c1c;
-            color: white;
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 4px 14px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
+.chat{background:var(--panel);border:1px solid var(--line);border-radius:6px;display:flex;flex-direction:column;height:min(640px,80vh);overflow:hidden;position:sticky;top:12px}
+.chat h2{padding:12px 14px 0}
+.chat iframe{flex:1;border:0;width:100%;background:#fff}
+.chat p{margin:auto;padding:20px;text-align:center;color:var(--mute)}
 
-        .main-logo {
-            width: 135px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        .main-logo:hover {
-            transform: scale(1.05) rotate(-2deg);
-        }
+.game{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px;text-align:center}
+.box{position:relative;width:100%;max-width:400px;aspect-ratio:4/3;margin:0 auto;border:2px solid var(--line)}
+#snakeGame{width:100%;height:100%;display:block;background:#0b0e16}
+.ov{position:absolute;inset:0;z-index:5;background:rgba(18,21,31,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.btn{background:var(--yellow);color:#000;border:0;padding:8px 22px;font-size:1rem;font-weight:700;border-radius:4px;cursor:pointer}
+.pad{display:none;grid-template-columns:repeat(3,1fr);gap:6px;width:150px;margin:12px auto 0}
+.pad button{background:var(--bg);border:1px solid var(--line);color:var(--text);padding:10px;border-radius:4px;cursor:pointer}
 
-        /* شريط الكواكب */
-        .planets-bar {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            background: rgba(30, 41, 59, 0.7);
-            padding: 12px;
-            flex-wrap: wrap;
-            border-radius: 16px;
-            margin: 15px auto 0 auto;
-            max-width: 85%;
-            border: 1px dashed rgba(245, 158, 11, 0.3);
-        }
+footer{text-align:center;padding:18px;color:var(--mute);font-size:.85rem}
 
-        .planet-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-            width: 80px;
-            opacity: 0.9;
-        }
-
-        .planet-item:hover {
-            transform: translateY(-4px);
-            opacity: 1;
-        }
-
-        .planet-img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-        }
-
-        .planet-name {
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-top: 6px;
-            color: var(--text-main);
-        }
-
-        /* شبكة العرض الرئيسية */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 250px 1fr 270px;
-            gap: 20px;
-            padding: 20px;
-            max-width: 1350px;
-            margin: 0 auto;
-        }
-
-        .sidebar {
-            background-color: var(--panel-bg);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 20px;
-            height: fit-content;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            position: relative;
-        }
-
-        /* دبوس تثبيت الأوراق للتزيين */
-        .sidebar::before {
-            content: '📌';
-            position: absolute;
-            top: -12px;
-            right: 20px;
-            font-size: 1.2rem;
-        }
-
-        .sidebar-title {
-            color: var(--school-yellow);
-            margin-top: 0;
-            font-size: 1.1rem;
-            border-bottom: 2px dashed rgba(255,255,255,0.1);
-            padding-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 0; margin: 0;
-        }
-
-        .sidebar-menu li { margin: 12px 0; }
-
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-            border-right: 3px solid transparent;
-        }
-
-        .sidebar-menu a:hover {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--school-yellow);
-            border-right-color: var(--school-yellow);
-            transform: translateX(-4px);
-        }
-
-        /* منطقة المحتوى والبث */
-        .content-area {
-            background-color: #1e293b;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .video-wrapper {
-            width: 100%;
-            max-width: 700px;
-            margin: 0 auto;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #000;
-            aspect-ratio: 4 / 3;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            border: 3px solid #334155;
-        }
-
-        .video-wrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* قسم الألعاب المدرسية */
-        .game-window {
-            margin-top: 30px;
-            background: var(--chalkboard-green);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            border: 4px solid #042f2e;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
-        }
-
-        .game-container-box {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-            max-width: 400px;
-            aspect-ratio: 4 / 3;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.2);
-        }
-
-        #snakeGame {
-            width: 100%;
-            height: 100%;
-            background: #022c22;
-            display: block;
-        }
-
-        .game-overlay {
-            width: 100%; height: 100%;
-            background: rgba(6, 78, 59, 0.92);
-            position: absolute; top:0; left:0; z-index: 10;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-
-        .btn-play {
-            background: var(--school-yellow);
-            color: #000;
-            border: none; padding: 10px 24px;
-            font-size: 1rem; font-weight: 700;
-            border-radius: 6px; cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-        }
-        .btn-play:hover { transform: scale(1.05); }
-
-        .mobile-controls {
-            display: none;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            width: 160px;
-            margin: 15px auto 0 auto;
-        }
-
-        .touch-btn {
-            background: #042f2e;
-            border: 1px solid #115e59;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        /* بطاقة نصائح الدراسة والأخبار */
-        .school-card {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 12px;
-            font-size: 0.88rem;
-            line-height: 1.5;
-        }
-
-        .school-card-title {
-            color: var(--school-blue);
-            font-weight: 700;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* شريط رسائل سبيستون المدرسي السفلي */
-        .spacetoon-ticker-tape {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            height: 45px;
-            background-color: #090d16;
-            border-top: 2px solid var(--school-yellow);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .ticker-label {
-            background: var(--school-yellow);
-            color: #000;
-            padding: 0 15px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            font-weight: 900;
-            font-size: 0.9rem;
-            z-index: 5;
-            box-shadow: 3px 0 10px rgba(0,0,0,0.5);
-        }
-
-        .ticker-text-wrap {
-            overflow: hidden;
-            width: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .ticker-movable {
-            display: inline-block;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: marquee-slow 28s linear infinite;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #f8fafc;
-        }
-
-        .ticker-movable a {
-            color: var(--school-blue);
-            text-decoration: none;
-            font-weight: 700;
-            margin: 0 4px;
-            border-bottom: 1px dashed var(--school-blue);
-        }
-        .ticker-movable a:hover { color: #7dd3fc; }
-
-        footer {
-            text-align: center; padding: 20px;
-            background: #0b0f19; margin-top: 40px;
-            border-top: 1px solid #232d3f;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        @media (max-width: 1024px) {
-            .main-grid { grid-template-columns: 1fr; padding: 10px; gap: 15px; }
-            .sidebar { order: 3; }
-            .sidebar-news { order: 2; }
-            .content-area { order: 1; padding: 15px; }
-            .planets-bar { max-width: 100%; padding: 8px; }
-            .planet-item { width: 65px; }
-            .planet-img { width: 40px; height: 40px; }
-            .mobile-controls { display: grid; }
-        }
-    </style>
+@media(max-width:900px){
+ .wrap{grid-template-columns:1fr;grid-template-areas:"player" "chat" "game";padding:12px}
+ .chat{position:static;height:480px}
+ .pad{display:grid}
+}
+</style>
 </head>
 <body>
 
-<!-- الهيدر المدرسية -->
-<div class="top-header">
-    <div class="school-badge"><i class="fas fa-graduation-cap"></i> موسم العودة إلى المدارس 📚</div>
-    <br>
-    <img src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png" alt="Spacetoon" class="main-logo" onclick="location.reload();">
-    
-    <!-- كواكب سبيستون -->
-    <div class="planets-bar">
-        <div class="planet-item" onclick="alert('كوكب أكشن: طاقة وحماس للاستعداد للمدرسة!')">
-            <img src="https://github.com/Mastergive/randompngtosave/blob/main/Action_planet-Photoroom.png?raw=true" class="planet-img">
-            <span class="planet-name">أكشن</span>
-        </div>
-        <div class="planet-item" onclick="alert('كوكب علوم: اكتشف حقائق جديدة مع العام الدراسي الجديد!')">
-            <img src="https://github.com/Mastergive/randompngtosave/blob/main/Adventure-Photoroom.png?raw=true" class="planet-img">
-            <span class="planet-name">علوم</span>
-        </div>
-        <div class="planet-item" onclick="alert('كوكب رياضة: نشاط وصحة لبدء الفصل الدراسي بأعلى طاقة!')">
-            <img src="https://github.com/Mastergive/randompngtosave/blob/main/Sports-Photoroom.png?raw=true" class="planet-img">
-            <span class="planet-name">رياضة</span>
-        </div>
-        <div class="planet-item" onclick="alert('كوكب بون بون: لأبطال المستقبل الصغار!')">
-            <img src="https://github.com/Mastergive/randompngtosave/blob/main/Planet_Bon_Bon_New.png?raw=true" class="planet-img">
-            <span class="planet-name">بون بون</span>
-        </div>
-        <div class="planet-item" onclick="alert('كوكب كوميديا: استراحات ممتعة بين ساعات الدراسة!')">
-            <img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%83%D8%A8_%D9%83%D9%88%D9%82%D9%8A%D8%AF%D9%8A%D8%A7-Photoroom.png?raw=true" class="planet-img">
-            <span class="planet-name">كوميديا</span>
-        </div>
-        <div class="planet-item" onclick="alert('كوكب زمردة: إبداع وتنظيم لأدواتك المدرسية!')">
-            <img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%83%D8%A8_%D8%B2%D9%85%D8%B1%D8%AF%D8%A9-Photoroom.png?raw=true" class="planet-img">
-            <span class="planet-name">زمردة</span>
-        </div>
-    </div>
+<header>
+ <img class="logo" src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png" alt="سبيستون">
+ <nav>
+  <a href="#live">البث المباشر</a>
+  <a href="#games">لعبة</a>
+  <a href="https://spacetoonold.netlify.app/message" target="_blank" rel="noopener">أرسل رسالة</a>
+ </nav>
+ <div class="planets">
+  <div><img src="https://github.com/Mastergive/randompngtosave/blob/main/Action_planet-Photoroom.png?raw=true" alt="">أكشن</div>
+  <div><img src="https://github.com/Mastergive/randompngtosave/blob/main/Adventure-Photoroom.png?raw=true" alt="">علوم</div>
+  <div><img src="https://github.com/Mastergive/randompngtosave/blob/main/Sports-Photoroom.png?raw=true" alt="">رياضة</div>
+  <div><img src="https://github.com/Mastergive/randompngtosave/blob/main/Planet_Bon_Bon_New.png?raw=true" alt="">بون بون</div>
+  <div><img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%83%D8%A8_%D9%83%D9%88%D9%82%D9%8A%D8%AF%D9%8A%D8%A7-Photoroom.png?raw=true" alt="">كوميديا</div>
+  <div><img src="https://github.com/Mastergive/randompngtosave/blob/main/%D9%83%D9%88%D9%83%D8%A8_%D8%B2%D9%85%D8%B1%D8%AF%D8%A9-Photoroom.png?raw=true" alt="">زمردة</div>
+ </div>
+</header>
+
+<div class="wrap">
+ <section class="player" id="live">
+  <h2>البث المباشر</h2>
+  <div class="screen">
+   <video id="v" controls autoplay muted playsinline></video>
+   <iframe id="od" title="Odysee" allowfullscreen hidden></iframe>
+   <div class="badge" id="badge" data-s="connecting">جاري الاتصال</div>
+   <button class="unmute" id="unmute" type="button">تشغيل الصوت</button>
+   <div class="off" id="off" hidden><strong>البث متوقف حالياً</strong><span>تتم إعادة المحاولة تلقائياً. يمكنك تجربة السيرفر 2.</span></div>
+  </div>
+  <div class="servers">
+   <button type="button" aria-pressed="true" data-n="0">السيرفر 1</button>
+   <button type="button" aria-pressed="false" data-n="1">السيرفر 2 (Odysee)</button>
+  </div>
+ </section>
+
+ <aside class="chat" id="chat"><h2>الدردشة</h2></aside>
+
+ <section class="game" id="games">
+  <h2>لعبة الثعبان</h2>
+  <div class="box">
+   <div id="gameOverlay" class="ov"><button class="btn" onclick="startGame()">ابدأ اللعبة</button></div>
+   <canvas id="snakeGame" width="400" height="300"></canvas>
+  </div>
+  <p style="margin:10px 0 0">النقاط: <b id="score" style="color:var(--yellow)">0</b></p>
+  <div class="pad" dir="ltr">
+   <span></span><button onclick="triggerKey(38)" aria-label="أعلى">&#9650;</button><span></span>
+   <button onclick="triggerKey(37)" aria-label="يسار">&#9664;</button><span></span><button onclick="triggerKey(39)" aria-label="يمين">&#9654;</button>
+   <span></span><button onclick="triggerKey(40)" aria-label="أسفل">&#9660;</button><span></span>
+  </div>
+ </section>
 </div>
 
-<div class="main-grid">
-    <!-- الشريط الجانبي الأيمن -->
-    <aside class="sidebar">
-        <h3 class="sidebar-title"><i class="fas fa-book-open"></i> القائمة المدرسية</h3>
-        <ul class="sidebar-menu">
-            <li><a href="#" onclick="location.reload(); return false;"><i class="fas fa-tv"></i> البث المباشر</a></li>
-            <li><a href="#games" onclick="document.getElementById('games').scrollIntoView({behavior: 'smooth'}); return false;"><i class="fas fa-pencil-alt"></i> استراحة الألعاب</a></li>
-            <li><a href="https://spacetoonold.netlify.app/message" target="_blank"><i class="fas fa-envelope-open-text"></i> إرسال تحية زملائك</a></li>
-        </ul>
-    </aside>
+<footer>محطة سبيستون القديمة</footer>
 
-    <!-- منتصف الشاشة: البث ولعبة استراحة الدراسة -->
-    <main class="content-area">
-        <h3 style="margin-top: 0; color: var(--school-yellow); font-size: 1.2rem; font-weight: bold; text-align: center;">
-            <i class="fas fa-broadcast-tower"></i> شاشة العرض المباشرة - جيل الطيبين
-        </h3>
-        
-        <div class="video-wrapper">
-            <iframe src="https://odysee.com/$/embed/@SpacetoonOld:d/SToon-Old:d?r=8K9b5FpWexD8q7xXpB8v9xW2xM3xL4xN" allowfullscreen></iframe>
-        </div>
-
-        <!-- لعبة استراحة الدراسة (سبورة كوكب علوم) -->
-        <div class="game-window" id="games">
-            <h4 style="color: #6ee7b7; margin-top:0; font-size: 1.1rem;"><i class="fas fa-brain"></i> استراحة الفسحة: جمع الأرقام والأدوات</h4>
-            
-            <div class="game-container-box">
-                <div id="gameOverlay" class="game-overlay">
-                    <p style="color: #fef08a; font-weight: bold; margin-bottom: 15px;">جاهز للتحدي في الفسحة؟</p>
-                    <button class="btn-play" onclick="startGame()">ابدأ اللعبة 🔔</button>
-                </div>
-                <canvas id="snakeGame" width="400" height="300"></canvas>
-            </div>
-            <p style="margin: 10px 0 0 0; font-size: 1rem; color: #a7f3d0;">نقاط النجاح: <span id="score" style="color:var(--school-yellow); font-weight: bold;">0</span></p>
-            
-            <div class="mobile-controls">
-                <div></div>
-                <button class="touch-btn" onclick="triggerKey(38)"><i class="fas fa-chevron-up"></i></button>
-                <div></div>
-                <button class="touch-btn" onclick="triggerKey(37)"><i class="fas fa-chevron-right"></i></button>
-                <div style="background: transparent;"></div>
-                <button class="touch-btn" onclick="triggerKey(39)"><i class="fas fa-chevron-left"></i></button>
-                <div></div>
-                <button class="touch-btn" onclick="triggerKey(40)"><i class="fas fa-chevron-down"></i></button>
-                <div></div>
-            </div>
-        </div>
-    </main>
-
-    <!-- الجانب الأيسر: زاوية المتفوقين ونصائح الدراسة -->
-    <aside class="sidebar sidebar-news">
-        <h3 class="sidebar-title"><i class="fas fa-lightbulb"></i> زاوية المتفوقين</h3>
-        
-        <div class="school-card">
-            <div class="school-card-title"><i class="fas fa-clock"></i> تنظيم الوقت</div>
-            خصص وقتاً ثابتاً لمتابعة برامج سبيستون المفضل لديك بعد الانتهاء من أداء الواجبات المدرسية!
-        </div>
-
-        <div class="school-card">
-            <div class="school-card-title"><i class="fas fa-sticky-note"></i> نصيحة اليوم</div>
-            "العلم نور والجهل ظلام".. ابدأ عامك الدراسي بشغف وطاقة إيجابية جديدة.
-        </div>
-    </aside>
-</div>
-
-<!-- شريط رسائل سبيستون المدرسي -->
-<div class="spacetoon-ticker-tape">
-    <div class="ticker-label">شريط المدرسة</div>
-    <div class="ticker-text-wrap">
-        <div class="ticker-movable">
-            ✏️ مرحباً بكم في موسم العودة إلى المدارس! نتمنى لجميع شباب المستقبل عاماً دراسياً مليئاً بالنجاح والتفوق ••• <a href="https://spacetoonold.netlify.app/message" target="_blank">[ شاركنا أهدافك للعام الجديد من هنا ]</a> ••• استمتعوا بمتابعة البث المستقر وقضاء أوقات ممتعة ومفيدة معنا! 📚✨
-        </div>
-    </div>
-</div>
-
-<footer>
-    <p>© جميع الحقوق محفوظة لقناة سبيستون - هورايزون تي في | طبعة العودة إلى المدارس 2026 🎓</p>
-</footer>
-
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
 <script>
-    const canvas = document.getElementById("snakeGame");
-    const ctx = canvas.getContext("2d");
-    const overlay = document.getElementById("gameOverlay");
-    
-    let score, snake, dx, dy, nextDx, nextDy, gameRunning = false;
-    let food = {x: 0, y: 0};
-    let gameInterval;
+/* ===== الإعدادات ===== */
+const CONFIG = {
+  // رابط MediaMTX المحلي: http://<IP>:8888/<path>/index.m3u8
+  STREAM_URL: "http://192.168.100.45:8888/stoonold/index.m3u8",
+  // رابط Odysee (السيرفر 2)
+  ODYSEE_URL: "https://odysee.com/$/embed/@SpacetoonOld:d/SToon-Old:d?r=8K9b5FpWexD8q7xXpB8v9xW2xM3xL4xN",
+  // رابط الدردشة (iframe src) من Cbox أو WidgetBot أو غيرهما. اتركه فارغاً لإخفائها.
+  CHAT_URL: ""
+};
+/* ===================== */
 
-    function startGame() {
-        overlay.style.display = "none";
-        gameRunning = true;
-        score = 0;
-        snake = [ {x: 200, y: 150}, {x: 190, y: 150}, {x: 180, y: 150} ];
-        dx = 10; dy = 0;
-        nextDx = 10; nextDy = 0; 
-        document.getElementById('score').innerHTML = score;
-        createFood();
-        
-        if(gameInterval) clearInterval(gameInterval);
-        gameInterval = setInterval(gameStep, 100);
-    }
+const $ = s => document.querySelector(s);
+const video = $("#v"), od = $("#od");
+let hls = null, timer = null;
 
-    function gameStep() {
-        if (!gameRunning) return;
-        dx = nextDx; dy = nextDy;
+/* الدردشة */
+const chat = $("#chat");
+if (CONFIG.CHAT_URL) {
+  const f = document.createElement("iframe");
+  f.src = CONFIG.CHAT_URL; f.title = "الدردشة";
+  chat.appendChild(f);
+} else {
+  chat.insertAdjacentHTML("beforeend", "<p>الدردشة غير مفعّلة حالياً.</p>");
+}
 
-        if (didGameEnd()) {
-            gameRunning = false;
-            clearInterval(gameInterval);
-            overlay.style.display = "flex";
-            overlay.innerHTML = `<h5 style="color:#f87171; margin: 0 0 10px 0; font-weight:bold; font-size:1.1rem;">انتهت الفسحة!</h5><button class="btn-play" onclick="startGame()">حاول مجدداً 🔔</button>`;
-            return;
-        }
-
-        clearCanvas();
-        drawFood();
-        advanceSnake();
-        drawSnake();
-    }
-
-    function clearCanvas() { ctx.fillStyle = "#022c22"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
-
-    function drawSnake() {
-        snake.forEach((part, index) => {
-            ctx.fillStyle = index === 0 ? "#f59e0b" : "#10b981";
-            ctx.fillRect(part.x, part.y, 10, 10);
-        });
-    }
-
-    function advanceSnake() {
-        const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-        snake.unshift(head);
-        if (head.x === food.x && head.y === food.y) {
-            score += 10;
-            document.getElementById('score').innerHTML = score;
-            createFood();
-        } else { snake.pop(); }
-    }
-
-    function didGameEnd() {
-        const head = snake[0];
-        if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) return true;
-        for (let i = 1; i < snake.length; i++) { if (head.x === snake[i].x && head.y === snake[i].y) return true; }
-        return false;
-    }
-
-    function createFood() {
-        let foodOnSnake = true;
-        while(foodOnSnake) {
-            food.x = Math.floor(Math.random() * (canvas.width / 10)) * 10;
-            food.y = Math.floor(Math.random() * (canvas.height / 10)) * 10;
-            foodOnSnake = snake.some(part => part.x === food.x && part.y === food.y);
-        }
-    }
-
-    function drawFood() { ctx.fillStyle = "#f43f5e"; ctx.fillRect(food.x, food.y, 10, 10); }
-
-    function handleDirection(keyCode) {
-        const GOING_LEFT = dx === -10; const GOING_RIGHT = dx === 10;
-        const GOING_UP = dy === -10; const GOING_DOWN = dy === 10;
-
-        if (keyCode === 37 && !GOING_RIGHT) { nextDx = -10; nextDy = 0; }
-        if (keyCode === 38 && !GOING_DOWN) { nextDx = 0; nextDy = -10; }
-        if (keyCode === 39 && !GOING_LEFT)  { nextDx = 10; nextDy = 0; }
-        if (keyCode === 40 && !GOING_UP)   { nextDx = 0; nextDy = 10; }
-    }
-
-    document.addEventListener("keydown", (e) => {
-        if (!gameRunning) return;
-        if([37, 38, 39, 40].includes(e.keyCode)) {
-            e.preventDefault();
-            handleDirection(e.keyCode);
-        }
+/* البث */
+function srcUrl() {
+  return new URLSearchParams(location.search).get("src") || CONFIG.STREAM_URL;
+}
+function setState(s) {
+  const b = $("#badge");
+  b.dataset.s = s;
+  b.textContent = { connecting: "جاري الاتصال", live: "مباشر", off: "متوقف" }[s];
+  $("#off").hidden = s !== "off";
+}
+function stopHls() { if (hls) { hls.destroy(); hls = null; } clearTimeout(timer); }
+function retry() { stopHls(); setState("off"); timer = setTimeout(startHls, 5000); }
+function startHls() {
+  stopHls(); setState("connecting");
+  if (window.Hls && Hls.isSupported()) {
+    hls = new Hls({ lowLatencyMode: true, liveSyncDurationCount: 3, backBufferLength: 30 });
+    hls.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(() => {}));
+    hls.on(Hls.Events.ERROR, (e, d) => {
+      if (!d.fatal) return;
+      if (d.type === Hls.ErrorTypes.MEDIA_ERROR) { hls.recoverMediaError(); return; }
+      retry();
     });
+    hls.loadSource(srcUrl());
+    hls.attachMedia(video);
+  } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+    video.src = srcUrl(); video.onerror = retry; video.play().catch(() => {});
+  } else { setState("off"); }
+}
+video.addEventListener("playing", () => setState("live"));
+video.addEventListener("volumechange", () => { $("#unmute").hidden = !video.muted; });
+$("#unmute").onclick = () => { video.muted = false; video.volume = 1; video.play().catch(() => {}); };
 
-    function triggerKey(code) { if (gameRunning) handleDirection(code); }
+/* تبديل السيرفر */
+document.querySelectorAll(".servers button").forEach(b => b.onclick = () => {
+  const n = +b.dataset.n;
+  document.querySelectorAll(".servers button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  const own = n === 0;
+  video.hidden = !own; od.hidden = own;
+  $("#badge").hidden = !own; $("#unmute").hidden = !own || !video.muted;
+  if (own) { startHls(); }
+  else {
+    stopHls(); video.pause(); $("#off").hidden = true;
+    if (!od.getAttribute("src")) od.src = CONFIG.ODYSEE_URL;
+  }
+});
+startHls();
+
+/* اللعبة */
+const canvas = $("#snakeGame"), ctx = canvas.getContext("2d"), overlay = $("#gameOverlay");
+let score, snake, dx, dy, nextDx, nextDy, gameRunning = false, food = { x: 0, y: 0 }, gameInterval;
+
+function startGame() {
+  overlay.style.display = "none"; gameRunning = true; score = 0;
+  snake = [{ x: 200, y: 150 }, { x: 190, y: 150 }, { x: 180, y: 150 }];
+  dx = 10; dy = 0; nextDx = 10; nextDy = 0;
+  $("#score").textContent = score;
+  createFood();
+  clearInterval(gameInterval);
+  gameInterval = setInterval(gameStep, 100);
+}
+function gameStep() {
+  if (!gameRunning) return;
+  dx = nextDx; dy = nextDy;
+  if (didGameEnd()) {
+    gameRunning = false; clearInterval(gameInterval);
+    overlay.style.display = "flex";
+    overlay.innerHTML = '<b>انتهت اللعبة</b><button class="btn" onclick="startGame()">حاول مجدداً</button>';
+    return;
+  }
+  ctx.fillStyle = "#0b0e16"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#e5484d"; ctx.fillRect(food.x, food.y, 10, 10);
+  const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+  snake.unshift(head);
+  if (head.x === food.x && head.y === food.y) { score += 10; $("#score").textContent = score; createFood(); }
+  else snake.pop();
+  snake.forEach((p, i) => { ctx.fillStyle = i ? "#3ba776" : "#ffc20e"; ctx.fillRect(p.x, p.y, 10, 10); });
+}
+function didGameEnd() {
+  const h = snake[0];
+  if (h.x < 0 || h.x >= canvas.width || h.y < 0 || h.y >= canvas.height) return true;
+  return snake.slice(1).some(p => p.x === h.x && p.y === h.y);
+}
+function createFood() {
+  do {
+    food.x = Math.floor(Math.random() * (canvas.width / 10)) * 10;
+    food.y = Math.floor(Math.random() * (canvas.height / 10)) * 10;
+  } while (snake.some(p => p.x === food.x && p.y === food.y));
+}
+function handleDirection(k) {
+  if (k === 37 && dx !== 10) { nextDx = -10; nextDy = 0; }
+  if (k === 38 && dy !== 10) { nextDx = 0; nextDy = -10; }
+  if (k === 39 && dx !== -10) { nextDx = 10; nextDy = 0; }
+  if (k === 40 && dy !== -10) { nextDx = 0; nextDy = 10; }
+}
+document.addEventListener("keydown", e => {
+  if (gameRunning && [37, 38, 39, 40].includes(e.keyCode)) { e.preventDefault(); handleDirection(e.keyCode); }
+});
+function triggerKey(c) { if (gameRunning) handleDirection(c); }
 </script>
 </body>
 </html>

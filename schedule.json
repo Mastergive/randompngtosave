@@ -1,19 +1,8 @@
 {
     "date": "2026-11-15",
-    "generated": "2026-11-15T18:58:12",
+    "generated": "2026-11-15T19:28:56",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Movies/DetectiveConan.mp4",
-            "planet": "Movies",
-            "series": "Movies",
-            "title": "Detective Conan: Countdown to the unknown",
-            "slot_minutes": 120,
-            "duration_sec": 5970,
-            "start": "2026-11-15 19:30",
-            "time": "07:30 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Iroka (S1 570p)/EP 1 - Iroka.mp4",

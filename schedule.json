@@ -1,19 +1,8 @@
 {
     "date": "2026-11-15",
-    "generated": "2026-11-15T21:58:39",
+    "generated": "2026-11-15T22:28:30",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Binky and Brain (S1 570p)/EP 1 - BAB.mp4",
-            "planet": "Comedy",
-            "series": "Binky and Brain (S1 570p)",
-            "title": "Binky and Brain",
-            "slot_minutes": 30,
-            "duration_sec": 1239,
-            "start": "2026-11-15 22:30",
-            "time": "10:30 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Black Cat (S1 570p)/EP 1 - Black Cat.mp4",

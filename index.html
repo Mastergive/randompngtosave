@@ -225,7 +225,7 @@ const chat = $("#chat");
 if (CFG.CHAT_URL) { const f = document.createElement("iframe"); f.src = CFG.CHAT_URL; f.title = "Chat"; chat.appendChild(f); }
 
 /* Schedule */
-let ENT = [], follow = store.get("follow", {}), saved = store.get("saved", {}), okUrl = null, W0 = 0;
+let SCH = [], ENT = [], NOWITEM = null, follow = store.get("follow", {}), saved = store.get("saved", {}), okUrl = null, W0 = 0;
 const PX = 4;
 function clean(e) {
   const planet = (e.planet || "").toLowerCase();
@@ -234,23 +234,38 @@ function clean(e) {
   const start = new Date(e.start.replace(" ", "T") + ":00" + CFG.OFFSET);
   return { id: e.start, planet, name, ep: m ? m[1] : "", mins: e.slot_minutes, dur: e.duration_sec, start, end: new Date(+start + e.slot_minutes * 6e4) };
 }
+async function getJ(u, step) {
+  const r = await fetch(u + "?t=" + Math.floor(Date.now() / step), { cache: "no-store" });
+  if (!r.ok) throw 0;
+  return r.json();
+}
+const sib = u => u.replace(/schedule\.json$/, "stoon_state.json");
+/* stoon_state.json = what the stream PC is really playing; it overrides the schedule for that time span */
+function merge() {
+  const n = NOWITEM;
+  ENT = SCH.filter(x => !(n && x.start < n.end && x.end > n.start));
+  if (n) ENT.push(n);
+  ENT.sort((a, b) => a.start - b.start);
+}
+const getCur = now => (NOWITEM && NOWITEM.start <= now && now < NOWITEM.end) ? NOWITEM : ENT.find(x => x.start <= now && now < x.end);
 async function load() {
   for (const u of okUrl ? [okUrl] : CFG.SCHEDULE_URLS) {
-    try {
-      const r = await fetch(u + "?t=" + Math.floor(Date.now() / 3e5), { cache: "no-store" });
-      if (!r.ok) continue;
-      ENT = ((await r.json()).entries || []).map(clean).sort((a, b) => a.start - b.start);
-      okUrl = u; break;
-    } catch (e) {}
+    try { SCH = ((await getJ(u, 3e5)).entries || []).map(clean); okUrl = u; break; } catch (e) {}
   }
-  render();
+  await loadState();
+}
+async function loadState() {
+  for (const u of okUrl ? [okUrl] : CFG.SCHEDULE_URLS) {
+    try { const s = await getJ(sib(u), 2e4); NOWITEM = s.current_item ? clean(s.current_item) : null; break; } catch (e) {}
+  }
+  merge(); render();
 }
 const kind = x => x.ep ? t("ep") + x.ep : t("movie");
 const art = (k, big) => { const p = pl(k); return p.img ? '<img src="' + p.img + '" alt="">' : pn(k)[0]; };
 const score = x => (follow[x.planet] ? 3 : 0) + (saved[x.id] ? 2 : 0) + 8 / (1 + Math.max(0, (x.start - Date.now()) / 36e5));
 
 function render() {
-  const now = Date.now(), cur = ENT.find(x => x.start <= now && now < x.end), up = ENT.filter(x => +x.start > now);
+  const now = Date.now(), cur = getCur(now), up = ENT.filter(x => +x.start > now);
   $("#clock").textContent = hm(new Date());
   if (!ENT.length) { $("#nTitle").textContent = okUrl === null ? t("load") : t("err"); return; }
   if (cur) {
@@ -281,7 +296,7 @@ function render() {
   tick();
 }
 function tick() {
-  const now = Date.now(), cur = ENT.find(x => x.start <= now && now < x.end);
+  const now = Date.now(), cur = getCur(now);
   const nl = $("#nl"); if (nl) nl.style.left = (now - W0) / 6e4 * PX + "px";
   $("#clock").textContent = hm(new Date());
   if (!cur) return;
@@ -324,7 +339,7 @@ document.querySelectorAll("[data-n]").forEach(b => b.onclick = () => {
 });
 
 prefs(); startHls(); load();
-setInterval(load, 3e5); setInterval(render, 3e4); setInterval(tick, 1000);
+setInterval(load, 3e5); setInterval(loadState, 2e4); setInterval(render, 3e4); setInterval(tick, 1000);
 </script>
 </body>
 </html>

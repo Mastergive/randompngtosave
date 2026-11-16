@@ -1,19 +1,8 @@
 {
     "date": "2026-11-16",
-    "generated": "2026-11-16T13:58:28",
+    "generated": "2026-11-16T14:28:39",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Power Rangers Dino Charge (S1 570p)/EP 1 - PPD.mp4",
-            "planet": "Action",
-            "series": "Power Rangers Dino Charge (S1 570p)",
-            "title": "Power Rangers Dino Charge",
-            "slot_minutes": 30,
-            "duration_sec": 1342,
-            "start": "2026-11-16 14:30",
-            "time": "02:30 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Naruto SD (S1 570p)/EP1 - NarutoSD.mp4",

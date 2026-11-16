@@ -1,19 +1,8 @@
 {
     "date": "2026-11-16",
-    "generated": "2026-11-16T10:28:31",
+    "generated": "2026-11-16T10:58:22",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/The fixies (570p)/EP 1 & 2 - The fixies.mp4",
-            "planet": "Science",
-            "series": "The fixies (570p)",
-            "title": "EP 1 & 2 - The fixies",
-            "slot_minutes": 30,
-            "duration_sec": 661,
-            "start": "2026-11-16 11:00",
-            "time": "11:00 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Mia (S1 570p)/EP 1 - Mia.mp4",

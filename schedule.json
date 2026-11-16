@@ -1,19 +1,8 @@
 {
     "date": "2026-11-16",
-    "generated": "2026-11-16T15:28:30",
+    "generated": "2026-11-16T15:58:31",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Beda Ball (S1 570p)/EP 1 - BB.mp4",
-            "planet": "Adventure",
-            "series": "Beda Ball (S1 570p)",
-            "title": "Beda Ball",
-            "slot_minutes": 30,
-            "duration_sec": 1430,
-            "start": "2026-11-16 16:00",
-            "time": "04:00 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Tanken Driland (S1 570p)/EP 3 - DRILAND.mp4",

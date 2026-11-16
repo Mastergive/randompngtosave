@@ -1,6 +1,16 @@
 {
     "last_show_name": "Pocoyo",
     "show_counter": 934,
-    "current_item": null,
+    "current_item": {
+        "type": "show",
+        "path": "/home/user/shared/SP/Shows/Magic Kaito (S1 570p)/EP 1 - Magic Kaito.mp4",
+        "planet": "Action",
+        "series": "Magic Kaito (S1 570p)",
+        "title": "Magic Kaito",
+        "slot_minutes": 30,
+        "duration_sec": 1323,
+        "start": "2026-11-16 12:30",
+        "time": "12:30 PM"
+    },
     "is_space_power": false
 }

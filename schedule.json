@@ -1,19 +1,8 @@
 {
     "date": "2026-11-16",
-    "generated": "2026-11-16T11:28:26",
+    "generated": "2026-11-16T11:58:26",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Pocoyo (S1 570p)/EP 1 - Pocoyo.mp4",
-            "planet": "Abjad",
-            "series": "Pocoyo (S1 570p)",
-            "title": "Pocoyo",
-            "slot_minutes": 30,
-            "duration_sec": 413,
-            "start": "2026-11-16 12:00",
-            "time": "12:00 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Magic Kaito (S1 570p)/EP 1 - Magic Kaito.mp4",

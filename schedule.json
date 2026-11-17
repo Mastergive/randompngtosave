@@ -1,19 +1,8 @@
 {
     "date": "2026-11-17",
-    "generated": "2026-11-17T19:58:39",
+    "generated": "2026-11-17T20:49:04",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Sarab (S1 570p)/EP 1 - Sarab.mp4",
-            "planet": "Adventure",
-            "series": "Sarab (S1 570p)",
-            "title": "Sarab",
-            "slot_minutes": 30,
-            "duration_sec": 1431,
-            "start": "2026-11-17 20:30",
-            "time": "08:30 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/One Piece (S1 570p)/EP 1 - OP.mp4",

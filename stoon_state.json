@@ -3,14 +3,14 @@
     "show_counter": 991,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Magic Kaito (S1 570p)/EP 1 - Magic Kaito.mp4",
-        "planet": "Action",
-        "series": "Magic Kaito (S1 570p)",
-        "title": "Magic Kaito",
+        "path": "/home/user/shared/SP/Shows/Sarab (S1 570p)/EP 1 - Sarab.mp4",
+        "planet": "Adventure",
+        "series": "Sarab (S1 570p)",
+        "title": "Sarab",
         "slot_minutes": 30,
-        "duration_sec": 1323,
-        "start": "2026-11-17 20:00",
-        "time": "08:00 PM"
+        "duration_sec": 1431,
+        "start": "2026-11-17 20:30",
+        "time": "08:30 PM"
     },
     "is_space_power": false
 }

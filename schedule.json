@@ -1,19 +1,8 @@
 {
     "date": "2026-11-17",
-    "generated": "2026-11-17T21:58:37",
+    "generated": "2026-11-17T22:28:29",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/PI PO PA (S1 570p)/EP 1 - PI PO PA.mp4",
-            "planet": "Adventure",
-            "series": "PI PO PA (S1 570p)",
-            "title": "PI PO PA",
-            "slot_minutes": 30,
-            "duration_sec": 1467,
-            "start": "2026-11-17 22:30",
-            "time": "10:30 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Black Cat (S1 570p)/EP 1 - Black Cat.mp4",

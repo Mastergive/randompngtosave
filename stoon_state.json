@@ -1,6 +1,16 @@
 {
     "last_show_name": "Detective Conan: Countdown to the unknown",
     "show_counter": 970,
-    "current_item": null,
+    "current_item": {
+        "type": "show",
+        "path": "/home/user/shared/SP/Shows/Made in Abyss (S1 570p)/EP 1 - Made in Abyss.mp4",
+        "planet": "Adventure",
+        "series": "Made in Abyss (S1 570p)",
+        "title": "Made in Abyss",
+        "slot_minutes": 30,
+        "duration_sec": 1227,
+        "start": "2026-11-17 08:00",
+        "time": "08:00 AM"
+    },
     "is_space_power": false
 }

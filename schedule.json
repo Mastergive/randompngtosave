@@ -1,19 +1,8 @@
 {
     "date": "2026-11-17",
-    "generated": "2026-11-17T00:29:50",
+    "generated": "2026-11-17T00:59:50",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Detective Conan (S8 570p)/EP 2 - DConan s8.mp4",
-            "planet": "Action",
-            "series": "Detective Conan (S8 570p)",
-            "title": "Detective Conan",
-            "slot_minutes": 30,
-            "duration_sec": 1443,
-            "start": "2026-11-17 01:00",
-            "time": "01:00 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/HxH classic (S1 570p)/EP 1 - Kanas.mp4",

@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Dice",
-    "show_counter": 994,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/PI PO PA (S1 570p)/EP 1 - PI PO PA.mp4",
-        "planet": "Adventure",
-        "series": "PI PO PA (S1 570p)",
-        "title": "PI PO PA",
-        "slot_minutes": 30,
-        "duration_sec": 1467,
-        "start": "2026-11-17 22:30",
-        "time": "10:30 PM"
-    },
+    "last_show_name": "PI PO PA",
+    "show_counter": 995,
+    "current_item": null,
     "is_space_power": false
 }

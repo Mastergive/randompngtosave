@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Boasae",
-    "show_counter": 974,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/Najmat Tabkh (S1 570p)/EP 1 - Najmat Tabkh.mp4",
-        "planet": "Zomoroda",
-        "series": "Najmat Tabkh (S1 570p)",
-        "title": "Najmat Tabkh",
-        "slot_minutes": 30,
-        "duration_sec": 582,
-        "start": "2026-11-17 10:00",
-        "time": "10:00 AM"
-    },
+    "last_show_name": "Najmat Tabkh",
+    "show_counter": 975,
+    "current_item": null,
     "is_space_power": false
 }

@@ -1,19 +1,8 @@
 {
     "date": "2026-11-17",
-    "generated": "2026-11-17T04:28:30",
+    "generated": "2026-11-17T04:58:35",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Cocotama (S1 570p)/EP 1 - Cocotama.mp4",
-            "planet": "Zomoroda",
-            "series": "Cocotama (S1 570p)",
-            "title": "Cocotama",
-            "slot_minutes": 30,
-            "duration_sec": 1429,
-            "start": "2026-11-17 05:00",
-            "time": "05:00 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Frank and his friends (S1 570p)/EP 1 - FAF.mp4",

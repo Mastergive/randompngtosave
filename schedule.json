@@ -1,19 +1,8 @@
 {
     "date": "2026-11-17",
-    "generated": "2026-11-17T21:13:43",
+    "generated": "2026-11-17T21:28:35",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Monsuno (S1 570p)/EP 3 - Monsuno.mp4",
-            "planet": "Action",
-            "series": "Monsuno (S1 570p)",
-            "title": "Monsuno",
-            "slot_minutes": 30,
-            "duration_sec": 1300,
-            "start": "2026-11-17 21:30",
-            "time": "09:30 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Temp/Dice (S1 570p)/EP 1 - Dice.mp4",

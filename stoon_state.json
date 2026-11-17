@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Beda Ball",
-    "show_counter": 987,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/Tanken Driland (S1 570p)/EP 3 - DRILAND.mp4",
-        "planet": "Adventure",
-        "series": "Tanken Driland (S1 570p)",
-        "title": "Driland",
-        "slot_minutes": 30,
-        "duration_sec": 1453,
-        "start": "2026-11-17 18:00",
-        "time": "06:00 PM"
-    },
+    "last_show_name": "EP 1 & 2 - The fixies",
+    "show_counter": 989,
+    "current_item": null,
     "is_space_power": false
 }

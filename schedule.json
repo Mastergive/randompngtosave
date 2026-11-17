@@ -1,19 +1,8 @@
 {
     "date": "2026-11-17",
-    "generated": "2026-11-17T00:59:50",
+    "generated": "2026-11-17T01:29:50",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/HxH classic (S1 570p)/EP 1 - Kanas.mp4",
-            "planet": "Adventure",
-            "series": "HxH classic (S1 570p)",
-            "title": "Al Kanas (Hunter X Hunter)",
-            "slot_minutes": 30,
-            "duration_sec": 1402,
-            "start": "2026-11-17 01:30",
-            "time": "01:30 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Boasa (S1 570p)/EP 4 - Boasa.mp4",

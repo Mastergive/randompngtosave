@@ -180,7 +180,8 @@ const P = {
   zomoroda:{h:145,ar:"زمردة",en:"Zomoroda",img:G+"zomoroda.png?raw=true"},
   science:{h:255,ar:"علوم",en:"Science", img:G+"Science-Photoroom.png?raw=true"},
   abjad:{h:20,ar:"أبجد",en:"Abjad", img:G+"Abjad-Photoroom.png?raw=true"},
-  movies:{h:230,ar:"أفلام",en:"Movies", img:G+"image-removebg-preview.png?raw=true"}
+  movies:{h:230,ar:"أفلام",en:"Movies", img:G+"image-removebg-preview.png?raw=true"},
+  spacepower:{h:280,ar:"سبيس باور",en:"SpacePower", img:"https://raw.githubusercontent.com/Mastergive/randompngtosave/main/SpacePower.png"}
 };
 const L = {
  ar:{onair:"على الهواء",unmute:"تشغيل الصوت",offT:"البث متوقف حالياً",offS:"تتم إعادة المحاولة تلقائياً، أو جرّب السيرفر 2",s1:"السيرفر 1",s2:"السيرفر 2",chat:"الدردشة المباشرة",
@@ -200,8 +201,11 @@ let lang = store.get("lang", (navigator.language || "en").startsWith("ar") ? "ar
 let th = store.get("th", matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
 let ui = store.get("ui", "glass"), tf;
 const t = k => L[lang][k];
-const pl = k => P[k] || { h: 230, ar: k, en: k };
-const pn = k => pl(k)[lang];
+const pl = k => P[(k || "").toLowerCase()] || { h: 230, ar: k, en: k };
+const pn = k => {
+  if ((k || "").toLowerCase() === "spacepower") return lang === "ar" ? "سبيس باور" : "SpacePower";
+  return pl(k)[lang];
+};
 const hm = d => tf.format(d);
 const mmss = s => Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
 const away = ms => { const m = Math.max(1, Math.round(ms / 6e4)); return t("in") + (m < 60 ? m + t("m") : Math.round(m / 60) + t("h")); };
@@ -230,7 +234,8 @@ if (CFG.CHAT_URL) { const f = document.createElement("iframe"); f.src = CFG.CHAT
 let SCH = [], ENT = [], NOWITEM = null, follow = store.get("follow", {}), saved = store.get("saved", {}), okUrl = null, W0 = 0;
 const PX = 4;
 function clean(e) {
-  const planet = (e.planet || "").toLowerCase();
+  let planet = (e.planet || "").toLowerCase();
+  if (e.is_space_power) planet = "spacepower";
   const name = planet === "movies" ? e.title : (e.series || e.title).replace(/\s*\((?:S\d+\s*)?\d+p\)\s*$/i, "");
   const m = /EP\s*(\d+(?:\s*&\s*\d+)?)/i.exec(e.path || "");
   const start = new Date(e.start.replace(" ", "T") + ":00" + CFG.OFFSET);
@@ -258,7 +263,16 @@ async function load() {
 }
 async function loadState() {
   for (const u of okUrl ? [okUrl] : CFG.SCHEDULE_URLS) {
-    try { const s = await getJ(sib(u), 2e4); NOWITEM = s.current_item ? clean(s.current_item) : null; break; } catch (e) {}
+    try { 
+      const s = await getJ(sib(u), 2e4); 
+      if (s.current_item) {
+        if (s.is_space_power) s.current_item.is_space_power = true;
+        NOWITEM = clean(s.current_item);
+      } else {
+        NOWITEM = null;
+      }
+      break; 
+    } catch (e) {}
   }
   merge(); render();
 }
@@ -273,14 +287,19 @@ function render() {
   if (cur) {
     $("#now").style.setProperty("--h", pl(cur.planet).h);
     $("#nArt").innerHTML = art(cur.planet);
-    $("#nPl").textContent = t("p") + pn(cur.planet);
+    $("#nPl").textContent = cur.planet === "spacepower" ? "" : (t("p") + pn(cur.planet));
+    if (cur.planet === "spacepower") {
+      $("#nPl").textContent = pn(cur.planet);
+    } else {
+      $("#nPl").textContent = t("p") + pn(cur.planet);
+    }
     $("#nTitle").innerHTML = "<bdi>" + cur.name + "</bdi>";
     $("#nMeta").textContent = kind(cur) + " · " + cur.mins + t("min");
   } else { $("#nTitle").textContent = "StoonOld"; $("#nMeta").textContent = ""; $("#nPl").textContent = ""; }
   const nx = up[0];
   $("#nNext").innerHTML = nx ? t("next") + "<bdi>" + nx.name + "</bdi>" + t("at") + hm(nx.start) + " · " + away(nx.start - now) : "";
 
-  const card = x => { const p = pl(x.planet); return '<button class="card gl" data-id="' + x.id + '" style="--h:' + p.h + '"><div class="cth">' + (saved[x.id] ? "<u>★</u>" : "") + art(x.planet) + "<time>" + hm(x.start) + "</time></div><b><bdi>" + x.name + "</bdi></b><small>" + t("p") + pn(x.planet) + " · " + kind(x) + '</small><small class="in">' + away(x.start - now) + "</small></button>"; };
+  const card = x => { const p = pl(x.planet); return '<button class="card gl" data-id="' + x.id + '" style="--h:' + p.h + '"><div class="cth">' + (saved[x.id] ? "<u>★</u>" : "") + art(x.planet) + "<time>" + hm(x.start) + "</time></div><b><bdi>" + x.name + "</bdi></b><small>" + (x.planet === "spacepower" ? pn(x.planet) : (t("p") + pn(x.planet))) + " · " + kind(x) + '</small><small class="in">' + away(x.start - now) + "</small></button>"; };
   const picks = up.filter(x => x.start - now < 12 * 36e5).map(x => ({ x, s: score(x) })).sort((a, b) => b.s - a.s).slice(0, 8).map(o => o.x);
   $("#fy").innerHTML = picks.length ? picks.map(card).join("") : "<p class='sub'>" + t("none") + "</p>";
 

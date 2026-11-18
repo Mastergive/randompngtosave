@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Sarab",
-    "show_counter": 1000,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/One Piece (S1 570p)/EP 1 - OP.mp4",
-        "planet": "Adventure",
-        "series": "One Piece (S1 570p)",
-        "title": "One Piece",
-        "slot_minutes": 30,
-        "duration_sec": 1481,
-        "start": "2026-11-18 01:30",
-        "time": "01:30 AM"
-    },
-    "is_space_power": true
+    "last_show_name": "EP 2 - PP",
+    "show_counter": 1002,
+    "current_item": null,
+    "is_space_power": false
 }

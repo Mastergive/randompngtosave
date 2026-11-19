@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Monsuno",
-    "show_counter": 1068,
+    "last_show_name": "Aad Al Asdika",
+    "show_counter": 1069,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Temp/Aad Al Asdika (S1 570p)/EP 1 - AAS.mp4",
+        "path": "/home/user/shared/SP/Shows/PI PO PA (S1 570p)/EP 1 - PI PO PA.mp4",
         "planet": "Adventure",
-        "series": "Temp",
-        "title": "Aad Al Asdika",
+        "series": "PI PO PA (S1 570p)",
+        "title": "PI PO PA",
         "slot_minutes": 30,
-        "duration_sec": 1463,
-        "start": "2026-11-19 14:30",
-        "time": "02:30 PM"
+        "duration_sec": 1467,
+        "start": "2026-11-19 15:00",
+        "time": "03:00 PM"
     },
     "is_space_power": false
 }

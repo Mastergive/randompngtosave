@@ -1,19 +1,8 @@
 {
     "date": "2026-11-19",
-    "generated": "2026-11-19T12:58:26",
+    "generated": "2026-11-19T13:28:25",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Pocoyo (S1 570p)/EP 1 - Pocoyo.mp4",
-            "planet": "Abjad",
-            "series": "Pocoyo (S1 570p)",
-            "title": "Pocoyo",
-            "slot_minutes": 30,
-            "duration_sec": 413,
-            "start": "2026-11-19 13:30",
-            "time": "01:30 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Monsuno (S1 570p)/EP 3 - Monsuno.mp4",

@@ -1,19 +1,8 @@
 {
     "date": "2026-11-19",
-    "generated": "2026-11-19T05:58:26",
+    "generated": "2026-11-19T06:28:39",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Monsuno (S1 570p)/EP 3 - Monsuno.mp4",
-            "planet": "Action",
-            "series": "Monsuno (S1 570p)",
-            "title": "Monsuno",
-            "slot_minutes": 30,
-            "duration_sec": 1300,
-            "start": "2026-11-19 06:30",
-            "time": "06:30 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Temp/Flona's Adventure (S1 570p)/EP 3 - FLONA.mp4",

@@ -1,6 +1,16 @@
 {
     "last_show_name": "Pocoyo",
     "show_counter": 1052,
-    "current_item": null,
+    "current_item": {
+        "type": "show",
+        "path": "/home/user/shared/SP/Shows/Monsuno (S1 570p)/EP 3 - Monsuno.mp4",
+        "planet": "Action",
+        "series": "Monsuno (S1 570p)",
+        "title": "Monsuno",
+        "slot_minutes": 30,
+        "duration_sec": 1300,
+        "start": "2026-11-19 06:30",
+        "time": "06:30 AM"
+    },
     "is_space_power": false
 }

@@ -1,19 +1,8 @@
 {
     "date": "2026-11-19",
-    "generated": "2026-11-19T06:58:35",
+    "generated": "2026-11-19T07:28:31",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/PI PO PA (S1 570p)/EP 1 - PI PO PA.mp4",
-            "planet": "Adventure",
-            "series": "PI PO PA (S1 570p)",
-            "title": "PI PO PA",
-            "slot_minutes": 30,
-            "duration_sec": 1467,
-            "start": "2026-11-19 07:30",
-            "time": "07:30 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Iroka (S1 570p)/EP 1 - Iroka.mp4",

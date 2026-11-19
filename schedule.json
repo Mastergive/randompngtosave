@@ -1,19 +1,8 @@
 {
     "date": "2026-11-19",
-    "generated": "2026-11-19T22:28:30",
+    "generated": "2026-11-19T22:59:37",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Magic Kaito (S1 570p)/EP 1 - Magic Kaito.mp4",
-            "planet": "Action",
-            "series": "Magic Kaito (S1 570p)",
-            "title": "Magic Kaito",
-            "slot_minutes": 30,
-            "duration_sec": 1323,
-            "start": "2026-11-19 23:00",
-            "time": "11:00 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Sarab (S1 570p)/EP 1 - Sarab.mp4",

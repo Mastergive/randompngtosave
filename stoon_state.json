@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Made in Abyss",
-    "show_counter": 1077,
+    "last_show_name": "Detective Conan",
+    "show_counter": 1078,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Detective Conan (S8 570p)/EP 2 - DConan s8.mp4",
-        "planet": "Action",
-        "series": "Detective Conan (S8 570p)",
-        "title": "Detective Conan",
+        "path": "/home/user/shared/SP/Shows/HxH classic (S1 570p)/EP 1 - Kanas.mp4",
+        "planet": "Adventure",
+        "series": "HxH classic (S1 570p)",
+        "title": "Al Kanas (Hunter X Hunter)",
         "slot_minutes": 30,
-        "duration_sec": 1443,
-        "start": "2026-11-19 19:00",
-        "time": "07:00 PM"
+        "duration_sec": 1402,
+        "start": "2026-11-19 19:30",
+        "time": "07:30 PM"
     },
     "is_space_power": false
 }

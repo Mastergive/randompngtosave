@@ -1,16 +1,16 @@
 {
     "last_show_name": "Sarab",
-    "show_counter": 1087,
+    "show_counter": 1088,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/One Piece (S1 570p)/EP 1 - OP.mp4",
-        "planet": "Adventure",
-        "series": "One Piece (S1 570p)",
-        "title": "One Piece",
+        "path": "/home/user/shared/SP/Shows/Black Cat (S1 570p)/EP 1 - Black Cat.mp4",
+        "planet": "Action",
+        "series": "Black Cat (S1 570p)",
+        "title": "Black Cat",
         "slot_minutes": 30,
-        "duration_sec": 1481,
-        "start": "2026-11-20 00:00",
-        "time": "12:00 AM"
+        "duration_sec": 1314,
+        "start": "2026-11-20 00:30",
+        "time": "12:30 AM"
     },
     "is_space_power": true
 }

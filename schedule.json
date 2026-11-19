@@ -1,19 +1,8 @@
 {
     "date": "2026-11-19",
-    "generated": "2026-11-19T02:28:39",
+    "generated": "2026-11-19T02:58:30",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Naruto SD (S1 570p)/EP1 - NarutoSD.mp4",
-            "planet": "Comedy",
-            "series": "Naruto SD (S1 570p)",
-            "title": "Naruto SD",
-            "slot_minutes": 30,
-            "duration_sec": 1311,
-            "start": "2026-11-19 03:00",
-            "time": "03:00 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Pink Panther (S1 570p)/EP 1 - PP.mp4",

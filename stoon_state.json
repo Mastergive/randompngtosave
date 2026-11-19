@@ -1,6 +1,16 @@
 {
-    "last_show_name": "Yo Kai Watch",
-    "show_counter": 1085,
-    "current_item": null,
+    "last_show_name": "Magic Kaito",
+    "show_counter": 1086,
+    "current_item": {
+        "type": "show",
+        "path": "/home/user/shared/SP/Shows/Sarab (S1 570p)/EP 1 - Sarab.mp4",
+        "planet": "Adventure",
+        "series": "Sarab (S1 570p)",
+        "title": "Sarab",
+        "slot_minutes": 30,
+        "duration_sec": 1431,
+        "start": "2026-11-19 23:30",
+        "time": "11:30 PM"
+    },
     "is_space_power": true
 }

@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Sokor al ard",
-    "show_counter": 1097,
+    "last_show_name": "Iftah ya Simsim",
+    "show_counter": 1098,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Iftah ya simim (S1 570p)/EP 1 - IYS.mp4",
-        "planet": "Abjad",
-        "series": "Iftah ya simim (S1 570p)",
-        "title": "Iftah ya Simsim",
+        "path": "/home/user/shared/SP/Shows/Dragon Z KAI (S1 570p)/EP 1 - DZK.mp4",
+        "planet": "Action",
+        "series": "Dragon Z KAI (S1 570p)",
+        "title": "Dragon Z KAI",
         "slot_minutes": 30,
-        "duration_sec": 1556,
-        "start": "2026-11-20 05:00",
-        "time": "05:00 AM"
+        "duration_sec": 1488,
+        "start": "2026-11-20 05:30",
+        "time": "05:30 AM"
     },
     "is_space_power": false
 }

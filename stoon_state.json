@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Haikyuu",
-    "show_counter": 1132,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/My hero academy (S1 570p)/EP 1 - My Hero Academy.mp4",
-        "planet": "Adventure",
-        "series": "My hero academy (S1 570p)",
-        "title": "My Hero Academy",
-        "slot_minutes": 30,
-        "duration_sec": 1368,
-        "start": "2026-11-21 00:00",
-        "time": "12:00 AM"
-    },
+    "last_show_name": "My Hero Academy",
+    "show_counter": 1133,
+    "current_item": null,
     "is_space_power": true
 }

@@ -1,19 +1,8 @@
 {
     "date": "2026-11-20",
-    "generated": "2026-11-20T06:58:12",
+    "generated": "2026-11-20T07:28:55",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Movies/DetectiveConan.mp4",
-            "planet": "Movies",
-            "series": "Movies",
-            "title": "Detective Conan: Countdown to the unknown",
-            "slot_minutes": 120,
-            "duration_sec": 5970,
-            "start": "2026-11-20 07:30",
-            "time": "07:30 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Magic Kaito (S1 570p)/EP 1 - Magic Kaito.mp4",

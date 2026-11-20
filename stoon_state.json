@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Power Rangers Dino Charge",
-    "show_counter": 1123,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/Naruto SD (S1 570p)/EP1 - NarutoSD.mp4",
-        "planet": "Comedy",
-        "series": "Naruto SD (S1 570p)",
-        "title": "Naruto SD",
-        "slot_minutes": 30,
-        "duration_sec": 1311,
-        "start": "2026-11-20 19:30",
-        "time": "07:30 PM"
-    },
+    "last_show_name": "EP 2 - PP",
+    "show_counter": 1125,
+    "current_item": null,
     "is_space_power": false
 }

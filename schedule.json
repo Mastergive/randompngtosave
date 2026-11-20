@@ -1,19 +1,8 @@
 {
     "date": "2026-11-20",
-    "generated": "2026-11-20T14:58:25",
+    "generated": "2026-11-20T15:28:38",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Monsuno (S1 570p)/EP 3 - Monsuno.mp4",
-            "planet": "Action",
-            "series": "Monsuno (S1 570p)",
-            "title": "Monsuno",
-            "slot_minutes": 30,
-            "duration_sec": 1300,
-            "start": "2026-11-20 15:30",
-            "time": "03:30 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Temp/Al motahari Wahid (S1 570p)/EP 1 - AMW.mp4",

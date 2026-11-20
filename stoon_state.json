@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Beda Ball",
-    "show_counter": 1126,
+    "last_show_name": "Driland",
+    "show_counter": 1127,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Tanken Driland (S1 570p)/EP 3 - DRILAND.mp4",
-        "planet": "Adventure",
-        "series": "Tanken Driland (S1 570p)",
-        "title": "Driland",
+        "path": "/home/user/shared/SP/Shows/The fixies (570p)/EP 1 & 2 - The fixies.mp4",
+        "planet": "Science",
+        "series": "The fixies (570p)",
+        "title": "EP 1 & 2 - The fixies",
         "slot_minutes": 30,
-        "duration_sec": 1453,
-        "start": "2026-11-20 21:00",
-        "time": "09:00 PM"
+        "duration_sec": 661,
+        "start": "2026-11-20 21:30",
+        "time": "09:30 PM"
     },
     "is_space_power": false
 }

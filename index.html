@@ -121,7 +121,7 @@ footer{text-align:center;color:var(--mu);padding:0 0 26px;font-size:.85rem}
 </header>
 
 <main class="wrap">
- <section class="stage">
+ <section class="stage" id="live">
   <div class="screen">
    <video id="v" controls autoplay muted playsinline></video>
    <iframe id="od" title="Odysee" allowfullscreen hidden></iframe>
@@ -354,5 +354,6 @@ document.querySelectorAll("[data-n]").forEach(b => b.onclick = () => {
 prefs(); startHls(); load();
 setInterval(load, 3e5); setInterval(loadState, 2e4); setInterval(render, 3e4); setInterval(tick, 1000);
 </script>
+<script src="nav.js"></script>
 </body>
 </html>

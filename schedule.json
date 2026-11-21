@@ -1,19 +1,8 @@
 {
     "date": "2026-11-21",
-    "generated": "2026-11-21T18:28:35",
+    "generated": "2026-11-21T18:58:39",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Mokatil Al Nabil (S1 570p)/EP 1 - MAN.mp4",
-            "planet": "Action",
-            "series": "Mokatil Al Nabil (S1 570p)",
-            "title": "Al Mokatil Nabil",
-            "slot_minutes": 30,
-            "duration_sec": 1300,
-            "start": "2026-11-21 19:00",
-            "time": "07:00 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Binky and Brain (S1 570p)/EP 1 - BAB.mp4",

@@ -23,7 +23,6 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 :focus-visible{outline:3px solid var(--ac);outline-offset:2px}
 bdi{unicode-bidi:isolate}
 .gl{background:var(--sf);border:1px solid var(--sb);-webkit-backdrop-filter:var(--bf);backdrop-filter:var(--bf);box-shadow:var(--sh)}
-[hsl],.pc{--pc:hsl(var(--h) 82% var(--pl))}
 
 .bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:10px 24px;border-width:0 0 1px}
 .bar img{height:36px}.bar h1{font-size:1.5rem;font-weight:800}
@@ -178,10 +177,10 @@ const P = {
   bonbon:{h:325,ar:"بون بون",en:"Bon Bon",img:G+"Planet_Bon_Bon_New.png?raw=true"},
   comedy:{h:38,ar:"كوميديا",en:"Comedy",img:G+"comedy.png?raw=true"},
   zomoroda:{h:145,ar:"زمردة",en:"Zomoroda",img:G+"zomoroda.png?raw=true"},
-  science:{h:255,ar:"علوم",en:"Science", img:G+"Science-Photoroom.png?raw=true"},
-  abjad:{h:20,ar:"أبجد",en:"Abjad", img:G+"Abjad-Photoroom.png?raw=true"},
-  movies:{h:230,ar:"أفلام",en:"Movies", img:G+"image-removebg-preview.png?raw=true"},
-  spacepower:{h:280,ar:"سبيس باور",en:"SpacePower", img:"https://raw.githubusercontent.com/Mastergive/randompngtosave/main/SpacePower.png"}
+  science:{h:255,ar:"علوم",en:"Science",img:G+"Science-Photoroom.png?raw=true"},
+  abjad:{h:20,ar:"أبجد",en:"Abjad",img:G+"Abjad-Photoroom.png?raw=true"},
+  movies:{h:230,ar:"أفلام",en:"Movies",img:G+"image-removebg-preview.png?raw=true"},
+  spacepower:{h:280,ar:"سبيس باور",en:"SpacePower",img:"https://raw.githubusercontent.com/Mastergive/randompngtosave/main/SpacePower.png"}
 };
 const L = {
  ar:{onair:"على الهواء",unmute:"تشغيل الصوت",offT:"البث متوقف حالياً",offS:"تتم إعادة المحاولة تلقائياً، أو جرّب السيرفر 2",s1:"السيرفر 1",s2:"السيرفر 2",chat:"الدردشة المباشرة",
@@ -202,10 +201,9 @@ let th = store.get("th", matchMedia("(prefers-color-scheme: light)").matches ? "
 let ui = store.get("ui", "glass"), tf;
 const t = k => L[lang][k];
 const pl = k => P[(k || "").toLowerCase()] || { h: 230, ar: k, en: k };
-const pn = k => {
-  if ((k || "").toLowerCase() === "spacepower") return lang === "ar" ? "سبيس باور" : "SpacePower";
-  return pl(k)[lang];
-};
+const pn = k => pl(k)[lang];
+/* SpacePower is a mode, not a planet: no "planet" wording for it */
+const pLabel = k => (k || "").toLowerCase() === "spacepower" ? pn(k) : t("p") + pn(k);
 const hm = d => tf.format(d);
 const mmss = s => Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
 const away = ms => { const m = Math.max(1, Math.round(ms / 6e4)); return t("in") + (m < 60 ? m + t("m") : Math.round(m / 60) + t("h")); };
@@ -263,21 +261,19 @@ async function load() {
 }
 async function loadState() {
   for (const u of okUrl ? [okUrl] : CFG.SCHEDULE_URLS) {
-    try { 
-      const s = await getJ(sib(u), 2e4); 
+    try {
+      const s = await getJ(sib(u), 2e4);
       if (s.current_item) {
-        if (s.is_space_power) s.current_item.is_space_power = true;
+        if (s.is_space_power) s.current_item.is_space_power = true; /* mode on: current show counts as SpacePower */
         NOWITEM = clean(s.current_item);
-      } else {
-        NOWITEM = null;
-      }
-      break; 
+      } else NOWITEM = null;
+      break;
     } catch (e) {}
   }
   merge(); render();
 }
 const kind = x => x.ep ? t("ep") + x.ep : t("movie");
-const art = (k, big) => { const p = pl(k); return p.img ? '<img src="' + p.img + '" alt="">' : pn(k)[0]; };
+const art = k => { const p = pl(k); return p.img ? '<img src="' + p.img + '" alt="">' : pn(k)[0]; };
 const score = x => (follow[x.planet] ? 3 : 0) + (saved[x.id] ? 2 : 0) + 8 / (1 + Math.max(0, (x.start - Date.now()) / 36e5));
 
 function render() {
@@ -287,19 +283,14 @@ function render() {
   if (cur) {
     $("#now").style.setProperty("--h", pl(cur.planet).h);
     $("#nArt").innerHTML = art(cur.planet);
-    $("#nPl").textContent = cur.planet === "spacepower" ? "" : (t("p") + pn(cur.planet));
-    if (cur.planet === "spacepower") {
-      $("#nPl").textContent = pn(cur.planet);
-    } else {
-      $("#nPl").textContent = t("p") + pn(cur.planet);
-    }
+    $("#nPl").textContent = pLabel(cur.planet);
     $("#nTitle").innerHTML = "<bdi>" + cur.name + "</bdi>";
     $("#nMeta").textContent = kind(cur) + " · " + cur.mins + t("min");
   } else { $("#nTitle").textContent = "StoonOld"; $("#nMeta").textContent = ""; $("#nPl").textContent = ""; }
   const nx = up[0];
   $("#nNext").innerHTML = nx ? t("next") + "<bdi>" + nx.name + "</bdi>" + t("at") + hm(nx.start) + " · " + away(nx.start - now) : "";
 
-  const card = x => { const p = pl(x.planet); return '<button class="card gl" data-id="' + x.id + '" style="--h:' + p.h + '"><div class="cth">' + (saved[x.id] ? "<u>★</u>" : "") + art(x.planet) + "<time>" + hm(x.start) + "</time></div><b><bdi>" + x.name + "</bdi></b><small>" + (x.planet === "spacepower" ? pn(x.planet) : (t("p") + pn(x.planet))) + " · " + kind(x) + '</small><small class="in">' + away(x.start - now) + "</small></button>"; };
+  const card = x => { const p = pl(x.planet); return '<button class="card gl" data-id="' + x.id + '" style="--h:' + p.h + '"><div class="cth">' + (saved[x.id] ? "<u>★</u>" : "") + art(x.planet) + "<time>" + hm(x.start) + "</time></div><b><bdi>" + x.name + "</bdi></b><small>" + pLabel(x.planet) + " · " + kind(x) + '</small><small class="in">' + away(x.start - now) + "</small></button>"; };
   const picks = up.filter(x => x.start - now < 12 * 36e5).map(x => ({ x, s: score(x) })).sort((a, b) => b.s - a.s).slice(0, 8).map(o => o.x);
   $("#fy").innerHTML = picks.length ? picks.map(card).join("") : "<p class='sub'>" + t("none") + "</p>";
 
@@ -313,7 +304,8 @@ function render() {
   $("#gd").innerHTML = g + '<div id="nl" data-l="' + t("now") + '"></div>';
   $("#gd").style.width = 12 * 30 * PX + "px";
 
-  $("#pls").innerHTML = [...new Set(ENT.map(x => x.planet))].map(k => '<button class="pl' + (follow[k] ? " on" : "") + '" data-k="' + k + '" style="--h:' + pl(k).h + '"><span>' + art(k) + "</span>" + pn(k) + "</button>").join("");
+  /* SpacePower is not a planet, so it is not followable */
+  $("#pls").innerHTML = [...new Set(ENT.map(x => x.planet))].filter(k => k !== "spacepower").map(k => '<button class="pl' + (follow[k] ? " on" : "") + '" data-k="' + k + '" style="--h:' + pl(k).h + '"><span>' + art(k) + "</span>" + pn(k) + "</button>").join("");
   tick();
 }
 function tick() {

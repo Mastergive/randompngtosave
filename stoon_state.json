@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Al Mokatil Nabil",
-    "show_counter": 1141,
+    "last_show_name": "Binky and Brain",
+    "show_counter": 1142,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Binky and Brain (S1 570p)/EP 1 - BAB.mp4",
-        "planet": "Comedy",
-        "series": "Binky and Brain (S1 570p)",
-        "title": "Binky and Brain",
+        "path": "/home/user/shared/SP/Shows/Boasa (S1 570p)/EP 4 - Boasa.mp4",
+        "planet": "Adventure",
+        "series": "Boasa (S1 570p)",
+        "title": "Boasae",
         "slot_minutes": 30,
-        "duration_sec": 1239,
-        "start": "2026-11-21 04:30",
-        "time": "04:30 AM"
+        "duration_sec": 1487,
+        "start": "2026-11-21 05:00",
+        "time": "05:00 AM"
     },
     "is_space_power": false
 }

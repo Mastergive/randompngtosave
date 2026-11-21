@@ -1,19 +1,8 @@
 {
     "date": "2026-11-21",
-    "generated": "2026-11-21T12:58:39",
+    "generated": "2026-11-21T13:28:31",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Yo kai watch (S1 570p)/EP 1 - YKW.mp4",
-            "planet": "Adventure",
-            "series": "Yo kai watch (S1 570p)",
-            "title": "Yo Kai Watch",
-            "slot_minutes": 30,
-            "duration_sec": 1301,
-            "start": "2026-11-21 13:30",
-            "time": "01:30 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Cocotama (S1 570p)/EP 1 - Cocotama.mp4",

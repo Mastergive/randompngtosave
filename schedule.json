@@ -1,19 +1,8 @@
 {
     "date": "2026-11-21",
-    "generated": "2026-11-21T01:58:26",
+    "generated": "2026-11-21T02:28:39",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Temp/Dice (S1 570p)/EP 1 - Dice.mp4",
-            "planet": "Action",
-            "series": "Temp",
-            "title": "Dice",
-            "slot_minutes": 30,
-            "duration_sec": 1385,
-            "start": "2026-11-21 02:30",
-            "time": "02:30 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/PI PO PA (S1 570p)/EP 1 - PI PO PA.mp4",

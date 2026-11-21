@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Franklin and friends",
-    "show_counter": 1159,
+    "last_show_name": "Detective Conan: Countdown to the unknown",
+    "show_counter": 1160,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Movies/DetectiveConan.mp4",
-        "planet": "Movies",
-        "series": "Movies",
-        "title": "Detective Conan: Countdown to the unknown",
-        "slot_minutes": 120,
-        "duration_sec": 5970,
-        "start": "2026-11-21 15:00",
-        "time": "03:00 PM"
+        "path": "/home/user/shared/SP/Shows/Magic Kaito (S1 570p)/EP 1 - Magic Kaito.mp4",
+        "planet": "Action",
+        "series": "Magic Kaito (S1 570p)",
+        "title": "Magic Kaito",
+        "slot_minutes": 30,
+        "duration_sec": 1323,
+        "start": "2026-11-21 17:00",
+        "time": "05:00 PM"
     },
     "is_space_power": false
 }

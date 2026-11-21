@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Detective Conan",
-    "show_counter": 1135,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/HxH classic (S1 570p)/EP 1 - Kanas.mp4",
-        "planet": "Adventure",
-        "series": "HxH classic (S1 570p)",
-        "title": "Al Kanas (Hunter X Hunter)",
-        "slot_minutes": 30,
-        "duration_sec": 1402,
-        "start": "2026-11-21 01:30",
-        "time": "01:30 AM"
-    },
-    "is_space_power": true
+    "last_show_name": "Al Kanas (Hunter X Hunter)",
+    "show_counter": 1136,
+    "current_item": null,
+    "is_space_power": false
 }

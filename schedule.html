@@ -1,77 +1,265 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar" dir="rtl" data-th="dark" data-ui="glass">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StoonOld - Schedule</title>
+<link rel="icon" href="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
 <style>
-    body { background: #0b0e14; color: #e0e0e0; font-family: 'Trebuchet MS', sans-serif; display: flex; justify-content: center; padding: 40px; }
-    .container { width: 500px; background: #161b22; border: 2px solid #30363d; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    .header { background: #1f6feb; padding: 20px; text-align: center; }
-    .header h1 { margin: 0; font-size: 24px; letter-spacing: 2px; }
-    
-    .current { background: #238636; padding: 15px; display: flex; align-items: center; border-bottom: 4px solid #2ea043; }
-    .current-info { margin-left: 15px; }
-    .current-info b { font-size: 1.2em; display: block; }
-    
-    .list-wrapper { max-height: 600px; overflow-y: auto; padding: 10px; }
-    .show-row { display: flex; align-items: center; padding: 12px; margin-bottom: 8px; background: #0d1117; border-radius: 8px; border-left: 4px solid transparent; }
-    
-    /* Planet Colors */
-    .adventure { border-left-color: #ff9800; }
-    .sports { border-left-color: #f44336; }
-    .action { border-left-color: #607d8b; }
-    .science { border-left-color: #2196f3; }
-    .zomoroda { border-left-color: #e91e63; }
-    .comedy { border-left-color: #ffeb3b; }
-    .classic { border-left-color: #795548; }
-    .abjad { border-left-color: #4caf50; }
+:root{color-scheme:dark;--bg:#090a14;--tx:#f4f5ff;--mu:#a3a8cc;--ac:#ffc400;--acx:#1a1300;--lv:#ff3d63;--sf:#151833;--sb:#2a2f5e;--bf:none;--sh:none;--blob:1;--pl:64%;--ga:22%;--gb:38%;--pcx:#10122a}
+[data-th=light]{color-scheme:light;--bg:#eceffb;--tx:#14162b;--mu:#565c86;--ac:#f0a800;--lv:#e8264f;--sf:#fff;--sb:#d3d8ef;--pl:42%;--ga:90%;--gb:74%;--pcx:#fff}
+[data-ui=glass]{--sf:rgba(26,30,68,.42);--sb:rgba(255,255,255,.18);--bf:blur(22px) saturate(1.7);--sh:inset 0 1px 0 rgba(255,255,255,.28),0 10px 34px rgba(0,0,0,.28)}
+[data-ui=glass][data-th=light]{--sf:rgba(255,255,255,.5);--sb:rgba(255,255,255,.85);--sh:inset 0 1px 0 #fff,0 10px 34px rgba(60,70,140,.18)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 15px/1.5 Cairo,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:-10%;z-index:-1;pointer-events:none;opacity:var(--blob);
+ background:radial-gradient(40% 35% at 12% 18%,hsl(172 80% 50%/.3),transparent),radial-gradient(35% 35% at 88% 8%,hsl(325 85% 58%/.26),transparent),radial-gradient(45% 40% at 72% 92%,hsl(255 85% 62%/.3),transparent)}
+[data-ui=classic]{--blob:0}
+[data-th=light][data-ui=glass]{--blob:.7}
+h1,h2,h3{font-family:"Baloo Bhaijaan 2",Cairo,sans-serif;margin:0;line-height:1.2}
+button,input{font:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+bdi{unicode-bidi:isolate}
+.gl{background:var(--sf);border:1px solid var(--sb);-webkit-backdrop-filter:var(--bf);backdrop-filter:var(--bf);box-shadow:var(--sh)}
 
-    .planet-icon { width: 35px; height: 35px; margin-right: 15px; border-radius: 50%; background: #30363d; object-fit: cover; }
-    .show-name { flex-grow: 1; font-weight: bold; }
-    .planet-label { font-size: 0.75em; opacity: 0.6; text-transform: uppercase; }
+.bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:10px 24px;border-width:0 0 1px}
+.bar img{height:36px}.bar h1{font-size:1.5rem;font-weight:800}
+.sp{flex:1}
+.ctl{display:flex;gap:6px}
+.ctl button,.ctl a{display:grid;place-items:center;min-width:38px;height:34px;padding:0 12px;border-radius:99px;font-weight:600;background:var(--sf);border:1px solid var(--sb)}
+.ctl button:hover,.ctl a:hover{border-color:var(--ac)}
 
-    /* IMAGE OVERRIDES - Add your links here */
-    .img-adventure { content: url('https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Adventure-Photoroom.png'); }
-    .img-sports { content: url('https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Sports-Photoroom.png'); }
-    .img-action { content: url('https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Action_planet-Photoroom.png'); }
-    .img-science { content: url('https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Science-Photoroom.png'); }
-    .img-zomoroda { content: url('https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/%D9%83%D9%88%D9%83%D8%A8_%D8%B2%D9%85%D8%B1%D8%AF%D8%A9-Photoroom.png'); }
-    .img-comedy { content: url('https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/%D9%83%D9%88%D9%83%D8%A8_%D9%83%D9%88%D9%85%D9%8A%D8%AF%D9%8A%D8%A7-Photoroom.png'); }
-    .img-abjad { content: url('https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/Abjad-Photoroom.png'); }
+.wrap{max-width:860px;margin:0 auto;padding:22px 18px 50px;display:grid;gap:18px}
+.now{--pc:hsl(var(--h) 82% var(--pl));display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;padding:16px 18px;border-radius:20px}
+.art{width:84px;height:84px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,hsl(var(--h) 55% var(--ga)),hsl(var(--h) 75% var(--gb)));font:800 2.2rem "Baloo Bhaijaan 2",sans-serif;color:#fff}
+.art img{width:76%;height:76%;object-fit:contain}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:0 12px;border-radius:99px;background:var(--lv);color:#fff;font:700 .8rem "Baloo Bhaijaan 2",sans-serif}
+.badge i{width:7px;height:7px;border-radius:50%;background:#fff;animation:bl 1.6s infinite}
+@keyframes bl{50%{opacity:.3}}@media(prefers-reduced-motion:reduce){.badge i{animation:none}}
+.now h2{font-size:1.7rem;font-weight:800;margin:2px 0}
+.meta{color:var(--mu);font-size:.92rem}
+.pb{margin:8px 0 2px}
+.pbt{position:relative;height:8px;border-radius:99px;background:color-mix(in srgb,var(--tx) 16%,transparent)}
+.pbt span{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--pc);width:0}
+.pbt i{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--pc),0 2px 8px rgba(0,0,0,.4);left:0}
+.pb.end .pbt span{background:var(--lv)}.pb.end .pbt i{box-shadow:0 0 0 3px var(--lv),0 2px 8px rgba(0,0,0,.4)}
+.pbl{display:flex;justify-content:space-between;margin-top:6px;font:600 .85rem Cairo,sans-serif;color:var(--mu)}
+.pbl em{font-style:normal;color:var(--tx);font-weight:700}.pb.end .pbl em{color:var(--lv)}
+
+.tools{display:grid;gap:12px}
+.tools input{width:100%;height:42px;padding:0 16px;border-radius:99px;border:1px solid var(--sb);background:var(--sf);-webkit-backdrop-filter:var(--bf);backdrop-filter:var(--bf)}
+.tools input::placeholder{color:var(--mu)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chip{--pc:hsl(var(--h,45) 82% var(--pl));flex:none;display:flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:99px;border:1px solid var(--sb);background:var(--sf);font-weight:600;white-space:nowrap}
+.chip img{width:20px;height:20px;object-fit:contain}
+.chip.on{background:var(--pc);border-color:var(--pc);color:var(--pcx)}
+
+.day{margin:6px 0 -4px;font:800 1.15rem "Baloo Bhaijaan 2",sans-serif;color:var(--mu)}
+.list{display:grid;gap:8px}
+.row{--pc:hsl(var(--h) 82% var(--pl));position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;width:100%;padding:10px 14px;border-radius:14px;text-align:start;border-inline-start:6px solid var(--pc)}
+.row::before{content:"";position:absolute;inset:0;width:var(--p,0%);background:var(--pc);opacity:.2}
+.row>*{position:relative}
+.row.past{opacity:.5}
+.row time{flex:none;min-width:70px;font:800 1.15rem "Baloo Bhaijaan 2",sans-serif;color:var(--pc)}
+.th{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,hsl(var(--h) 55% var(--ga)),hsl(var(--h) 75% var(--gb)));color:#fff;font:800 1.2rem "Baloo Bhaijaan 2",sans-serif}
+.th img{width:72%;height:72%;object-fit:contain}
+.inf{flex:1;min-width:0}
+.inf b{display:block;font:700 1.05rem/1.25 "Baloo Bhaijaan 2",Cairo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inf small{color:var(--mu)}
+.sts{flex:none;font-size:.82rem;font-weight:600;color:var(--mu)}
+.sts.now{color:var(--lv)}
+.star{flex:none;font-size:1.2rem;color:var(--mu)}.star.on{color:var(--ac)}
+.empty{color:var(--mu);text-align:center;padding:20px}
+.jump{position:fixed;bottom:20px;inset-inline-end:20px;z-index:30;padding:6px 18px;border-radius:99px;background:var(--ac);color:var(--acx);font-weight:700;box-shadow:0 8px 24px -6px #0008}
+@media(max-width:560px){.bar{padding:8px 12px;gap:8px}.bar h1{display:none}.sts{display:none}.row time{min-width:62px}}
 </style>
 </head>
 <body>
+<header class="bar gl">
+ <img src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png" alt="">
+ <h1 data-i="title"></h1><span class="sp"></span>
+ <div class="ctl">
+  <a id="tv" href="#" hidden data-i="tv"></a>
+  <button id="bL" type="button" aria-label="Language"></button>
+  <button id="bT" type="button" aria-label="Theme"></button>
+  <button id="bU" type="button" aria-label="Style"></button>
+ </div>
+</header>
 
-<div class="container">
-    <div class="header"><h1>STOO-OLD TV</h1></div>
-    
-    <div class="current">
-        <img class="planet-icon img-sports" alt="ADV">
-        <div class="current-info">
-            <small>ON AIR NOW</small>
-            <b>Abtal Kora</b>
-        </div>
-    </div>
+<main class="wrap">
+ <section class="now gl" id="now" style="--h:45">
+  <div class="art" id="nArt">S</div>
+  <div>
+   <span class="badge"><i></i><span data-i="onair"></span></span>
+   <h2 id="nTitle"></h2>
+   <div class="meta" id="nMeta"></div>
+   <div class="pb" id="pb" dir="ltr">
+    <div class="pbt"><span id="pbf"></span><i id="pbk"></i></div>
+    <div class="pbl"><span id="pe">0:00</span><em id="pst"></em><span id="pr">-0:00</span></div>
+   </div>
+  </div>
+ </section>
 
-    <div class="list-wrapper">
-        <div class="show-row sports"><img class="planet-icon img-sports"><div class="show-name">Abtal Kora<br><span class="planet-label">Sports</span></div></div>
-        <div class="show-row action"><img class="planet-icon img-action"><div class="show-name">Dice<br><span class="planet-label">Action</span></div></div>
-        <div class="show-row science"><img class="planet-icon img-science"><div class="show-name">Al Motahari Wahid<br><span class="planet-label">Science</span></div></div>
-        <div class="show-row adventure"><img class="planet-icon img-adventure"><div class="show-name">Beda Ball<br><span class="planet-label">Adventure</span></div></div>
-        <div class="show-row action"><img class="planet-icon img-action"><div class="show-name">Dice<br><span class="planet-label">Action</span></div></div>
-        <div class="show-row action"><img class="planet-icon img-action"><div class="show-name">Black Cat<br><span class="planet-label">Action</span></div></div>
-        <div class="show-row adventure"><img class="planet-icon img-adventure"><div class="show-name">Boasa<br><span class="planet-label">Adventure</span></div></div>
-        <div class="show-row adventure"><img class="planet-icon img-adventure"><div class="show-name">Beda Ball<br><span class="planet-label">Adventure</span></div></div>
-        <div class="show-row adventure"><img class="planet-icon img-adventure"><div class="show-name">Sokor Al Ard<br><span class="planet-label">Adventure</span></div></div>
-        <div class="show-row science"><img class="planet-icon img-science"><div class="show-name">Al Motahari Wahid<br><span class="planet-label">Science</span></div></div>
-        <div class="show-row zomoroda"><img class="planet-icon img-zomoroda"><div class="show-name">Iroka<br><span class="planet-label">Zomoroda</span></div></div>
-        <div class="show-row action"><img class="planet-icon img-action"><div class="show-name">Power Rangers Dino Charge<br><span class="planet-label">Action</span></div></div>
-        <div class="show-row comedy"><img class="planet-icon img-comedy"><div class="show-name">Pink Panther<br><span class="planet-label">Comedy</span></div></div>
-        <div class="show-row zomoroda"><img class="planet-icon img-zomoroda"><div class="show-name">Flona's Adventure<br><span class="planet-label">Zomoroda</span></div></div>
-        <div class="show-row action"><img class="planet-icon img-action"><div class="show-name">Monsuno<br><span class="planet-label">Action</span></div></div>
-        <div class="show-row action"><img class="planet-icon img-action"><div class="show-name">Detective Conan S8<br><span class="planet-label">Action</span></div></div>
-        <div class="show-row abjad"><img class="planet-icon img-abjad"><div class="show-name">Pocoyo<br><span class="planet-label">Abjad</span></div></div>
-        <div class="show-row comedy"><img class="planet-icon img-comedy"><div class="show-name">Naruto SD<br><span class="planet-label">Comedy</span></div></div>
-    </div>
-</div>
+ <section class="tools">
+  <input id="q" type="search" data-ph="search" autocomplete="off">
+  <div class="chips" id="chips"></div>
+ </section>
 
+ <section id="out" class="list"></section>
+</main>
+<button class="jump" id="jump" type="button" data-i="jump"></button>
+
+<script>
+/* ===== Settings / الإعدادات ===== */
+const CFG = {
+  SCHEDULE_URLS: [
+    "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/mainn/schedule.json",
+    "https://raw.githubusercontent.com/Mastergive/randompngtosave/refs/heads/main/schedule.json"
+  ],
+  OFFSET: "+01:00", // UTC offset of the stream PC / فرق توقيت جهاز البث
+  TV_URL: "" // optional: link to your TV page
+};
+const G = "https://raw.githubusercontent.com/Mastergive/randompngtosave/main/";
+const P = {
+  action:{h:8,ar:"أكشن",en:"Action",img:G+"Action_planet-Photoroom.png"},
+  adventure:{h:172,ar:"مغامرات",en:"Adventure",img:G+"Adventure-Photoroom.png"},
+  sports:{h:210,ar:"رياضة",en:"Sports",img:G+"Sports-Photoroom.png"},
+  bonbon:{h:325,ar:"بون بون",en:"Bon Bon",img:G+"Planet_Bon_Bon_New.png"},
+  comedy:{h:38,ar:"كوميديا",en:"Comedy",img:G+"comedy.png"},
+  zomoroda:{h:145,ar:"زمردة",en:"Zomoroda",img:G+"zomoroda.png"},
+  science:{h:255,ar:"علوم",en:"Science",img:G+"Science-Photoroom.png"},
+  abjad:{h:20,ar:"أبجد",en:"Abjad",img:G+"Abjad-Photoroom.png"},
+  movies:{h:230,ar:"أفلام",en:"Movies",img:G+"image-removebg-preview.png"},
+  spacepower:{h:280,ar:"سبيس باور",en:"SpacePower",img:G+"SpacePower.png"}
+};
+const L = {
+ ar:{title:"جدول البث",onair:"على الهواء",search:"ابحث عن مسلسل...",all:"الكل",saved:"المحفوظة",jump:"الآن",tv:"التلفزيون",glass:"زجاجي",classic:"عادي",
+  p:"كوكب ",ep:"الحلقة ",movie:"فيلم",min:" دقيقة",in:"بعد ",m:" د",h:" س",nowS:"الآن",done:"انتهت",load:"جاري تحميل الجدول",err:"تعذر تحميل الجدول",none:"لا توجد نتائج",
+  s0:"بدأت للتو",s1:"في بدايتها",s2:"في المنتصف",s3:"في النصف الثاني",s4:"تقترب من النهاية",s5:"انتهت، فقرة جديدة قريباً",today:"اليوم",tom:"غداً"},
+ en:{title:"Schedule",onair:"On air",search:"Search shows...",all:"All",saved:"Saved",jump:"Now",tv:"TV",glass:"Glass",classic:"Classic",
+  p:"",ep:"Episode ",movie:"Movie",min:" min",in:"in ",m:" min",h:" h",nowS:"Now",done:"Done",load:"Loading schedule",err:"Could not load the schedule",none:"No results",
+  s0:"Just started",s1:"Early on",s2:"Halfway through",s3:"In the second half",s4:"Almost over",s5:"Finished, next show soon",today:"Today",tom:"Tomorrow"}
+};
+const $ = s => document.querySelector(s);
+const store = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+/* same storage keys as the TV page: language, theme, style and saved shows carry over */
+let lang = store.get("lang", (navigator.language || "en").startsWith("ar") ? "ar" : "en");
+let th = store.get("th", matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+let ui = store.get("ui", "glass"), tf, df, filter = "all", q = "";
+let SCH = [], ENT = [], NOWITEM = null, okUrl = null, saved = store.get("saved", {});
+const t = k => L[lang][k];
+const pl = k => P[(k || "").toLowerCase()] || { h: 230, ar: k, en: k };
+const pn = k => pl(k)[lang];
+const pLabel = k => (k || "").toLowerCase() === "spacepower" ? pn(k) : t("p") + pn(k);
+const art = k => { const p = pl(k); return p.img ? '<img src="' + p.img + '" alt="">' : pn(k)[0]; };
+const hm = d => tf.format(d);
+const mmss = s => Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
+const away = ms => { const m = Math.max(1, Math.round(ms / 6e4)); return t("in") + (m < 60 ? m + t("m") : Math.round(m / 60) + t("h")); };
+const kind = x => x.ep ? t("ep") + x.ep : t("movie");
+
+function prefs() {
+  const d = document.documentElement;
+  d.lang = lang; d.dir = lang === "ar" ? "rtl" : "ltr"; d.dataset.th = th; d.dataset.ui = ui;
+  document.querySelectorAll("[data-i]").forEach(e => e.textContent = t(e.dataset.i));
+  $("#q").placeholder = t("search");
+  $("#bL").textContent = lang === "ar" ? "EN" : "ع";
+  $("#bT").textContent = th === "dark" ? "☀" : "☾";
+  $("#bU").textContent = ui === "glass" ? t("classic") : t("glass");
+  document.title = "StoonOld - " + t("title");
+  const loc = lang === "ar" ? "ar-u-nu-latn" : "en-US";
+  tf = new Intl.DateTimeFormat(loc, { hour: "numeric", minute: "2-digit" });
+  df = new Intl.DateTimeFormat(loc, { weekday: "long", day: "numeric", month: "long" });
+}
+$("#bL").onclick = () => { lang = lang === "ar" ? "en" : "ar"; store.set("lang", lang); prefs(); render(); };
+$("#bT").onclick = () => { th = th === "dark" ? "light" : "dark"; store.set("th", th); prefs(); };
+$("#bU").onclick = () => { ui = ui === "glass" ? "classic" : "glass"; store.set("ui", ui); prefs(); };
+if (CFG.TV_URL) { $("#tv").href = CFG.TV_URL; $("#tv").hidden = false; }
+
+/* Data: schedule.json + stoon_state.json (what is really playing overrides the schedule) */
+function clean(e) {
+  let planet = (e.planet || "").toLowerCase();
+  if (e.is_space_power) planet = "spacepower";
+  const name = planet === "movies" ? e.title : (e.series || e.title).replace(/\s*\((?:S\d+\s*)?\d+p\)\s*$/i, "");
+  const m = /EP\s*(\d+(?:\s*&\s*\d+)?)/i.exec(e.path || "");
+  const start = new Date(e.start.replace(" ", "T") + ":00" + CFG.OFFSET);
+  return { id: e.start, planet, name, ep: m ? m[1] : "", mins: e.slot_minutes, dur: e.duration_sec, start, end: new Date(+start + e.slot_minutes * 6e4) };
+}
+async function getJ(u, step) { const r = await fetch(u + "?t=" + Math.floor(Date.now() / step), { cache: "no-store" }); if (!r.ok) throw 0; return r.json(); }
+const sib = u => u.replace(/schedule\.json$/, "stoon_state.json");
+function merge() {
+  const n = NOWITEM;
+  ENT = SCH.filter(x => !(n && x.start < n.end && x.end > n.start));
+  if (n) ENT.push(n);
+  ENT.sort((a, b) => a.start - b.start);
+}
+const getCur = now => (NOWITEM && NOWITEM.start <= now && now < NOWITEM.end) ? NOWITEM : ENT.find(x => x.start <= now && now < x.end);
+async function load() {
+  for (const u of okUrl ? [okUrl] : CFG.SCHEDULE_URLS) { try { SCH = ((await getJ(u, 3e5)).entries || []).map(clean); okUrl = u; break; } catch (e) {} }
+  await loadState();
+}
+async function loadState() {
+  for (const u of okUrl ? [okUrl] : CFG.SCHEDULE_URLS) {
+    try {
+      const s = await getJ(sib(u), 2e4);
+      if (s.current_item) { if (s.is_space_power) s.current_item.is_space_power = true; NOWITEM = clean(s.current_item); } else NOWITEM = null;
+      break;
+    } catch (e) {}
+  }
+  merge(); render();
+}
+
+/* Render */
+const dayKey = d => d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+function dayName(d) {
+  const n = new Date(), tm = new Date(+n + 864e5);
+  return dayKey(d) === dayKey(n) ? t("today") + " · " + df.format(d) : dayKey(d) === dayKey(tm) ? t("tom") + " · " + df.format(d) : df.format(d);
+}
+function chips() {
+  const ks = [...new Set(ENT.map(x => x.planet))];
+  $("#chips").innerHTML = '<button class="chip' + (filter === "all" ? " on" : "") + '" data-f="all">' + t("all") + '</button><button class="chip' + (filter === "saved" ? " on" : "") + '" data-f="saved">★ ' + t("saved") + "</button>" +
+    ks.map(k => '<button class="chip' + (filter === k ? " on" : "") + '" data-f="' + k + '" style="--h:' + pl(k).h + '">' + (pl(k).img ? '<img src="' + pl(k).img + '" alt="">' : "") + pn(k) + "</button>").join("");
+}
+function render() {
+  const now = Date.now(), cur = getCur(now);
+  if (!ENT.length) { $("#nTitle").textContent = okUrl === null ? t("load") : t("err"); return; }
+  if (cur) {
+    $("#now").style.setProperty("--h", pl(cur.planet).h);
+    $("#nArt").innerHTML = art(cur.planet);
+    $("#nTitle").innerHTML = "<bdi>" + cur.name + "</bdi>";
+    $("#nMeta").textContent = pLabel(cur.planet) + " · " + kind(cur) + " · " + cur.mins + t("min");
+  } else { $("#nTitle").textContent = "StoonOld"; $("#nMeta").textContent = ""; }
+  chips();
+  const list = ENT.filter(x => (filter === "all" || (filter === "saved" ? saved[x.id] : x.planet === filter)) && (x.name + " " + pn(x.planet)).toLowerCase().includes(q));
+  let html = "", last = "";
+  list.forEach(x => {
+    const dk = dayKey(x.start);
+    if (dk !== last) { html += '<h3 class="day">' + dayName(x.start) + "</h3>"; last = dk; }
+    const c = x === cur, past = x.end <= now;
+    html += '<button class="row gl' + (c ? " cur" : "") + (past ? " past" : "") + '" data-id="' + x.id + '" style="--h:' + pl(x.planet).h + '"><time>' + hm(x.start) + '</time><span class="th">' + art(x.planet) + '</span><span class="inf"><b><bdi>' + x.name + "</bdi></b><small>" + pLabel(x.planet) + " · " + kind(x) + " · " + x.mins + t("min") + '</small></span><span class="sts' + (c ? " now" : "") + '">' + (c ? t("nowS") : past ? t("done") : away(x.start - now)) + '</span><span class="star' + (saved[x.id] ? " on" : "") + '">' + (saved[x.id] ? "★" : "☆") + "</span></button>";
+  });
+  $("#out").innerHTML = html || '<div class="empty">' + t("none") + "</div>";
+  tick();
+}
+function tick() {
+  const now = Date.now(), cur = getCur(now);
+  if (!cur) return;
+  const el = Math.min(cur.dur, (now - cur.start) / 1e3), pct = el / cur.dur * 100;
+  $("#pbf").style.width = pct + "%"; $("#pbk").style.left = pct + "%";
+  $("#pe").textContent = mmss(el); $("#pr").textContent = "-" + mmss(cur.dur - el);
+  $("#pb").classList.toggle("end", pct >= 88);
+  $("#pst").textContent = t((now - cur.start) / 1e3 >= cur.dur ? "s5" : pct < 8 ? "s0" : pct < 38 ? "s1" : pct < 62 ? "s2" : pct < 88 ? "s3" : "s4");
+  const row = document.querySelector(".row.cur"); if (row) row.style.setProperty("--p", Math.min(100, (now - cur.start) / (cur.end - cur.start) * 100) + "%");
+}
+$("#chips").onclick = e => { const b = e.target.closest(".chip"); if (b) { filter = b.dataset.f; render(); } };
+$("#q").oninput = e => { q = e.target.value.trim().toLowerCase(); render(); };
+$("#out").onclick = e => { const b = e.target.closest(".row"); if (!b) return; const id = b.dataset.id; saved[id] ? delete saved[id] : saved[id] = 1; store.set("saved", saved); render(); };
+$("#jump").onclick = () => { const r = document.querySelector(".row.cur"); (r || $("#now")).scrollIntoView({ behavior: "smooth", block: "center" }); };
+
+prefs(); load();
+setInterval(load, 3e5); setInterval(loadState, 2e4); setInterval(render, 3e4); setInterval(tick, 1000);
+</script>
 </body>
 </html>

@@ -1,325 +1,222 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl" data-th="dark" data-ui="glass">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Radio Spacetoon - 24/7 Live Stream</title>
-  <style>
-    :root {
-      --primary-color: #1a1a2e;
-      --accent-color: #ff9900;
-      --card-bg: #16213e;
-      --text-color: #ffffff;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radio Spacetoon</title>
+<link rel="icon" href="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#090a14;--tx:#f4f5ff;--mu:#a3a8cc;--ac:#ffc400;--acx:#1a1300;--lv:#ff3d63;--sf:#151833;--sb:#2a2f5e;--bf:none;--sh:none;--blob:1}
+[data-th=light]{color-scheme:light;--bg:#eceffb;--tx:#14162b;--mu:#565c86;--ac:#f0a800;--lv:#e8264f;--sf:#fff;--sb:#d3d8ef}
+[data-ui=glass]{--sf:rgba(26,30,68,.42);--sb:rgba(255,255,255,.18);--bf:blur(22px) saturate(1.7);--sh:inset 0 1px 0 rgba(255,255,255,.28),0 10px 34px rgba(0,0,0,.28)}
+[data-ui=glass][data-th=light]{--sf:rgba(255,255,255,.5);--sb:rgba(255,255,255,.85);--sh:inset 0 1px 0 #fff,0 10px 34px rgba(60,70,140,.18)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 15px/1.5 Cairo,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:-10%;z-index:-1;pointer-events:none;opacity:var(--blob);
+ background:radial-gradient(40% 35% at 12% 18%,hsl(172 80% 50%/.3),transparent),radial-gradient(35% 35% at 88% 8%,hsl(325 85% 58%/.26),transparent),radial-gradient(45% 40% at 72% 92%,hsl(255 85% 62%/.3),transparent)}
+[data-ui=classic]{--blob:0}
+[data-th=light][data-ui=glass]{--blob:.7}
+h1,h2,h3{font-family:"Baloo Bhaijaan 2",Cairo,sans-serif;margin:0;line-height:1.2}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+bdi{unicode-bidi:isolate}
+.gl{background:var(--sf);border:1px solid var(--sb);-webkit-backdrop-filter:var(--bf);backdrop-filter:var(--bf);box-shadow:var(--sh)}
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--primary-color);
-      color: var(--text-color);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
+.bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:10px 24px;border-width:0 0 1px}
+.bar img{height:36px}.bar h1{font-size:1.5rem;font-weight:800}
+.onair{display:flex;align-items:center;gap:6px;padding:0 12px;border-radius:99px;background:#444;color:#fff;font:700 .8rem "Baloo Bhaijaan 2",sans-serif}
+.onair i{width:7px;height:7px;border-radius:50%;background:#fff}
+.onair.live{background:var(--lv)}.onair.live i{animation:bl 1.6s infinite}
+@keyframes bl{50%{opacity:.3}}
+.sp{flex:1}
+.ctl{display:flex;gap:6px}
+.ctl button,.ctl a{display:grid;place-items:center;min-width:38px;height:34px;padding:0 12px;border-radius:99px;font-weight:600;background:var(--sf);border:1px solid var(--sb)}
+.ctl button:hover,.ctl a:hover{border-color:var(--ac)}
 
-    .player-card {
-      background-color: var(--card-bg);
-      border-radius: 16px;
-      padding: 2rem;
-      width: 100%;
-      max-width: 380px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      position: relative;
-      overflow: hidden;
-    }
+.wrap{max-width:480px;margin:0 auto;padding:28px 18px 40px;display:grid;gap:18px}
+.player{border-radius:26px;padding:26px 24px;text-align:center}
+.disc{position:relative;width:176px;height:176px;margin:0 auto 18px}
+.disc::before{content:"";position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(from 0deg,#2fc4b2,#ffd23f,#ff5d8f,#9b86ff,#2fc4b2);filter:blur(14px);opacity:.55}
+.art{position:relative;width:100%;height:100%;border-radius:50%;object-fit:cover;border:4px solid var(--sb);background:#0f172a;animation:spin 18s linear infinite;animation-play-state:paused;transition:opacity .4s}
+.disc.on .art{animation-play-state:running}
+.disc::after{content:"";position:absolute;inset:0;margin:auto;width:26px;height:26px;border-radius:50%;background:var(--bg);border:3px solid var(--sb)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.art,.onair.live i{animation:none}}
+.fade{opacity:0}
+.eq{height:64px;border-radius:12px;margin-bottom:16px;background:color-mix(in srgb,var(--bg) 70%,transparent);border:1px solid var(--sb);overflow:hidden}
+canvas{width:100%;height:100%;display:block}
+.st{font:800 1.7rem "Baloo Bhaijaan 2",sans-serif}
+.np{min-height:3.2em;margin:4px 0 16px;transition:opacity .4s}
+.np b{display:block;font:700 1.15rem/1.3 "Baloo Bhaijaan 2",Cairo,sans-serif}
+.np span{color:var(--ac);font-weight:600}
+.play{width:72px;height:72px;border-radius:50%;background:var(--ac);color:var(--acx);font-size:1.6rem;display:grid;place-items:center;margin:0 auto;box-shadow:0 8px 24px -6px var(--ac);transition:transform .2s}
+.play:hover{transform:scale(1.06)}
+.vol{display:flex;align-items:center;gap:12px;margin:20px auto 0;width:86%}
+.vol button{padding:2px 12px;border-radius:99px;border:1px solid var(--sb);font-size:.85rem;font-weight:600;white-space:nowrap}
+.vol input{flex:1;accent-color:var(--ac);cursor:pointer}
+.msg{min-height:1.5em;margin-top:10px;color:var(--mu);font-size:.9rem}
 
-    .album-art-container {
-      width: 130px;
-      height: 130px;
-      margin: 0 auto 1rem auto;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      background-color: #0f172a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .album-art {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: opacity 0.5s ease-in-out;
-    }
-
-    .visualizer-container {
-      width: 100%;
-      height: 60px;
-      background-color: #080c14;
-      border-radius: 8px;
-      margin-bottom: 1.2rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
-    }
-
-    canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .status-badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 12px;
-      margin-bottom: 1rem;
-      background-color: #444;
-      transition: background-color 0.3s ease;
-    }
-
-    .status-badge.live {
-      background-color: #e50914;
-      box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
-      animation: pulse 2s infinite;
-    }
-
-    .station-title {
-      font-size: 1.5rem;
-      margin: 0 0 0.5rem 0;
-    }
-
-    .track-info {
-      font-size: 0.95rem;
-      color: #b3b3b3;
-      margin-bottom: 1.2rem;
-      min-height: 2.8em;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      line-height: 1.3;
-      transition: opacity 0.4s ease-in-out;
-    }
-
-    .track-title-text {
-      color: #ffffff;
-      font-weight: 600;
-      font-size: 1rem;
-      margin-bottom: 2px;
-    }
-
-    .track-artist-text {
-      color: var(--accent-color);
-      font-size: 0.85rem;
-    }
-
-    .controls {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-      align-items: center;
-    }
-
-    .play-btn {
-      background-color: var(--accent-color);
-      color: #000;
-      border: none;
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s, background-color 0.2s;
-    }
-
-    .play-btn:hover {
-      transform: scale(1.05);
-      background-color: #ffaa22;
-    }
-
-    .volume-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      width: 80%;
-    }
-
-    .volume-slider {
-      width: 100%;
-      accent-color: var(--accent-color);
-      cursor: pointer;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(229, 9, 20, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(229, 9, 20, 0); }
-    }
-
-    .fade-out {
-      opacity: 0;
-    }
-  </style>
+.hist{border-radius:20px;padding:16px 18px}
+.hist h3{font-size:1.15rem;margin-bottom:8px}
+.hist ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.hist li{display:flex;align-items:center;gap:12px}
+.hist img{width:42px;height:42px;border-radius:8px;object-fit:cover;background:#0f172a}
+.hist div{flex:1;min-width:0;text-align:start}
+.hist b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist small{color:var(--mu)}
+.hist time{color:var(--mu);font-size:.8rem}
+.empty{color:var(--mu)}
+@media(max-width:560px){.bar{padding:8px 12px;gap:8px}.bar h1{display:none}}
+</style>
 </head>
 <body>
+<header class="bar gl">
+ <img src="https://upload.wikimedia.org/wikipedia/ar/archive/1/10/20220105065429%21شعار_سبيستون.png" alt="">
+ <h1 data-i="name"></h1>
+ <span class="onair" id="badge"><i></i><span id="badgeT"></span></span>
+ <span class="sp"></span>
+ <div class="ctl">
+  <a id="tv" href="#" hidden data-i="tv"></a>
+  <button id="bL" type="button" aria-label="Language"></button>
+  <button id="bT" type="button" aria-label="Theme"></button>
+  <button id="bU" type="button" aria-label="Style"></button>
+ </div>
+</header>
 
-  <div class="player-card">
-    <div id="statusBadge" class="status-badge">Offline</div>
-    
-    <div class="album-art-container">
-      <img id="albumArt" class="album-art" src="https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/88/9d/ff/889dff3f-1cf7-8f1e-80f2-2ab7c874905e/859765481186_cover.jpg/100x100bb.jpg" alt="Album Cover">
-    </div>
-
-    <div class="visualizer-container">
-      <canvas id="visualizer" width="300" height="60"></canvas>
-    </div>
-
-    <h2 class="station-title">Radio Spacetoon</h2>
-    
-    <div id="trackInfo" class="track-info">
-      <div id="songTitle" class="track-title-text">Radio Spacetoon</div>
-      <div id="songArtist" class="track-artist-text">24/7 Live Stream</div>
-    </div>
-
-    <div class="controls">
-      <button id="playBtn" class="play-btn" aria-label="Play Stream">▶</button>
-      
-      <div class="volume-container">
-        <span>🔈</span>
-        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="0.8">
-        <span>🔊</span>
-      </div>
-    </div>
+<main class="wrap">
+ <section class="player gl">
+  <div class="disc" id="disc"><img class="art" id="art" alt="" src="https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/88/9d/ff/889dff3f-1cf7-8f1e-80f2-2ab7c874905e/859765481186_cover.jpg/100x100bb.jpg"></div>
+  <div class="eq"><canvas id="eq" width="480" height="64"></canvas></div>
+  <h2 class="st" data-i="name"></h2>
+  <div class="np" id="np"><b id="sT"></b><span id="sA"></span></div>
+  <button class="play" id="play" type="button"></button>
+  <div class="vol">
+   <button id="mute" type="button"></button>
+   <input type="range" id="vol" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
   </div>
+  <div class="msg" id="msg" role="status"></div>
+ </section>
 
-  <script>
-    // The exact Centova Cast API and Proxy URLs
-    const API_URL = 'https://eu8.fastcast4u.com/external/rpc.php?m=streaminfo.get&username=radiospacetoon&charset=utf-8';
-    
-    // Using the /proxy/ system bypasses the HTML wrapper entirely
-    const STREAM_URL = 'https://eu8.fastcast4u.com/proxy/radiospacetoon?mp=/stream';
+ <section class="hist gl">
+  <h3 data-i="recent"></h3>
+  <ul id="hist"></ul>
+ </section>
+</main>
 
-    // Standard Audio instance - NO crossOrigin attribute set so the browser doesn't send strict preflight requests
-    const audio = new Audio();
+<script>
+/* ===== Settings / الإعدادات ===== */
+const CFG = {
+  API_URL: "https://eu8.fastcast4u.com/external/rpc.php?m=streaminfo.get&username=radiospacetoon&charset=utf-8",
+  STREAM_URL: "https://eu8.fastcast4u.com/proxy/radiospacetoon?mp=/stream",
+  TV_URL: "" // optional: link to your TV page, shows a button in the top bar
+};
+const L = {
+ ar:{name:"راديو سبيستون",live:"بث مباشر 24/7",onair:"على الهواء",off:"متوقف",conn:"جاري الاتصال",play:"تشغيل",pause:"إيقاف",mute:"كتم",unmute:"تشغيل الصوت",recent:"تم تشغيلها مؤخراً",none:"ستظهر الأغاني هنا أثناء التشغيل",
+  err:"تعذر تشغيل البث، حاول مرة أخرى",tv:"التلفزيون",glass:"زجاجي",classic:"عادي"},
+ en:{name:"Radio Spacetoon",live:"24/7 Live Stream",onair:"On air",off:"Offline",conn:"Connecting",play:"Play",pause:"Pause",mute:"Mute",unmute:"Unmute",recent:"Recently played",none:"Songs will appear here while playing",
+  err:"Could not play the stream, please try again",tv:"TV",glass:"Glass",classic:"Classic"}
+};
+const $ = s => document.querySelector(s);
+const store = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+/* same keys as the TV page, so language/theme/style carry over on the same site */
+let lang = store.get("lang", (navigator.language || "en").startsWith("ar") ? "ar" : "en");
+let th = store.get("th", matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+let ui = store.get("ui", "glass"), tf, status = "off";
+const t = k => L[lang][k];
+const audio = new Audio();
+audio.volume = 0.8;
+let playing = false, anim, cur = "", hist = store.get("radioHist", []);
+const bars = new Array(24).fill(0);
 
-    const playBtn = document.getElementById('playBtn');
-    const statusBadge = document.getElementById('statusBadge');
-    const trackInfo = document.getElementById('trackInfo');
-    const songTitle = document.getElementById('songTitle');
-    const songArtist = document.getElementById('songArtist');
-    const albumArt = document.getElementById('albumArt');
-    const volumeSlider = document.getElementById('volumeSlider');
-    
-    const canvas = document.getElementById('visualizer');
-    const ctx = canvas.getContext('2d');
-    let animationId;
-    let isPlaying = false;
-    let currentTrackName = "";
+function prefs() {
+  const d = document.documentElement;
+  d.lang = lang; d.dir = lang === "ar" ? "rtl" : "ltr"; d.dataset.th = th; d.dataset.ui = ui;
+  document.querySelectorAll("[data-i]").forEach(e => e.textContent = t(e.dataset.i));
+  $("#bL").textContent = lang === "ar" ? "EN" : "ع";
+  $("#bT").textContent = th === "dark" ? "☀" : "☾";
+  $("#bU").textContent = ui === "glass" ? t("classic") : t("glass");
+  tf = new Intl.DateTimeFormat(lang === "ar" ? "ar-u-nu-latn" : "en-US", { hour: "numeric", minute: "2-digit" });
+  document.title = t("name");
+  if (!cur) { $("#sT").textContent = t("name"); $("#sA").textContent = t("live"); }
+  $("#mute").textContent = audio.muted ? t("unmute") : t("mute");
+  paint(); renderHist();
+}
+function paint() {
+  const b = $("#badge");
+  b.classList.toggle("live", status === "live");
+  $("#badgeT").textContent = status === "live" ? t("onair") : status === "conn" ? t("conn") : t("off");
+  $("#play").textContent = playing ? "❚❚" : "▶";
+  $("#play").setAttribute("aria-label", playing ? t("pause") : t("play"));
+  $("#disc").classList.toggle("on", status === "live");
+}
+$("#bL").onclick = () => { lang = lang === "ar" ? "en" : "ar"; store.set("lang", lang); prefs(); };
+$("#bT").onclick = () => { th = th === "dark" ? "light" : "dark"; store.set("th", th); prefs(); };
+$("#bU").onclick = () => { ui = ui === "glass" ? "classic" : "glass"; store.set("ui", ui); prefs(); };
+if (CFG.TV_URL) { $("#tv").href = CFG.TV_URL; $("#tv").hidden = false; }
 
-    const numBars = 24;
-    const barHeights = new Array(numBars).fill(0);
+/* Visualizer */
+const cv = $("#eq"), cx = cv.getContext("2d");
+function draw() {
+  anim = requestAnimationFrame(draw);
+  cx.clearRect(0, 0, cv.width, cv.height);
+  const w = cv.width / bars.length;
+  const g = cx.createLinearGradient(0, cv.height, 0, 0);
+  g.addColorStop(0, "#2fc4b2"); g.addColorStop(.6, "#ffd23f"); g.addColorStop(1, "#ff5d8f");
+  cx.fillStyle = g;
+  bars.forEach((v, i) => {
+    bars[i] += (Math.random() * cv.height * .85 - v) * .25;
+    cx.fillRect(i * w + 2, cv.height - bars[i], w - 4, bars[i]);
+  });
+}
 
-    audio.volume = volumeSlider.value;
+/* Now playing */
+function renderHist() {
+  $("#hist").innerHTML = hist.length ? hist.map(h => '<li><img src="' + h.img + '" alt=""><div><b><bdi>' + h.title + "</bdi></b><small><bdi>" + h.artist + "</bdi></small></div><time>" + tf.format(new Date(h.at)) + "</time></li>").join("") : '<li class="empty">' + t("none") + "</li>";
+}
+const esc = s => String(s || "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+async function nowPlaying() {
+  try {
+    const r = await fetch(CFG.API_URL), d = await r.json();
+    const tr = d && d.data && d.data[0] && d.data[0].track;
+    if (!tr) return;
+    const name = tr.artist + " - " + tr.title;
+    if (name === cur) return;
+    if (cur) { hist.unshift({ title: esc(cur.split(" - ").slice(1).join(" - ")), artist: esc(cur.split(" - ")[0]), img: window._lastImg || $("#art").src, at: Date.now() }); hist = hist.slice(0, 6); store.set("radioHist", hist); renderHist(); }
+    cur = name; window._lastImg = tr.imageurl || $("#art").src;
+    $("#np").classList.add("fade"); $("#art").classList.add("fade");
+    setTimeout(() => {
+      $("#sT").textContent = tr.title || t("name");
+      $("#sA").textContent = tr.artist || t("live");
+      if (tr.imageurl) $("#art").src = tr.imageurl;
+      $("#np").classList.remove("fade"); $("#art").classList.remove("fade");
+      if ("mediaSession" in navigator) navigator.mediaSession.metadata = new MediaMetadata({ title: tr.title || t("name"), artist: tr.artist || "", artwork: tr.imageurl ? [{ src: tr.imageurl }] : [] });
+    }, 400);
+  } catch (e) { console.error("Metadata error:", e); }
+}
+nowPlaying(); setInterval(nowPlaying, 5000);
 
-    function drawVisualizer() {
-      animationId = requestAnimationFrame(drawVisualizer);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+/* Playback */
+function stop() {
+  audio.pause(); audio.removeAttribute("src"); audio.load();
+  playing = false; status = "off"; cancelAnimationFrame(anim); cx.clearRect(0, 0, cv.width, cv.height); paint();
+}
+$("#play").onclick = () => {
+  $("#msg").textContent = "";
+  if (playing) { stop(); return; }
+  playing = true; status = "conn"; paint();
+  audio.src = CFG.STREAM_URL + "&nocache=" + Date.now(); /* fresh stream, no cached error */
+  audio.play().then(() => { status = "live"; paint(); draw(); }).catch(e => { console.error(e); stop(); $("#msg").textContent = t("err"); });
+};
+audio.addEventListener("waiting", () => { if (playing) { status = "conn"; paint(); } });
+audio.addEventListener("playing", () => { if (playing) { status = "live"; paint(); } });
+audio.addEventListener("error", () => { if (playing) { stop(); $("#msg").textContent = t("err"); } });
+$("#vol").oninput = e => { audio.volume = e.target.value; };
+$("#mute").onclick = () => { audio.muted = !audio.muted; $("#mute").textContent = audio.muted ? t("unmute") : t("mute"); };
+if ("mediaSession" in navigator) { navigator.mediaSession.setActionHandler("play", () => { if (!playing) $("#play").click(); }); navigator.mediaSession.setActionHandler("pause", () => { if (playing) $("#play").click(); }); }
 
-      const barWidth = canvas.width / numBars;
-
-      for (let i = 0; i < numBars; i++) {
-        const targetHeight = Math.random() * canvas.height * 0.85;
-        barHeights[i] += (targetHeight - barHeights[i]) * 0.25;
-
-        const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
-        gradient.addColorStop(0, '#00ffcc');
-        gradient.addColorStop(0.6, '#ffcc00');
-        gradient.addColorStop(1, '#ff0055');
-
-        ctx.fillStyle = gradient;
-        ctx.fillRect(i * barWidth, canvas.height - barHeights[i], barWidth - 3, barHeights[i]);
-      }
-    }
-
-    async function updateNowPlaying() {
-      try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
-
-        if (data && data.data && data.data[0] && data.data[0].track) {
-          const track = data.data[0].track;
-          const fullTrackName = `${track.artist} - ${track.title}`;
-
-          if (fullTrackName !== currentTrackName) {
-            currentTrackName = fullTrackName;
-
-            trackInfo.classList.add('fade-out');
-            albumArt.classList.add('fade-out');
-
-            setTimeout(() => {
-              songTitle.textContent = track.title || "Radio Spacetoon";
-              songArtist.textContent = track.artist || "Live Stream";
-
-              if (track.imageurl) {
-                albumArt.src = track.imageurl;
-              }
-
-              trackInfo.classList.remove('fade-out');
-              albumArt.classList.remove('fade-out');
-            }, 400);
-          }
-        }
-      } catch (err) {
-        console.error("Metadata error:", err);
-      }
-    }
-
-    updateNowPlaying();
-    setInterval(updateNowPlaying, 5000);
-
-    playBtn.addEventListener('click', () => {
-      if (!isPlaying) {
-        // Appending a timestamp forces the browser to pull a fresh audio stream instead of a cached error state
-        audio.src = STREAM_URL + '&nocache=' + Date.now();
-
-        audio.play().then(() => {
-          isPlaying = true;
-          playBtn.textContent = '❚❚';
-          statusBadge.textContent = 'ON AIR';
-          statusBadge.classList.add('live');
-          drawVisualizer();
-        }).catch(err => {
-          console.error("Playback Error:", err);
-          songTitle.textContent = "Stream Offline";
-          songArtist.textContent = "Please try again";
-        });
-      } else {
-        audio.pause();
-        audio.removeAttribute('src');
-        audio.load();
-        isPlaying = false;
-        playBtn.textContent = '▶';
-        statusBadge.textContent = 'OFFLINE';
-        statusBadge.classList.remove('live');
-        cancelAnimationFrame(animationId);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-    });
-
-    volumeSlider.addEventListener('input', (e) => {
-      audio.volume = e.target.value;
-    });
-  </script>
-
+prefs();
+</script>
 </body>
 </html>

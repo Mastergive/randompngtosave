@@ -1,19 +1,8 @@
 {
     "date": "2026-11-22",
-    "generated": "2026-11-22T13:28:31",
+    "generated": "2026-11-22T13:58:26",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Iftah ya simim (S1 570p)/EP 1 - IYS.mp4",
-            "planet": "Abjad",
-            "series": "Iftah ya simim (S1 570p)",
-            "title": "Iftah ya Simsim",
-            "slot_minutes": 30,
-            "duration_sec": 1556,
-            "start": "2026-11-22 14:00",
-            "time": "02:00 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Dragon Z KAI (S1 570p)/EP 1 - DZK.mp4",

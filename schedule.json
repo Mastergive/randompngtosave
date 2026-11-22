@@ -1,19 +1,8 @@
 {
     "date": "2026-11-22",
-    "generated": "2026-11-22T19:28:30",
+    "generated": "2026-11-22T19:58:35",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Najmat Tabkh (S1 570p)/EP 1 - Najmat Tabkh.mp4",
-            "planet": "Zomoroda",
-            "series": "Najmat Tabkh (S1 570p)",
-            "title": "Najmat Tabkh",
-            "slot_minutes": 30,
-            "duration_sec": 582,
-            "start": "2026-11-22 20:00",
-            "time": "08:00 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Boasa (S1 570p)/EP 4 - Boasa.mp4",

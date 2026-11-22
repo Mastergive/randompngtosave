@@ -1,19 +1,8 @@
 {
     "date": "2026-11-22",
-    "generated": "2026-11-22T12:28:30",
+    "generated": "2026-11-22T12:58:35",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Najmat Tabkh (S1 570p)/EP 1 - Najmat Tabkh.mp4",
-            "planet": "Zomoroda",
-            "series": "Najmat Tabkh (S1 570p)",
-            "title": "Najmat Tabkh",
-            "slot_minutes": 30,
-            "duration_sec": 582,
-            "start": "2026-11-22 13:00",
-            "time": "01:00 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Sokor Al Ard (S1 570p)/EP 1 - Sokor al ard.mp4",

@@ -1,16 +1,6 @@
 {
-    "last_show_name": "EP 1 & 2 - The fixies",
-    "show_counter": 1179,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/Mia (S1 570p)/EP 1 - Mia.mp4",
-        "planet": "Abjad",
-        "series": "Mia (S1 570p)",
-        "title": "Mia",
-        "slot_minutes": 30,
-        "duration_sec": 692,
-        "start": "2026-11-22 02:30",
-        "time": "02:30 AM"
-    },
+    "last_show_name": "Pocoyo",
+    "show_counter": 1181,
+    "current_item": null,
     "is_space_power": false
 }

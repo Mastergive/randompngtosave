@@ -1,19 +1,8 @@
 {
     "date": "2026-11-22",
-    "generated": "2026-11-22T08:28:28",
+    "generated": "2026-11-22T08:58:31",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/My hero academy (S1 570p)/EP 1 - My Hero Academy.mp4",
-            "planet": "Adventure",
-            "series": "My hero academy (S1 570p)",
-            "title": "My Hero Academy",
-            "slot_minutes": 30,
-            "duration_sec": 1368,
-            "start": "2026-11-22 09:00",
-            "time": "09:00 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Made in Abyss (S1 570p)/EP 1 - Made in Abyss.mp4",

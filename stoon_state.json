@@ -1,6 +1,16 @@
 {
     "last_show_name": "Sarab",
     "show_counter": 1210,
-    "current_item": null,
+    "current_item": {
+        "type": "show",
+        "path": "/home/user/shared/SP/Shows/One Piece (S1 570p)/EP 1 - OP.mp4",
+        "planet": "Adventure",
+        "series": "One Piece (S1 570p)",
+        "title": "One Piece",
+        "slot_minutes": 30,
+        "duration_sec": 1481,
+        "start": "2026-11-22 19:30",
+        "time": "07:30 PM"
+    },
     "is_space_power": false
 }

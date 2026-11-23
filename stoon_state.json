@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Detective Conan: Countdown to the unknown",
-    "show_counter": 1226,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/Iroka (S1 570p)/EP 1 - Iroka.mp4",
-        "planet": "Zomoroda",
-        "series": "Iroka (S1 570p)",
-        "title": "Iroka",
-        "slot_minutes": 30,
-        "duration_sec": 1371,
-        "start": "2026-11-23 05:00",
-        "time": "05:00 AM"
-    },
+    "last_show_name": "Iroka",
+    "show_counter": 1227,
+    "current_item": null,
     "is_space_power": false
 }

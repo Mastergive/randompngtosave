@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Al Kanas (Hunter X Hunter)",
-    "show_counter": 1256,
+    "last_show_name": "Monsuno",
+    "show_counter": 1257,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Monsuno (S1 570p)/EP 3 - Monsuno.mp4",
-        "planet": "Action",
-        "series": "Monsuno (S1 570p)",
-        "title": "Monsuno",
+        "path": "/home/user/shared/SP/Shows/Temp/Flona's Adventure (S1 570p)/EP 3 - FLONA.mp4",
+        "planet": "Zomoroda",
+        "series": "Temp",
+        "title": "Flona's Adventure",
         "slot_minutes": 30,
-        "duration_sec": 1300,
-        "start": "2026-11-23 20:00",
-        "time": "08:00 PM"
+        "duration_sec": 1281,
+        "start": "2026-11-23 20:30",
+        "time": "08:30 PM"
     },
     "is_space_power": false
 }

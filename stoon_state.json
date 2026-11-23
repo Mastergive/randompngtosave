@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Mia",
-    "show_counter": 1237,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/Pocoyo (S1 570p)/EP 1 - Pocoyo.mp4",
-        "planet": "Abjad",
-        "series": "Pocoyo (S1 570p)",
-        "title": "Pocoyo",
-        "slot_minutes": 30,
-        "duration_sec": 413,
-        "start": "2026-11-23 10:30",
-        "time": "10:30 AM"
-    },
+    "last_show_name": "Pocoyo",
+    "show_counter": 1238,
+    "current_item": null,
     "is_space_power": false
 }

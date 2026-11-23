@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Flona's Adventure",
-    "show_counter": 1258,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/PI PO PA (S1 570p)/EP 1 - PI PO PA.mp4",
-        "planet": "Adventure",
-        "series": "PI PO PA (S1 570p)",
-        "title": "PI PO PA",
-        "slot_minutes": 30,
-        "duration_sec": 1467,
-        "start": "2026-11-23 21:00",
-        "time": "09:00 PM"
-    },
+    "last_show_name": "Najmat Tabkh",
+    "show_counter": 1260,
+    "current_item": null,
     "is_space_power": false
 }

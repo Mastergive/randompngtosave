@@ -1,6 +1,16 @@
 {
     "last_show_name": "Franklin and friends",
     "show_counter": 1225,
-    "current_item": null,
+    "current_item": {
+        "type": "show",
+        "path": "/home/user/shared/SP/Shows/Movies/DetectiveConan.mp4",
+        "planet": "Movies",
+        "series": "Movies",
+        "title": "Detective Conan: Countdown to the unknown",
+        "slot_minutes": 120,
+        "duration_sec": 5970,
+        "start": "2026-11-23 03:00",
+        "time": "03:00 AM"
+    },
     "is_space_power": false
 }

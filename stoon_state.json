@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Black Cat",
-    "show_counter": 1267,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/My hero academy (S1 570p)/EP 1 - My Hero Academy.mp4",
-        "planet": "Adventure",
-        "series": "My hero academy (S1 570p)",
-        "title": "My Hero Academy",
-        "slot_minutes": 30,
-        "duration_sec": 1368,
-        "start": "2026-11-24 01:30",
-        "time": "01:30 AM"
-    },
+    "last_show_name": "My Hero Academy",
+    "show_counter": 1268,
+    "current_item": null,
     "is_space_power": true
 }

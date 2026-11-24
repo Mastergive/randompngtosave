@@ -1,19 +1,8 @@
 {
     "date": "2026-11-24",
-    "generated": "2026-11-24T03:28:35",
+    "generated": "2026-11-24T03:58:12",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Frank and his friends (S1 570p)/EP 1 - FAF.mp4",
-            "planet": "Bonbon",
-            "series": "Frank and his friends (S1 570p)",
-            "title": "Franklin and friends",
-            "slot_minutes": 30,
-            "duration_sec": 1323,
-            "start": "2026-11-24 04:00",
-            "time": "04:00 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Movies/DetectiveConan.mp4",

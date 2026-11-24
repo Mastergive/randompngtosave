@@ -1,19 +1,8 @@
 {
     "date": "2026-11-24",
-    "generated": "2026-11-24T01:58:13",
+    "generated": "2026-11-24T02:28:38",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Dragon Z KAI (S1 570p)/EP 1 - DZK.mp4",
-            "planet": "Action",
-            "series": "Dragon Z KAI (S1 570p)",
-            "title": "Dragon Z KAI",
-            "slot_minutes": 30,
-            "duration_sec": 1488,
-            "start": "2026-11-24 02:30",
-            "time": "02:30 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Yo kai watch (S1 570p)/EP 1 - YKW.mp4",

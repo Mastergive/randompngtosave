@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Franklin and friends",
-    "show_counter": 1273,
+    "last_show_name": "Detective Conan: Countdown to the unknown",
+    "show_counter": 1274,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Movies/DetectiveConan.mp4",
-        "planet": "Movies",
-        "series": "Movies",
-        "title": "Detective Conan: Countdown to the unknown",
-        "slot_minutes": 120,
-        "duration_sec": 5970,
-        "start": "2026-11-24 04:30",
-        "time": "04:30 AM"
+        "path": "/home/user/shared/SP/Shows/Iftah ya simim (S1 570p)/EP 1 - IYS.mp4",
+        "planet": "Abjad",
+        "series": "Iftah ya simim (S1 570p)",
+        "title": "Iftah ya Simsim",
+        "slot_minutes": 30,
+        "duration_sec": 1556,
+        "start": "2026-11-24 06:30",
+        "time": "06:30 AM"
     },
     "is_space_power": false
 }

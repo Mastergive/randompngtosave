@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Dragon Z KAI",
-    "show_counter": 1276,
+    "last_show_name": "Yo Kai Watch",
+    "show_counter": 1277,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Yo kai watch (S1 570p)/EP 1 - YKW.mp4",
-        "planet": "Adventure",
-        "series": "Yo kai watch (S1 570p)",
-        "title": "Yo Kai Watch",
+        "path": "/home/user/shared/SP/Shows/Magic Kaito (S1 570p)/EP 1 - Magic Kaito.mp4",
+        "planet": "Action",
+        "series": "Magic Kaito (S1 570p)",
+        "title": "Magic Kaito",
         "slot_minutes": 30,
-        "duration_sec": 1301,
-        "start": "2026-11-24 07:30",
-        "time": "07:30 AM"
+        "duration_sec": 1323,
+        "start": "2026-11-24 08:00",
+        "time": "08:00 AM"
     },
     "is_space_power": false
 }

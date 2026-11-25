@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Al Kanas (Hunter X Hunter)",
-    "show_counter": 1308,
+    "last_show_name": "Sarab",
+    "show_counter": 1309,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Sarab (S1 570p)/EP 1 - Sarab.mp4",
-        "planet": "Adventure",
-        "series": "Sarab (S1 570p)",
-        "title": "Sarab",
+        "path": "/home/user/shared/SP/Shows/Black Cat (S1 570p)/EP 1 - Black Cat.mp4",
+        "planet": "Action",
+        "series": "Black Cat (S1 570p)",
+        "title": "Black Cat",
         "slot_minutes": 30,
-        "duration_sec": 1431,
-        "start": "2026-11-25 01:00",
-        "time": "01:00 AM"
+        "duration_sec": 1314,
+        "start": "2026-11-25 01:30",
+        "time": "01:30 AM"
     },
     "is_space_power": true
 }

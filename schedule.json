@@ -1,19 +1,8 @@
 {
-    "date": "2026-11-25",
-    "generated": "2026-11-25T23:29:50",
+    "date": "2026-11-26",
+    "generated": "2026-11-26T00:00:10",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Detective Conan (S8 570p)/EP 2 - DConan s8.mp4",
-            "planet": "Action",
-            "series": "Detective Conan (S8 570p)",
-            "title": "Detective Conan",
-            "slot_minutes": 30,
-            "duration_sec": 1443,
-            "start": "2026-11-26 00:00",
-            "time": "12:00 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/HxH classic (S1 570p)/EP 1 - Kanas.mp4",
@@ -178,6 +167,336 @@
             "duration_sec": 413,
             "start": "2026-11-26 07:30",
             "time": "07:30 AM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Iroka (S1 570p)/EP 1 - Iroka.mp4",
+            "planet": "Zomoroda",
+            "series": "Iroka (S1 570p)",
+            "title": "Iroka",
+            "slot_minutes": 30,
+            "duration_sec": 1371,
+            "start": "2026-11-26 08:00",
+            "time": "08:00 AM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Mokatil Al Nabil (S1 570p)/EP 1 - MAN.mp4",
+            "planet": "Action",
+            "series": "Mokatil Al Nabil (S1 570p)",
+            "title": "Al Mokatil Nabil",
+            "slot_minutes": 30,
+            "duration_sec": 1300,
+            "start": "2026-11-26 08:30",
+            "time": "08:30 AM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Binky and Brain (S1 570p)/EP 1 - BAB.mp4",
+            "planet": "Comedy",
+            "series": "Binky and Brain (S1 570p)",
+            "title": "Binky and Brain",
+            "slot_minutes": 30,
+            "duration_sec": 1239,
+            "start": "2026-11-26 09:00",
+            "time": "09:00 AM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/HxH classic (S1 570p)/EP 1 - Kanas.mp4",
+            "planet": "Adventure",
+            "series": "HxH classic (S1 570p)",
+            "title": "Al Kanas (Hunter X Hunter)",
+            "slot_minutes": 30,
+            "duration_sec": 1402,
+            "start": "2026-11-26 09:30",
+            "time": "09:30 AM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Sarab (S1 570p)/EP 1 - Sarab.mp4",
+            "planet": "Adventure",
+            "series": "Sarab (S1 570p)",
+            "title": "Sarab",
+            "slot_minutes": 30,
+            "duration_sec": 1431,
+            "start": "2026-11-26 10:00",
+            "time": "10:00 AM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Black Cat (S1 570p)/EP 1 - Black Cat.mp4",
+            "planet": "Action",
+            "series": "Black Cat (S1 570p)",
+            "title": "Black Cat",
+            "slot_minutes": 30,
+            "duration_sec": 1314,
+            "start": "2026-11-26 10:30",
+            "time": "10:30 AM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Beybattle Burst (S1 570p)/EP 1 - BBurst.mp4",
+            "planet": "Sports",
+            "series": "Beybattle Burst (S1 570p)",
+            "title": "Beybattle Burst",
+            "slot_minutes": 30,
+            "duration_sec": 1459,
+            "start": "2026-11-26 11:00",
+            "time": "11:00 AM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Power Rangers Dino Charge (S1 570p)/EP 1 - PPD.mp4",
+            "planet": "Action",
+            "series": "Power Rangers Dino Charge (S1 570p)",
+            "title": "Power Rangers Dino Charge",
+            "slot_minutes": 30,
+            "duration_sec": 1342,
+            "start": "2026-11-26 11:30",
+            "time": "11:30 AM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Naruto SD (S1 570p)/EP1 - NarutoSD.mp4",
+            "planet": "Comedy",
+            "series": "Naruto SD (S1 570p)",
+            "title": "Naruto SD",
+            "slot_minutes": 30,
+            "duration_sec": 1311,
+            "start": "2026-11-26 12:00",
+            "time": "12:00 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Pink Panther (S1 570p)/EP 2 - PP.mp4",
+            "planet": "Comedy",
+            "series": "Pink Panther (S1 570p)",
+            "title": "EP 2 - PP",
+            "slot_minutes": 30,
+            "duration_sec": 384,
+            "start": "2026-11-26 12:30",
+            "time": "12:30 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Beda Ball (S1 570p)/EP 1 - BB.mp4",
+            "planet": "Adventure",
+            "series": "Beda Ball (S1 570p)",
+            "title": "Beda Ball",
+            "slot_minutes": 30,
+            "duration_sec": 1430,
+            "start": "2026-11-26 13:00",
+            "time": "01:00 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Tanken Driland (S1 570p)/EP 3 - DRILAND.mp4",
+            "planet": "Adventure",
+            "series": "Tanken Driland (S1 570p)",
+            "title": "Driland",
+            "slot_minutes": 30,
+            "duration_sec": 1453,
+            "start": "2026-11-26 13:30",
+            "time": "01:30 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/The fixies (570p)/EP 1 & 2 - The fixies.mp4",
+            "planet": "Science",
+            "series": "The fixies (570p)",
+            "title": "EP 1 & 2 - The fixies",
+            "slot_minutes": 30,
+            "duration_sec": 661,
+            "start": "2026-11-26 14:00",
+            "time": "02:00 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Mia (S1 570p)/EP 1 - Mia.mp4",
+            "planet": "Abjad",
+            "series": "Mia (S1 570p)",
+            "title": "Mia",
+            "slot_minutes": 30,
+            "duration_sec": 692,
+            "start": "2026-11-26 14:30",
+            "time": "02:30 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Pocoyo (S1 570p)/EP 1 - Pocoyo.mp4",
+            "planet": "Abjad",
+            "series": "Pocoyo (S1 570p)",
+            "title": "Pocoyo",
+            "slot_minutes": 30,
+            "duration_sec": 413,
+            "start": "2026-11-26 15:00",
+            "time": "03:00 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Monsuno (S1 570p)/EP 3 - Monsuno.mp4",
+            "planet": "Action",
+            "series": "Monsuno (S1 570p)",
+            "title": "Monsuno",
+            "slot_minutes": 30,
+            "duration_sec": 1300,
+            "start": "2026-11-26 15:30",
+            "time": "03:30 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Temp/Dice (S1 570p)/EP 1 - Dice.mp4",
+            "planet": "Action",
+            "series": "Temp",
+            "title": "Dice",
+            "slot_minutes": 30,
+            "duration_sec": 1385,
+            "start": "2026-11-26 16:00",
+            "time": "04:00 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/PI PO PA (S1 570p)/EP 1 - PI PO PA.mp4",
+            "planet": "Adventure",
+            "series": "PI PO PA (S1 570p)",
+            "title": "PI PO PA",
+            "slot_minutes": 30,
+            "duration_sec": 1467,
+            "start": "2026-11-26 16:30",
+            "time": "04:30 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Najmat Tabkh (S1 570p)/EP 1 - Najmat Tabkh.mp4",
+            "planet": "Zomoroda",
+            "series": "Najmat Tabkh (S1 570p)",
+            "title": "Najmat Tabkh",
+            "slot_minutes": 30,
+            "duration_sec": 582,
+            "start": "2026-11-26 17:00",
+            "time": "05:00 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Boasa (S1 570p)/EP 4 - Boasa.mp4",
+            "planet": "Adventure",
+            "series": "Boasa (S1 570p)",
+            "title": "Boasae",
+            "slot_minutes": 30,
+            "duration_sec": 1487,
+            "start": "2026-11-26 17:30",
+            "time": "05:30 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Sokor Al Ard (S1 570p)/EP 1 - Sokor al ard.mp4",
+            "planet": "Adventure",
+            "series": "Sokor Al Ard (S1 570p)",
+            "title": "Sokor al ard",
+            "slot_minutes": 30,
+            "duration_sec": 1490,
+            "start": "2026-11-26 18:00",
+            "time": "06:00 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Iftah ya simim (S1 570p)/EP 1 - IYS.mp4",
+            "planet": "Abjad",
+            "series": "Iftah ya simim (S1 570p)",
+            "title": "Iftah ya Simsim",
+            "slot_minutes": 30,
+            "duration_sec": 1556,
+            "start": "2026-11-26 18:30",
+            "time": "06:30 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Dragon Z KAI (S1 570p)/EP 1 - DZK.mp4",
+            "planet": "Action",
+            "series": "Dragon Z KAI (S1 570p)",
+            "title": "Dragon Z KAI",
+            "slot_minutes": 30,
+            "duration_sec": 1488,
+            "start": "2026-11-26 19:00",
+            "time": "07:00 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Yo kai watch (S1 570p)/EP 1 - YKW.mp4",
+            "planet": "Adventure",
+            "series": "Yo kai watch (S1 570p)",
+            "title": "Yo Kai Watch",
+            "slot_minutes": 30,
+            "duration_sec": 1301,
+            "start": "2026-11-26 19:30",
+            "time": "07:30 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/One Piece (S1 570p)/EP 1 - OP.mp4",
+            "planet": "Adventure",
+            "series": "One Piece (S1 570p)",
+            "title": "One Piece",
+            "slot_minutes": 30,
+            "duration_sec": 1481,
+            "start": "2026-11-26 20:00",
+            "time": "08:00 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Haikyuu (S1 570p)/EP 1 - Haikyuu.mp4",
+            "planet": "Sports",
+            "series": "Haikyuu (S1 570p)",
+            "title": "Haikyuu",
+            "slot_minutes": 30,
+            "duration_sec": 1463,
+            "start": "2026-11-26 20:30",
+            "time": "08:30 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/My hero academy (S1 570p)/EP 1 - My Hero Academy.mp4",
+            "planet": "Adventure",
+            "series": "My hero academy (S1 570p)",
+            "title": "My Hero Academy",
+            "slot_minutes": 30,
+            "duration_sec": 1368,
+            "start": "2026-11-26 21:00",
+            "time": "09:00 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Cocotama (S1 570p)/EP 1 - Cocotama.mp4",
+            "planet": "Zomoroda",
+            "series": "Cocotama (S1 570p)",
+            "title": "Cocotama",
+            "slot_minutes": 30,
+            "duration_sec": 1429,
+            "start": "2026-11-26 21:30",
+            "time": "09:30 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Frank and his friends (S1 570p)/EP 1 - FAF.mp4",
+            "planet": "Bonbon",
+            "series": "Frank and his friends (S1 570p)",
+            "title": "Franklin and friends",
+            "slot_minutes": 30,
+            "duration_sec": 1323,
+            "start": "2026-11-26 22:00",
+            "time": "10:00 PM"
+        },
+        {
+            "type": "show",
+            "path": "/home/user/shared/SP/Shows/Movies/DetectiveConan.mp4",
+            "planet": "Movies",
+            "series": "Movies",
+            "title": "Detective Conan: Countdown to the unknown",
+            "slot_minutes": 120,
+            "duration_sec": 5970,
+            "start": "2026-11-26 22:30",
+            "time": "10:30 PM"
         }
     ]
 }

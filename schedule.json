@@ -1,19 +1,8 @@
 {
     "date": "2026-11-25",
-    "generated": "2026-11-25T10:58:30",
+    "generated": "2026-11-25T11:28:28",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Haikyuu (S1 570p)/EP 1 - Haikyuu.mp4",
-            "planet": "Sports",
-            "series": "Haikyuu (S1 570p)",
-            "title": "Haikyuu",
-            "slot_minutes": 30,
-            "duration_sec": 1463,
-            "start": "2026-11-25 11:30",
-            "time": "11:30 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/My hero academy (S1 570p)/EP 1 - My Hero Academy.mp4",

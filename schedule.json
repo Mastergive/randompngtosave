@@ -1,19 +1,8 @@
 {
     "date": "2026-11-25",
-    "generated": "2026-11-25T01:29:49",
+    "generated": "2026-11-25T01:58:15",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Beybattle Burst (S1 570p)/EP 1 - BBurst.mp4",
-            "planet": "Sports",
-            "series": "Beybattle Burst (S1 570p)",
-            "title": "Beybattle Burst",
-            "slot_minutes": 30,
-            "duration_sec": 1459,
-            "start": "2026-11-25 02:00",
-            "time": "02:00 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Power Rangers Dino Charge (S1 570p)/EP 1 - PPD.mp4",

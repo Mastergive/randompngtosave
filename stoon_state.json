@@ -1,16 +1,6 @@
 {
-    "last_show_name": "Sarab",
-    "show_counter": 1309,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/Black Cat (S1 570p)/EP 1 - Black Cat.mp4",
-        "planet": "Action",
-        "series": "Black Cat (S1 570p)",
-        "title": "Black Cat",
-        "slot_minutes": 30,
-        "duration_sec": 1314,
-        "start": "2026-11-25 01:30",
-        "time": "01:30 AM"
-    },
-    "is_space_power": true
+    "last_show_name": "Black Cat",
+    "show_counter": 1310,
+    "current_item": null,
+    "is_space_power": false
 }

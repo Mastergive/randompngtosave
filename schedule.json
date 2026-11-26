@@ -1,19 +1,8 @@
 {
     "date": "2026-11-26",
-    "generated": "2026-11-26T00:59:49",
+    "generated": "2026-11-26T01:29:49",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Black Cat (S1 570p)/EP 1 - Black Cat.mp4",
-            "planet": "Action",
-            "series": "Black Cat (S1 570p)",
-            "title": "Black Cat",
-            "slot_minutes": 30,
-            "duration_sec": 1314,
-            "start": "2026-11-26 01:30",
-            "time": "01:30 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Iroka (S1 570p)/EP 1 - Iroka.mp4",

@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Monsuno",
-    "show_counter": 1380,
+    "last_show_name": "Dice",
+    "show_counter": 1381,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Temp/Dice (S1 570p)/EP 1 - Dice.mp4",
-        "planet": "Action",
-        "series": "Temp",
-        "title": "Dice",
+        "path": "/home/user/shared/SP/Shows/PI PO PA (S1 570p)/EP 1 - PI PO PA.mp4",
+        "planet": "Adventure",
+        "series": "PI PO PA (S1 570p)",
+        "title": "PI PO PA",
         "slot_minutes": 30,
-        "duration_sec": 1385,
-        "start": "2026-11-26 16:00",
-        "time": "04:00 PM"
+        "duration_sec": 1467,
+        "start": "2026-11-26 16:30",
+        "time": "04:30 PM"
     },
     "is_space_power": false
 }

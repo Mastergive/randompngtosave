@@ -1,16 +1,16 @@
 {
-    "last_show_name": "EP 1 - PP",
-    "show_counter": 1359,
+    "last_show_name": "Beda Ball",
+    "show_counter": 1360,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Beda Ball (S1 570p)/EP 1 - BB.mp4",
+        "path": "/home/user/shared/SP/Shows/Tanken Driland (S1 570p)/EP 3 - DRILAND.mp4",
         "planet": "Adventure",
-        "series": "Beda Ball (S1 570p)",
-        "title": "Beda Ball",
+        "series": "Tanken Driland (S1 570p)",
+        "title": "Driland",
         "slot_minutes": 30,
-        "duration_sec": 1430,
-        "start": "2026-11-26 05:30",
-        "time": "05:30 AM"
+        "duration_sec": 1453,
+        "start": "2026-11-26 06:00",
+        "time": "06:00 AM"
     },
     "is_space_power": false
 }

@@ -1,16 +1,16 @@
 {
     "last_show_name": "My Hero Academy",
-    "show_counter": 1391,
+    "show_counter": 1392,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Cocotama (S1 570p)/EP 1 - Cocotama.mp4",
-        "planet": "Zomoroda",
-        "series": "Cocotama (S1 570p)",
-        "title": "Cocotama",
+        "path": "/home/user/shared/SP/Shows/Frank and his friends (S1 570p)/EP 1 - FAF.mp4",
+        "planet": "Bonbon",
+        "series": "Frank and his friends (S1 570p)",
+        "title": "Franklin and friends",
         "slot_minutes": 30,
-        "duration_sec": 1429,
-        "start": "2026-11-26 21:30",
-        "time": "09:30 PM"
+        "duration_sec": 1323,
+        "start": "2026-11-26 22:00",
+        "time": "10:00 PM"
     },
     "is_space_power": false
 }

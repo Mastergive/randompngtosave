@@ -1,19 +1,8 @@
 {
-    "date": "2026-11-26",
-    "generated": "2026-11-26T22:28:55",
+    "date": "2026-11-27",
+    "generated": "2026-11-27T00:29:37",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/One Piece (S1 570p)/EP 1 - OP.mp4",
-            "planet": "Adventure",
-            "series": "One Piece (S1 570p)",
-            "title": "One Piece",
-            "slot_minutes": 30,
-            "duration_sec": 1481,
-            "start": "2026-11-27 00:30",
-            "time": "12:30 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Haikyuu (S1 570p)/EP 1 - Haikyuu.mp4",

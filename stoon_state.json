@@ -1,16 +1,16 @@
 {
     "last_show_name": "Yo Kai Watch",
-    "show_counter": 1388,
+    "show_counter": 1389,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/One Piece (S1 570p)/EP 1 - OP.mp4",
-        "planet": "Adventure",
-        "series": "One Piece (S1 570p)",
-        "title": "One Piece",
+        "path": "/home/user/shared/SP/Shows/Haikyuu (S1 570p)/EP 1 - Haikyuu.mp4",
+        "planet": "Sports",
+        "series": "Haikyuu (S1 570p)",
+        "title": "Haikyuu",
         "slot_minutes": 30,
-        "duration_sec": 1481,
-        "start": "2026-11-26 20:00",
-        "time": "08:00 PM"
+        "duration_sec": 1463,
+        "start": "2026-11-26 20:30",
+        "time": "08:30 PM"
     },
     "is_space_power": false
 }

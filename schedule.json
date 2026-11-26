@@ -1,19 +1,8 @@
 {
     "date": "2026-11-26",
-    "generated": "2026-11-26T16:58:35",
+    "generated": "2026-11-26T17:28:30",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Boasa (S1 570p)/EP 4 - Boasa.mp4",
-            "planet": "Adventure",
-            "series": "Boasa (S1 570p)",
-            "title": "Boasae",
-            "slot_minutes": 30,
-            "duration_sec": 1487,
-            "start": "2026-11-26 17:30",
-            "time": "05:30 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Sokor Al Ard (S1 570p)/EP 1 - Sokor al ard.mp4",

@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Najmat Tabkh",
-    "show_counter": 1383,
+    "last_show_name": "Boasae",
+    "show_counter": 1384,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Boasa (S1 570p)/EP 4 - Boasa.mp4",
+        "path": "/home/user/shared/SP/Shows/Sokor Al Ard (S1 570p)/EP 1 - Sokor al ard.mp4",
         "planet": "Adventure",
-        "series": "Boasa (S1 570p)",
-        "title": "Boasae",
+        "series": "Sokor Al Ard (S1 570p)",
+        "title": "Sokor al ard",
         "slot_minutes": 30,
-        "duration_sec": 1487,
-        "start": "2026-11-26 17:30",
-        "time": "05:30 PM"
+        "duration_sec": 1490,
+        "start": "2026-11-26 18:00",
+        "time": "06:00 PM"
     },
     "is_space_power": false
 }

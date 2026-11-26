@@ -1,19 +1,8 @@
 {
     "date": "2026-11-26",
-    "generated": "2026-11-26T17:28:30",
+    "generated": "2026-11-26T17:58:30",
     "grid_minutes": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Sokor Al Ard (S1 570p)/EP 1 - Sokor al ard.mp4",
-            "planet": "Adventure",
-            "series": "Sokor Al Ard (S1 570p)",
-            "title": "Sokor al ard",
-            "slot_minutes": 30,
-            "duration_sec": 1490,
-            "start": "2026-11-26 18:00",
-            "time": "06:00 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Iftah ya simim (S1 570p)/EP 1 - IYS.mp4",

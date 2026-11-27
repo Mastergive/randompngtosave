@@ -1,19 +1,19 @@
 {
-    "last_show_name": "Beda Ball",
-    "show_counter": 1430,
+    "last_show_name": "Driland",
+    "show_counter": 1431,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Tanken Driland (S1 570p)/EP 3 - DRILAND.mp4",
-        "planet": "Adventure",
-        "series": "Tanken Driland (S1 570p)",
-        "title": "Driland",
+        "path": "/home/user/shared/SP/Shows/Haikyuu (S1 570p)/EP 1 - Haikyuu.mp4",
+        "planet": "Sport",
+        "series": "Haikyuu (S1 570p)",
+        "title": "Haikyuu",
         "slot_minutes": 30,
-        "duration_sec": 1453,
-        "start": "2026-11-27 22:30",
-        "time": "10:30 PM"
+        "duration_sec": 1463,
+        "start": "2026-11-27 23:00",
+        "time": "11:00 PM"
     },
-    "is_space_power": false,
-    "previous_show": "Naruto SD",
+    "is_space_power": true,
+    "previous_show": "Beda Ball",
     "last_adhan_date": null,
     "last_adhan_name": null
 }

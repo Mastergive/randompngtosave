@@ -1,19 +1,19 @@
 {
-    "last_show_name": "One Piece",
-    "show_counter": 1433,
+    "last_show_name": "My Hero Academy",
+    "show_counter": 1434,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/My hero academy (S1 570p)/EP 1 - My Hero Academy.mp4",
-        "planet": "Adventure",
-        "series": "My hero academy (S1 570p)",
-        "title": "My Hero Academy",
+        "path": "/home/user/shared/SP/Shows/Magic Kaito (S1 570p)/EP 1 - Magic Kaito.mp4",
+        "planet": "Action",
+        "series": "Magic Kaito (S1 570p)",
+        "title": "Magic Kaito",
         "slot_minutes": 30,
-        "duration_sec": 1368,
-        "start": "2026-11-28 00:00",
-        "time": "12:00 AM"
+        "duration_sec": 1323,
+        "start": "2026-11-28 00:30",
+        "time": "12:30 AM"
     },
     "is_space_power": true,
-    "previous_show": "Haikyuu",
+    "previous_show": "One Piece",
     "last_adhan_date": null,
     "last_adhan_name": null
 }

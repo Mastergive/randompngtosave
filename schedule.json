@@ -1,20 +1,9 @@
 {
     "date": "2026-11-27",
-    "generated": "2026-11-27T20:04:52",
+    "generated": "2026-11-27T20:28:35",
     "grid_minutes": 30,
-    "revision": 0,
+    "revision": 1,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Power Rangers Dino Charge (S1 570p)/EP 1 - PPD.mp4",
-            "planet": "Action",
-            "series": "Power Rangers Dino Charge (S1 570p)",
-            "title": "Power Rangers Dino Charge",
-            "slot_minutes": 30,
-            "duration_sec": 1342,
-            "start": "2026-11-27 20:30",
-            "time": "08:30 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Naruto SD (S1 570p)/EP1 - NarutoSD.mp4",
@@ -62,7 +51,7 @@
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Haikyuu (S1 570p)/EP 1 - Haikyuu.mp4",
-            "planet": "Sports",
+            "planet": "Sport",
             "series": "Haikyuu (S1 570p)",
             "title": "Haikyuu",
             "slot_minutes": 30,

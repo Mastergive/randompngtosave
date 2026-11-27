@@ -1,16 +1,16 @@
 {
-    "last_show_name": "Detective Conan",
-    "show_counter": 1409,
+    "last_show_name": "Iroka",
+    "show_counter": 1410,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Iroka (S1 570p)/EP 1 - Iroka.mp4",
-        "planet": "Zomoroda",
-        "series": "Iroka (S1 570p)",
-        "title": "Iroka",
+        "path": "/home/user/shared/SP/Shows/Mokatil Al Nabil (S1 570p)/EP 1 - MAN.mp4",
+        "planet": "Action",
+        "series": "Mokatil Al Nabil (S1 570p)",
+        "title": "Al Mokatil Nabil",
         "slot_minutes": 30,
-        "duration_sec": 1371,
-        "start": "2026-11-27 09:30",
-        "time": "09:30 AM"
+        "duration_sec": 1300,
+        "start": "2026-11-27 10:00",
+        "time": "10:00 AM"
     },
     "is_space_power": false
 }

@@ -3,14 +3,14 @@
     "show_counter": 1429,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Pink Panther (S1 570p)/EP 2 - PP.mp4",
-        "planet": "Comedy",
-        "series": "Pink Panther (S1 570p)",
-        "title": "EP 2 - PP",
+        "path": "/home/user/shared/SP/Shows/Beda Ball (S1 570p)/EP 1 - BB.mp4",
+        "planet": "Adventure",
+        "series": "Beda Ball (S1 570p)",
+        "title": "Beda Ball",
         "slot_minutes": 30,
-        "duration_sec": 384,
-        "start": "2026-11-27 21:30",
-        "time": "09:30 PM"
+        "duration_sec": 1430,
+        "start": "2026-11-27 22:00",
+        "time": "10:00 PM"
     },
     "is_space_power": false,
     "previous_show": "Power Rangers Dino Charge",

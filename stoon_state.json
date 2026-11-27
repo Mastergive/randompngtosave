@@ -1,6 +1,16 @@
 {
-    "last_show_name": "Detective Conan: Countdown to the unknown",
-    "show_counter": 1394,
-    "current_item": null,
+    "last_show_name": "One Piece",
+    "show_counter": 1395,
+    "current_item": {
+        "type": "show",
+        "path": "/home/user/shared/SP/Shows/Haikyuu (S1 570p)/EP 1 - Haikyuu.mp4",
+        "planet": "Sports",
+        "series": "Haikyuu (S1 570p)",
+        "title": "Haikyuu",
+        "slot_minutes": 30,
+        "duration_sec": 1463,
+        "start": "2026-11-27 01:00",
+        "time": "01:00 AM"
+    },
     "is_space_power": true
 }

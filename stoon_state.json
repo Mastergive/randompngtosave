@@ -1,7 +1,17 @@
 {
     "last_show_name": "Haikyuu",
     "show_counter": 1432,
-    "current_item": null,
+    "current_item": {
+        "type": "show",
+        "path": "/home/user/shared/SP/Shows/One Piece (S1 570p)/EP 1 - OP.mp4",
+        "planet": "Adventure",
+        "series": "One Piece (S1 570p)",
+        "title": "One Piece",
+        "slot_minutes": 30,
+        "duration_sec": 1481,
+        "start": "2026-11-27 23:30",
+        "time": "11:30 PM"
+    },
     "is_space_power": true,
     "previous_show": "Driland",
     "last_adhan_date": null,

@@ -1,19 +1,9 @@
 {
-    "last_show_name": "Black Cat",
-    "show_counter": 1427,
-    "current_item": {
-        "type": "show",
-        "path": "/home/user/shared/SP/Shows/Power Rangers Dino Charge (S1 570p)/EP 1 - PPD.mp4",
-        "planet": "Action",
-        "series": "Power Rangers Dino Charge (S1 570p)",
-        "title": "Power Rangers Dino Charge",
-        "slot_minutes": 30,
-        "duration_sec": 1342,
-        "start": "2026-11-27 20:30",
-        "time": "08:30 PM"
-    },
+    "last_show_name": "Power Rangers Dino Charge",
+    "show_counter": 1428,
+    "current_item": null,
     "is_space_power": false,
-    "previous_show": "N/A",
+    "previous_show": "Black Cat",
     "last_adhan_date": null,
     "last_adhan_name": null
 }

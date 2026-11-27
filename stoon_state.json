@@ -1,19 +1,19 @@
 {
-    "last_show_name": "Haikyuu",
-    "show_counter": 1432,
+    "last_show_name": "One Piece",
+    "show_counter": 1433,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/One Piece (S1 570p)/EP 1 - OP.mp4",
+        "path": "/home/user/shared/SP/Shows/My hero academy (S1 570p)/EP 1 - My Hero Academy.mp4",
         "planet": "Adventure",
-        "series": "One Piece (S1 570p)",
-        "title": "One Piece",
+        "series": "My hero academy (S1 570p)",
+        "title": "My Hero Academy",
         "slot_minutes": 30,
-        "duration_sec": 1481,
-        "start": "2026-11-27 23:30",
-        "time": "11:30 PM"
+        "duration_sec": 1368,
+        "start": "2026-11-28 00:00",
+        "time": "12:00 AM"
     },
     "is_space_power": true,
-    "previous_show": "Driland",
+    "previous_show": "Haikyuu",
     "last_adhan_date": null,
     "last_adhan_name": null
 }

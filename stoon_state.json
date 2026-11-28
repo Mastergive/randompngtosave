@@ -1,19 +1,19 @@
 {
-    "last_show_name": "Magic Kaito",
-    "show_counter": 1435,
+    "last_show_name": "Made in Abyss",
+    "show_counter": 1436,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Made in Abyss (S1 570p)/EP 1 - Made in Abyss.mp4",
-        "planet": "Adventure",
-        "series": "Made in Abyss (S1 570p)",
-        "title": "Made in Abyss",
+        "path": "/home/user/shared/SP/Shows/Detective Conan (S8 570p)/EP 2 - DConan s8.mp4",
+        "planet": "Action",
+        "series": "Detective Conan (S8 570p)",
+        "title": "Detective Conan",
         "slot_minutes": 30,
-        "duration_sec": 1227,
-        "start": "2026-11-28 01:00",
-        "time": "01:00 AM"
+        "duration_sec": 1443,
+        "start": "2026-11-28 01:30",
+        "time": "01:30 AM"
     },
     "is_space_power": true,
-    "previous_show": "My Hero Academy",
+    "previous_show": "Magic Kaito",
     "last_adhan_date": null,
     "last_adhan_name": null
 }

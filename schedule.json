@@ -1,20 +1,9 @@
 {
     "date": "2026-11-28",
-    "generated": "2026-11-28T11:28:28",
+    "generated": "2026-11-28T11:58:23",
     "grid_minutes": 30,
-    "revision": 29,
+    "revision": 30,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/The fixies (570p)/EP 1 & 2 - The fixies.mp4",
-            "planet": "Science",
-            "series": "The fixies (570p)",
-            "title": "EP 1 & 2 - The fixies",
-            "slot_minutes": 30,
-            "duration_sec": 661,
-            "start": "2026-11-28 12:00",
-            "time": "12:00 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Iftah ya simim (S1 570p)/EP 1 - IYS.mp4",

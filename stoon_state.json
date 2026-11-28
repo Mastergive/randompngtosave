@@ -1,19 +1,19 @@
 {
-    "last_show_name": "Franklin and friends",
-    "show_counter": 1450,
+    "last_show_name": "Detective Conan: Countdown to the unknown",
+    "show_counter": 1451,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Movies/DetectiveConan.mp4",
-        "planet": "Movies",
-        "series": "Movies",
-        "title": "Detective Conan: Countdown to the unknown",
-        "slot_minutes": 120,
-        "duration_sec": 5970,
-        "start": "2026-11-28 09:00",
-        "time": "09:00 AM"
+        "path": "/home/user/shared/SP/Shows/Binky and Brain (S1 570p)/EP 1 - BAB.mp4",
+        "planet": "Comedy",
+        "series": "Binky and Brain (S1 570p)",
+        "title": "Binky and Brain",
+        "slot_minutes": 30,
+        "duration_sec": 1239,
+        "start": "2026-11-28 11:00",
+        "time": "11:00 AM"
     },
     "is_space_power": false,
-    "previous_show": "Cocotama",
+    "previous_show": "Franklin and friends",
     "last_adhan_date": null,
     "last_adhan_name": null
 }

@@ -1,20 +1,9 @@
 {
     "date": "2026-11-28",
-    "generated": "2026-11-28T08:58:55",
+    "generated": "2026-11-28T10:58:29",
     "grid_minutes": 30,
-    "revision": 27,
+    "revision": 28,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Binky and Brain (S1 570p)/EP 1 - BAB.mp4",
-            "planet": "Comedy",
-            "series": "Binky and Brain (S1 570p)",
-            "title": "Binky and Brain",
-            "slot_minutes": 30,
-            "duration_sec": 1239,
-            "start": "2026-11-28 11:00",
-            "time": "11:00 AM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Beybattle Burst (S1 570p)/EP 1 - BBurst.mp4",

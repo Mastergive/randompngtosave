@@ -1,19 +1,19 @@
 {
-    "last_show_name": "Monsuno",
-    "show_counter": 1455,
+    "last_show_name": "PI PO PA",
+    "show_counter": 1456,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/PI PO PA (S1 570p)/EP 1 - PI PO PA.mp4",
-        "planet": "Adventure",
-        "series": "PI PO PA (S1 570p)",
-        "title": "PI PO PA",
+        "path": "/home/user/shared/SP/Shows/Temp/Flona's Adventure (S1 570p)/EP 3 - FLONA.mp4",
+        "planet": "Zomoroda",
+        "series": "Temp",
+        "title": "Flona's Adventure",
         "slot_minutes": 30,
-        "duration_sec": 1467,
-        "start": "2026-11-28 13:30",
-        "time": "01:30 PM"
+        "duration_sec": 1281,
+        "start": "2026-11-28 14:00",
+        "time": "02:00 PM"
     },
     "is_space_power": false,
-    "previous_show": "Iftah ya Simsim",
+    "previous_show": "Monsuno",
     "last_adhan_date": null,
     "last_adhan_name": null
 }

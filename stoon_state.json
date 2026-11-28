@@ -1,19 +1,19 @@
 {
-    "last_show_name": "Cocotama",
-    "show_counter": 1449,
+    "last_show_name": "Franklin and friends",
+    "show_counter": 1450,
     "current_item": {
         "type": "show",
-        "path": "/home/user/shared/SP/Shows/Frank and his friends (S1 570p)/EP 1 - FAF.mp4",
-        "planet": "Bonbon",
-        "series": "Frank and his friends (S1 570p)",
-        "title": "Franklin and friends",
-        "slot_minutes": 30,
-        "duration_sec": 1323,
-        "start": "2026-11-28 08:30",
-        "time": "08:30 AM"
+        "path": "/home/user/shared/SP/Shows/Movies/DetectiveConan.mp4",
+        "planet": "Movies",
+        "series": "Movies",
+        "title": "Detective Conan: Countdown to the unknown",
+        "slot_minutes": 120,
+        "duration_sec": 5970,
+        "start": "2026-11-28 09:00",
+        "time": "09:00 AM"
     },
     "is_space_power": false,
-    "previous_show": "Yo Kai Watch",
+    "previous_show": "Cocotama",
     "last_adhan_date": null,
     "last_adhan_name": null
 }

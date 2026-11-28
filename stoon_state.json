@@ -1,7 +1,17 @@
 {
     "last_show_name": "Najmat Tabkh",
     "show_counter": 1443,
-    "current_item": null,
+    "current_item": {
+        "type": "show",
+        "path": "/home/user/shared/SP/Shows/Boasa (S1 570p)/EP 4 - Boasa.mp4",
+        "planet": "Adventure",
+        "series": "Boasa (S1 570p)",
+        "title": "Boasae",
+        "slot_minutes": 30,
+        "duration_sec": 1487,
+        "start": "2026-11-28 05:30",
+        "time": "05:30 AM"
+    },
     "is_space_power": false,
     "previous_show": "PI PO PA",
     "last_adhan_date": null,

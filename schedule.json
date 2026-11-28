@@ -1,20 +1,9 @@
 {
     "date": "2026-11-28",
-    "generated": "2026-11-28T14:28:13",
+    "generated": "2026-11-28T14:58:56",
     "grid_minutes": 30,
-    "revision": 35,
+    "revision": 36,
     "entries": [
-        {
-            "type": "show",
-            "path": "/home/user/shared/SP/Shows/Movies/DetectiveConan.mp4",
-            "planet": "Movies",
-            "series": "Movies",
-            "title": "Detective Conan: Countdown to the unknown",
-            "slot_minutes": 120,
-            "duration_sec": 5970,
-            "start": "2026-11-28 15:00",
-            "time": "03:00 PM"
-        },
         {
             "type": "show",
             "path": "/home/user/shared/SP/Shows/Naruto SD (S1 570p)/EP1 - NarutoSD.mp4",
